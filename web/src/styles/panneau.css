@@ -5,65 +5,43 @@
 }
 .intro {
   color: var(--encre-2);
+  font-size: 14px;
+  line-height: 1.6;
 }
-/* Titre de bloc : l'étiquette « atelier » de la charte. */
+.panneau-entete h2 { margin-top: 7px; font-size: 27px; line-height: 1.15; }
+.panneau-entete .etiquette { font-size: 10px; letter-spacing: .12em; }
+.complement { padding-top: 16px; border-top: 1px solid var(--filet); }
+.complement summary { color: var(--discret); font-size: 13px; cursor: pointer; }
+.complement .tuiles { margin-top: 16px; }
+.complement summary:hover { color: var(--encre); }
+.champ-recherche {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 11px;
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon);
+  background: var(--surface);
+  color: var(--encre);
+  font: inherit;
+  font-size: 16px;
+}
+.champ-recherche::placeholder {
+  color: var(--discret);
+  opacity: 1;
+}
+/* Les petits titres restent en casse normale pour garder une lecture fluide. */
 .sous-titre {
   margin-bottom: 8px;
-  font-family: var(--police-mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.14em;
+  font-family: var(--police);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
   line-height: 1.5;
-  text-transform: uppercase;
-  color: var(--discret);
+  color: var(--encre-2);
 }
 .note {
   font-size: 13px;
   color: var(--discret);
-}
-/* Fiche d'un arrêt, d'une ligne ou d'un carreau : la carte de formule de la charte. */
-.fiche {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 14px 16px;
-  border: 1px solid var(--filet);
-  border-left: 6px solid var(--terracotta);
-  border-radius: var(--rayon);
-  background: var(--surface);
-}
-.fiche__entete {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-}
-.fiche__entete h2 {
-  font-size: 20px;
-}
-.fiche__fermer {
-  flex: none;
-  width: 28px;
-  height: 28px;
-  border: 1px solid transparent;
-  border-radius: var(--rayon);
-  background: transparent;
-  font-size: 20px;
-  line-height: 1;
-  color: var(--encre-2);
-  cursor: pointer;
-}
-.fiche__fermer:hover {
-  border-color: var(--filet);
-  color: var(--encre);
-}
-.fiche__chiffres {
-  color: var(--encre-2);
-}
-.fiche__chiffres strong {
-  font-family: var(--police-titre);
-  font-weight: 600;
-  color: var(--encre);
 }
 .classement ol {
   list-style: none;
@@ -75,13 +53,14 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 6px 8px;
+  padding: 10px 8px;
   margin: 0 -8px;
   width: calc(100% + 16px);
   border: none;
   border-radius: var(--rayon);
   background: transparent;
   text-align: left;
+  font-size: 14px;
   cursor: pointer;
 }
 .classement__ligne:hover {
@@ -102,10 +81,7 @@
   background: var(--plan);
 }
 .tuiles dt {
-  font-family: var(--police-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 12px;
   color: var(--discret);
 }
 .tuiles dd {
@@ -121,7 +97,8 @@
   gap: 6px;
 }
 .puce {
-  padding: 5px 11px;
+  padding: 6px 11px;
+  min-height: 36px;
   border: 1px solid var(--filet);
   border-radius: var(--rayon);
   background: var(--surface);
@@ -151,9 +128,6 @@
   background: var(--barre);
 }
 
-/* Sur téléphone, une fiche amenée à l'écran s'arrête sous la carte et les onglets, collés en haut. */
-@media (max-width: 899px) {
-  .fiche {
-    scroll-margin-top: calc(var(--hauteur-carte) + 56px);
-  }
+@media (pointer: coarse) {
+  .puce, .classement__ligne { min-height: 44px; }
 }

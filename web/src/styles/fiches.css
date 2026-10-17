@@ -1,0 +1,43 @@
+/* La sélection prime sur les classements et les chiffres de contexte. */
+.fiche {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 2px solid var(--terracotta);
+  border-bottom: 1px solid var(--filet);
+  background: var(--surface);
+}
+.fiche__entete {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.fiche__entete h2 { font-size: 21px; line-height: 1.25; }
+.fiche__fermer {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon);
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--encre-2);
+  cursor: pointer;
+}
+.fiche__fermer:hover { background: var(--plan); color: var(--encre); }
+.fiche__chiffres { font-size: 13px; color: var(--encre-2); }
+.fiche__chiffres strong { color: var(--encre); }
+.fiche__mesure { display: flex; align-items: center; gap: 12px; }
+.fiche__mesure > strong { font: 600 46px/1 var(--police-titre); letter-spacing: -1.8px; color: var(--encre); }
+.fiche__mesure > span { color: var(--encre-2); font-size: 14px; }
+.fiche__mesure small { display: block; margin-top: 3px; color: var(--discret); font-size: 12px; }
+.fiche__valeur { display: block; margin-bottom: 5px; font: 600 36px/1.1 var(--police-titre); color: var(--encre); letter-spacing: -1px; }
+@media (max-width: 899px) {
+  .fiche { scroll-margin-top: calc(var(--hauteur-entete) + var(--hauteur-carte) + 16px); }
+}
+@media (pointer: coarse) {
+  .fiche__fermer { width: 40px; height: 40px; }
+}

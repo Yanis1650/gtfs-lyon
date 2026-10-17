@@ -92,10 +92,8 @@ const bulle = computed(() =>
 }
 .profil__titre {
   margin-bottom: 8px;
-  font-family: var(--police-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--police);
+  font-size: 13px;
   color: var(--discret);
 }
 .profil__zone {
@@ -129,7 +127,7 @@ svg {
 }
 .profil__graduation {
   font-family: var(--police-mono);
-  font-size: 9.5px;
+  font-size: 13px;
   fill: var(--discret);
   font-variant-numeric: tabular-nums;
 }

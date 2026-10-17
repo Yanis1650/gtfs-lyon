@@ -10,7 +10,7 @@ Toutes les mesures portent sur un jour de référence : le mardi 17 novembre 202
 
 | Vue | Ce qu’elle montre |
 |---|---|
-| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules en circulation s’animent d’après les horaires, dix fois plus vite que la réalité, en temps réel ou soixante fois plus vite au choix. |
+| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules s’animent d’après les horaires théoriques, dix fois plus vite que la réalité, à vitesse réelle ou soixante fois plus vite au choix. Une recherche permet de trouver un arrêt. |
 | **La vitesse** | Vitesse commerciale de chaque tronçon (divergente autour de l’allure typique du réseau) et classement des lignes, par période. |
 | **L’accessibilité** | Part des habitants de la Métropole joignables en 30 et 45 minutes depuis chaque carreau habité, et temps de trajet depuis six grands pôles. |
 
@@ -37,9 +37,18 @@ Insee Filosofi 2021 ──► carreaux habités ──► r5py / R5 (Docker, Jav
   chaque véhicule prend son gabarit (bus de 12 m, articulés de 18 m, trams en cinq modules, métros voiture par voiture),
   chaque caisse suivant la courbe de la voie ; métros et funiculaires, souterrains, restent à plat sous les immeubles.
 - **Accessibilité.** r5py (moteur R5 de Conveyal) : départs minute par minute entre 8 h et 9 h, durée médiane, marche
-  comprise, sur les 7 879 carreaux habités de la Métropole.
+  à 3,6 km/h comprise, sur les 7 879 carreaux habités de la Métropole. L’archive transmise à R5 exclut les mêmes agences
+  scolaires que l’offre ; les références aux lignes et courses exclues sont retirées des tables GTFS.
 
 Le détail est repris dans la fenêtre « Méthode et sources » de la carte.
+
+## Communication LinkedIn
+
+Le dossier `Linkedin/` contient le post, trois visuels portrait, la capture 3D, les textes alternatifs et les sources
+modifiables. Son `README.md` décrit l’ordre des images et les précautions de lecture.
+
+L’image de partage de 1 200 × 627 pixels est dans `web/public/partage/lyon-sans-voiture.png` et déclarée dans les
+métadonnées de la page. Les visuels sont régénérables avec `node outils/generer_linkedin.cjs` (Node.js et `sharp` requis).
 
 ## Lancer le projet
 
@@ -98,10 +107,14 @@ compose.yaml          webmap (nginx derrière Traefik) et conteneur de la chaîn
 ## Charte
 
 L’interface suit une charte sobre : fond crème, ardoise pour les éléments d’action, terracotta en touches,
-Space Grotesk, IBM Plex Sans et IBM Plex Mono servies depuis le site, arrondi unique de 3 px. Les données en reprennent
+Space Grotesk, IBM Plex Sans et IBM Plex Mono servies depuis le site, commandes arrondies à 7 px. Les données en reprennent
 les rampes : ardoise pour les quantités, terracotta pour les temps, et une échelle divergente terracotta-ardoise pour
 les vitesses. Le fond OpenFreeMap est recoloré aux mêmes teintes. Mise en page pensée d’abord pour le téléphone,
 puis pour le bureau (une colonne de lecture et la carte en pleine hauteur, à partir de 900 px).
+
+La branche `codex/atlas-refonte-visuelle` propose la direction **Atlas** : en-tête sur toute la largeur,
+navigation segmentée, colonne de lecture resserrée, sélection mise en valeur et barre horaire directement sur la carte.
+Le détail de la proposition et des vérifications est dans `docs/refonte-atlas.md`.
 
 ## Sécurité
 

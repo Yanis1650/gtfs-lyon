@@ -8,6 +8,7 @@ import '@fontsource/ibm-plex-sans/latin-600.css'
 import '@fontsource/ibm-plex-mono/latin-400.css'
 import './style.css'
 import './styles/panneau.css'
+import './styles/fiches.css'
 
 import { createApp } from 'vue'
 

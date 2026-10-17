@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 
 import type { Mode, ProprietesLigne } from '../donnees'
 import { kmh } from '../format'
+import { correspond } from '../recherche'
 import BadgeLigne from './BadgeLigne.vue'
 
 const props = defineProps<{
@@ -14,8 +15,10 @@ const props = defineProps<{
 const emit = defineEmits<{ choisir: [string | null] }>()
 
 const ordre = ref<'rapides' | 'lentes'>('rapides')
+const requete = ref('')
 const classement = computed(() => {
-  const liste = [...props.lignes.values()].filter((l) => l.vitesse != null && props.modes.includes(l.mode))
+  const liste = [...props.lignes.values()].filter((l) => l.vitesse != null && props.modes.includes(l.mode)
+    && correspond(`${l.ligne} ${l.nom}`, requete.value))
   const sens = ordre.value === 'rapides' ? -1 : 1
   return liste.sort((a, b) => sens * (a.vitesse! - b.vitesse!))
 })
@@ -27,6 +30,10 @@ const classement = computed(() => {
       <h2 class="sous-titre">Les lignes, de la plus {{ ordre === 'rapides' ? 'rapide' : 'lente' }}</h2>
       <button class="lien-action" @click="ordre = ordre === 'rapides' ? 'lentes' : 'rapides'">Inverser</button>
     </div>
+    <label class="visuellement-cache" for="recherche-ligne">Rechercher une ligne ou une destination</label>
+    <input id="recherche-ligne" v-model="requete" class="champ-recherche" type="search"
+      placeholder="Rechercher : T1, C3, Part-Dieu…" autocomplete="off" @keydown.esc="requete = ''" />
+    <p v-if="!classement.length" class="note" role="status">Aucune ligne pour cette recherche et les modes affichés.</p>
     <ol class="lignes">
       <li v-for="l in classement" :key="l.id">
         <button
@@ -56,7 +63,7 @@ const classement = computed(() => {
 }
 .lignes {
   list-style: none;
-  margin: 0;
+  margin: 8px 0 0;
   padding: 0;
 }
 .lignes__ligne {

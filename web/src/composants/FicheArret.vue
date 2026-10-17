@@ -27,10 +27,10 @@ const lignesArret = computed(() =>
       <h2>{{ arret.nom }}</h2>
       <button class="fiche__fermer" aria-label="Fermer la fiche de l’arrêt" @click="emit('fermer')">×</button>
     </div>
-    <p class="fiche__chiffres chiffres">
-      <strong>{{ nombre(arret.profil[heure]) }}</strong> départs, {{ tranche(heure) }} ·
-      <strong>{{ nombre(arret.departs) }}</strong> sur la journée
+    <p class="fiche__mesure chiffres">
+      <strong>{{ nombre(arret.profil[heure]) }}</strong><span>départs<small>{{ tranche(heure) }}</small></span>
     </p>
+    <p class="fiche__chiffres chiffres"><strong>{{ nombre(arret.departs) }}</strong> départs sur la journée, toutes lignes confondues.</p>
     <BarresProfil titre="Départs heure par heure" :valeurs="arret.profil" :actif="heure" @choisir="(i) => emit('choisirHeure', i)" />
     <div class="badges" aria-label="Lignes au départ de l’arrêt">
       <BadgeLigne v-for="l in lignesArret" :key="l.id" :ligne="l.ligne" :couleur="l.couleur" :title="l.nom" />

@@ -1,0 +1,15 @@
+{
+  "date_reference": "2026-11-17",
+  "carreaux": 7879,
+  "identifiants_uniques": 7879,
+  "carreaux_invalides": 0,
+  "agences_exclues": [
+    "TCL_JD"
+  ],
+  "carreaux_modifies_30min": 113,
+  "carreaux_modifies_45min": 432,
+  "ecart_absolu_max_habitants_30min": 2031.0,
+  "ecart_absolu_max_habitants_45min": 3126.0,
+  "sha256_resultat": "a968a45522fe98363f7a6120131d16d318c0c4105e9417de120f29c0063fead0",
+  "controle": "Population non negative ; 30 min <= 45 min ; marche 30 min <= TC 30 min ; identifiants et nombre de carreaux conserves."
+}

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, watch } from 'vue'
 
+import { arreterDefilement as arreter, minuterie } from '../etat/lecture'
 import { debutTranche, simulation, trancheDe } from '../etat/simulation'
 import { horaire, tranche } from '../format'
 
 const heure = defineModel<number>({ required: true })
 
 // Lecture : la journée défile d'une heure toutes les 0,9 s, jusqu'à ce qu'on reprenne la main.
-const minuterie = ref<number | null>(null)
 function basculer() {
   // Véhicules affichés : la lecture fait avancer leur horloge en continu.
   if (simulation.actif) {
@@ -16,10 +16,6 @@ function basculer() {
   }
   if (minuterie.value != null) return arreter()
   minuterie.value = window.setInterval(() => (heure.value = (heure.value + 1) % 24), 900)
-}
-function arreter() {
-  if (minuterie.value != null) window.clearInterval(minuterie.value)
-  minuterie.value = null
 }
 onBeforeUnmount(arreter)
 
@@ -54,7 +50,10 @@ defineExpose({ arreter })
       <svg v-else viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" /></svg>
     </button>
     <div class="horloge__curseur">
-      <label for="heure" class="horloge__libelle chiffres">{{ libelle }}</label>
+      <div class="horloge__entete">
+        <label for="heure" class="horloge__libelle chiffres">{{ libelle }}</label>
+        <span class="horloge__contexte">{{ simulation.actif ? 'Animation simulée' : 'Horaires théoriques' }}</span>
+      </div>
       <input
         id="heure"
         type="range"
@@ -96,11 +95,22 @@ defineExpose({ arreter })
 }
 .horloge__curseur {
   flex: 1;
+  min-width: 0;
+}
+.horloge__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.horloge__contexte {
+  color: var(--discret);
+  font-size: 12px;
 }
 .horloge__libelle {
   display: block;
   font-family: var(--police-titre);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -109,6 +119,6 @@ input[type='range'] {
   width: 100%;
   height: 28px;
   margin: 0;
-  accent-color: var(--ardoise);
+  accent-color: var(--terracotta);
 }
 </style>

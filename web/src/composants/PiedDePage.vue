@@ -30,10 +30,11 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
   display: flex;
   align-items: center;
   gap: 8px 16px;
-  padding: 10px 20px;
-  background: var(--pied);
-  color: var(--pied-texte);
-  font-size: 13px;
+  padding: 9px 24px;
+  background: var(--surface);
+  border-top: 1px solid var(--filet);
+  color: var(--discret);
+  font-size: 12px;
 }
 .pied__liens {
   flex: 1;
@@ -45,9 +46,9 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
   padding: 0;
   border: none;
   background: none;
-  color: #f7f2e6;
-  font-size: 13px;
-  font-weight: 500;
+  color: var(--discret);
+  font-size: 12px;
+  font-weight: 400;
   text-decoration: none;
   cursor: pointer;
 }
@@ -55,7 +56,7 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
   content: ' →';
 }
 .pied__lien:hover {
-  color: #ffffff;
+  color: var(--encre);
   text-decoration: underline;
 }
 .pied__signature {
@@ -65,7 +66,7 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
   align-items: flex-end;
   gap: 3px;
   line-height: 1;
-  color: #efe6d1;
+  color: var(--encre-2);
   text-decoration: none;
   opacity: 0.85;
 }
@@ -78,17 +79,19 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
   font-weight: 600;
 }
 .pied__portfolio {
-  font-size: 9px;
+  display: none;
   line-height: 1;
-  color: var(--pied-texte);
+  color: var(--discret);
 }
 .pied__signature:hover .pied__portfolio {
   text-decoration: underline;
 }
 
-@media (min-width: 900px) {
+@media (max-width: 599px) {
   .pied {
-    padding: 10px 24px;
+    padding: 12px 18px;
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 </style>

@@ -3,11 +3,9 @@ import { computed } from 'vue'
 
 import { LIBELLES_MODES, type Meta, type Mode, type ProprietesLigne, type ProprietesTroncon } from '../donnees'
 import { kmh } from '../format'
-import { classesVitesse } from '../palette'
 import ClassementLignes from './ClassementLignes.vue'
 import FicheLigne from './FicheLigne.vue'
 import FicheTroncon from './FicheTroncon.vue'
-import Legende from './Legende.vue'
 
 const props = defineProps<{
   meta: Meta
@@ -24,7 +22,7 @@ const emit = defineEmits<{
   fermerTroncon: []
 }>()
 
-const MODES_FILTRABLES: Mode[] = ['metro', 'tram', 'trolleybus', 'bus', 'funiculaire']
+const MODES_FILTRABLES: Mode[] = ['metro', 'tram', 'trolleybus', 'bus', 'funiculaire', 'navette_fluviale']
 const ORDRE_TUILES: Mode[] = ['metro', 'tram', 'bus', 'trolleybus']
 
 function basculer(mode: Mode) {
@@ -41,10 +39,22 @@ const modesAffiches = computed(() =>
 
 <template>
   <section class="panneau-vue">
+    <div class="panneau-entete"><p class="etiquette">Comparer les lignes</p><h2>Le rythme du réseau.</h2></div>
     <p class="intro">
-      La vitesse commerciale rapporte la distance parcourue au temps de trajet, arrêts et attentes aux feux compris.
+      La vitesse commerciale rapporte la distance parcourue au temps prévu dans les horaires, arrêts compris.
       Terracotta&nbsp;: plus lent que l’allure typique du réseau&nbsp;; ardoise&nbsp;: plus rapide.
     </p>
+
+    <FicheTroncon
+      v-if="troncon"
+      :troncon="troncon"
+      :lignes="lignes"
+      :noms-arrets="nomsArrets"
+      :ligne="ligne"
+      @fermer="emit('fermerTroncon')"
+      @choisir-ligne="(id) => emit('choisirLigne', id)"
+    />
+    <FicheLigne v-if="ligneChoisie" :ligne="ligneChoisie" :vitesse-max="vitesseMax" @fermer="emit('choisirLigne', null)" />
 
     <dl class="tuiles">
       <div v-for="m in modesAffiches" :key="m.mode">
@@ -52,12 +62,6 @@ const modesAffiches = computed(() =>
         <dd class="chiffres">{{ kmh(m.vitesse) }}</dd>
       </div>
     </dl>
-
-    <Legende
-      titre="Vitesse sur le tronçon (km/h)"
-      :classes="classesVitesse(sombre)"
-      note="Épaisseur&nbsp;: nombre de courses dans la journée."
-    />
 
     <div class="puces" role="group" aria-label="Modes affichés">
       <button
@@ -71,16 +75,6 @@ const modesAffiches = computed(() =>
       </button>
     </div>
 
-    <FicheTroncon
-      v-if="troncon"
-      :troncon="troncon"
-      :lignes="lignes"
-      :noms-arrets="nomsArrets"
-      :ligne="ligne"
-      @fermer="emit('fermerTroncon')"
-      @choisir-ligne="(id) => emit('choisirLigne', id)"
-    />
-    <FicheLigne v-if="ligneChoisie" :ligne="ligneChoisie" :vitesse-max="vitesseMax" @fermer="emit('choisirLigne', null)" />
 
     <ClassementLignes
       :lignes="lignes"

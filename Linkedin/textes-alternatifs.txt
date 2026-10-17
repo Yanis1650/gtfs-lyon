@@ -1,0 +1,14 @@
+01-atlas.png
+Lyon sans voiture, un atlas interactif des transports lyonnais. Une carte montre un extrait géographique des tracés du réseau TCL. Pour le mardi 17 novembre 2026, le périmètre complet retenu compte 20 705 courses programmées et 2 588 arrêts desservis. Sources : horaires théoriques SYTRAL Mobilités et tracés OpenStreetMap.
+
+02-vitesses-T1-T3.png
+Comparaison des vitesses commerciales théoriques sur les lignes complètes : T1, 14,9 km/h ; T3, 29,5 km/h. Le graphique utilise une échelle commune de 0 à 40 km/h. Une carte repère T1 en terracotta et T3 en ardoise. Les arrêts sont compris dans les durées. Cette comparaison ne mesure pas les causes de l’écart. Jour de référence : 17 novembre 2026.
+
+03-explorer.png
+Trois façons d’explorer l’atlas TCL : observer l’offre et les départs à chaque arrêt, comparer les vitesses des lignes et tronçons, explorer l’accessibilité en 30 et 45 minutes. La carte interactive est disponible sur atlas-lyon.drekky.fr. Les calculs reposent sur des horaires théoriques, OpenStreetMap et la population Insee Filosofi 2021.
+
+couverture-lien.png
+Lyon sans voiture : jusqu’où va le réseau TCL ? Un atlas de l’offre, des vitesses et de l’accessibilité. Un extrait du réseau accompagne les totaux de 20 705 courses programmées et 2 588 arrêts desservis, le 17 novembre 2026 selon les horaires théoriques.
+
+capture-satellite-3d.png
+Capture de l’atlas Lyon sans voiture en thème sombre, avec vue satellite inclinée et bâtiments en 3D. Des véhicules sont représentés à 8 h 03 selon les horaires théoriques et une animation accélérée. Le panneau présente l’offre et la légende. Il ne s’agit pas d’un suivi en direct.

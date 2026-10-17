@@ -22,34 +22,35 @@ const vue = defineModel<Vue>({ required: true })
 <style scoped>
 .onglets {
   display: flex;
-  gap: 20px;
-  padding: 0 20px;
-  border-bottom: 1px solid var(--filet);
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon);
   background: var(--surface);
 }
 .onglets__onglet {
-  padding: 12px 0 10px;
-  margin-bottom: -1px;
+  min-height: 38px;
+  padding: 8px 14px;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-radius: 4px;
   background: transparent;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--encre-2);
   cursor: pointer;
   white-space: nowrap;
 }
 .onglets__onglet:hover {
+  background: var(--survol);
   color: var(--encre);
 }
 .onglets__onglet[aria-current='page'] {
-  color: var(--encre);
-  border-bottom-color: var(--ardoise);
+  color: var(--sur-ardoise);
+  background: var(--ardoise);
 }
 
-@media (min-width: 900px) {
-  .onglets {
-    padding: 0 24px;
-  }
+@media (max-width: 899px) {
+  .onglets { justify-content: center; padding: 0; border: 0; }
+  .onglets__onglet { flex: 1; min-height: 36px; padding: 7px 6px; font-size: 13px; }
 }
 </style>
