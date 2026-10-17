@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 defineProps<{ etiquette: string; titre: string; id: string }>()
 const dialogue = ref<HTMLDialogElement>()
-defineExpose({ ouvrir: () => dialogue.value?.showModal() })
+defineExpose({ ouvrir: () => dialogue.value?.showModal(), fermer: () => dialogue.value?.close() })
 </script>
 
 <template>

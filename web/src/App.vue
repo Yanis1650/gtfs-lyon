@@ -5,7 +5,9 @@ import CarteAtlas from './composants/CarteAtlas.vue'
 import BarreTemps from './composants/BarreTemps.vue'
 import LegendeCarte from './composants/LegendeCarte.vue'
 import CommandesCarte from './composants/CommandesCarte.vue'
+import CommandesAcces from './composants/CommandesAcces.vue'
 import EnTete from './composants/EnTete.vue'
+import GuideDialogue from './composants/GuideDialogue.vue'
 import MentionsDialogue from './composants/MentionsDialogue.vue'
 import MethodeDialogue from './composants/MethodeDialogue.vue'
 import NavigationMobile from './composants/NavigationMobile.vue'
@@ -29,6 +31,7 @@ import {
   type ProprietesTroncon,
 } from './donnees'
 import { population } from './etat/statistiques'
+import { useRetourCarte } from './etat/balayage'
 import { useTheme } from './etat/theme'
 import { useVue } from './etat/vue'
 
@@ -41,6 +44,7 @@ const pole = ref('part_dieu')
 const satellite = ref(false)
 const relief = ref(false)
 const hauteurTemps = ref(52)
+const hauteurAcces = ref(72)
 const exploration = ref(false)
 
 const meta = shallowRef<Meta | null>(null)
@@ -56,6 +60,9 @@ const carreau = shallowRef<ProprietesCarreau | null>(null)
 
 const carte = ref<InstanceType<typeof CarteAtlas>>()
 const contenu = ref<HTMLElement>()
+const panneau = ref<HTMLElement>()
+const guide = ref<InstanceType<typeof GuideDialogue>>()
+useRetourCarte(panneau, exploration)
 const methode = ref<InstanceType<typeof MethodeDialogue>>()
 const mentions = ref<InstanceType<typeof MentionsDialogue>>()
 
@@ -105,13 +112,13 @@ async function choisirLigne(id: string | null) {
 </script>
 
 <template>
-  <div class="atlas" :style="{ '--hauteur-temps': `${hauteurTemps}px` }">
-    <EnTete class="atlas__entete" :date="meta?.date_reference ?? null" :sombre="sombre" @basculer-theme="basculer">
+  <div class="atlas" :style="{ '--hauteur-temps': `${hauteurTemps}px`, '--hauteur-acces': `${hauteurAcces}px` }">
+    <EnTete class="atlas__entete" :date="meta?.date_reference ?? null" :sombre="sombre" @basculer-theme="basculer" @guide="guide?.ouvrir()">
       <Onglets v-model="vue" />
     </EnTete>
     <NavigationMobile v-model="exploration" :vue="vue" class="atlas__navigation" />
 
-    <main id="atlas-carte" :class="['atlas__carte', { 'atlas__carte--offre': vue === 'offre', 'atlas__carte--masquee': exploration }]">
+    <main id="atlas-carte" :class="['atlas__carte', { 'atlas__carte--offre': vue === 'offre', 'atlas__carte--acces': vue === 'acces', 'atlas__carte--masquee': exploration }]">
       <CarteAtlas
         ref="carte"
         :vue="vue"
@@ -131,12 +138,14 @@ async function choisirLigne(id: string | null) {
         @troncon="(t) => (troncon = t)"
         @carreau="(c) => (carreau = c)"
       />
-      <CommandesCarte v-model:satellite="satellite" v-model:relief="relief" />
+      <CommandesCarte v-model:satellite="satellite" v-model:relief="relief" :vue="vue" :heure="heure" />
+      <CommandesAcces v-if="vue === 'acces'" v-model:indicateur="indicateur" v-model:pole="pole" :poles="meta?.poles ?? []" @hauteur="hauteurAcces = $event" />
       <LegendeCarte class="atlas__legende" :vue="vue" :sombre="sombre" :indicateur="indicateur" />
     </main>
     <BarreTemps v-if="vue === 'offre'" v-model:heure="heure" class="atlas__temps" @hauteur="hauteurTemps = $event" />
 
-    <section id="atlas-lecture" :class="['atlas__panneau', { 'atlas__panneau--ouvert': exploration }]" aria-label="Lecture de la carte">
+    <section id="atlas-lecture" ref="panneau" :class="['atlas__panneau', { 'atlas__panneau--ouvert': exploration }]" aria-label="Lecture de la carte">
+      <p class="atlas__balayage">↔ Glissez pour revenir à la carte</p>
       <div ref="contenu" class="atlas__contenu">
         <template v-if="meta">
           <PanneauOffre
@@ -181,6 +190,7 @@ async function choisirLigne(id: string | null) {
 
     <MethodeDialogue v-if="meta" ref="methode" :meta="meta" />
     <MentionsDialogue ref="mentions" />
+    <GuideDialogue ref="guide" @choisir="(v) => { vue = v; exploration = false }" />
   </div>
 </template>
 

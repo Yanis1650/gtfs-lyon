@@ -21,12 +21,15 @@ immeubles à leur hauteur OpenStreetMap.
 
 Sur téléphone et tablette (moins de 900 px), les trois vues restent accessibles dans la barre du bas. Le bouton
 **Carte** affiche la carte sur tout l’espace disponible : on la déplace directement avec un doigt. Le bouton voisin
-ouvre **Arrêts et recherche**, **Lignes et filtres** ou **Indicateurs**, selon la vue. Ce panneau défile indépendamment,
+ouvre **Arrêts et recherche**, **Lignes et filtres** ou **Résultats et détails**, selon la vue. Ce panneau défile indépendamment,
 sans carte figée au-dessus. Toucher un arrêt, un tronçon ou un carreau ouvre sa fiche ; le bouton Carte permet d’y revenir.
+Un balayage horizontal dans le panneau ramène aussi à la carte. Le bouton **Aide** explique les trois usages et permet de les ouvrir.
 
-Dans l’offre, la barre horaire fine reste accessible sur la carte comme pendant la lecture des fiches. Le bouton de
-réglages ouvre l’animation des véhicules et ses vitesses ×1, ×10 et ×60. Le libellé distingue les horaires théoriques
+Dans l’offre, **Animer les véhicules** et **Vue 3D** sont visibles en tête de carte, sur téléphone comme sur bureau.
+La barre horaire fine reste accessible pendant la lecture des fiches ; ses réglages regroupent les vitesses ×1, ×10 et ×60. Le libellé distingue les horaires théoriques
 de la simulation. La légende peut se replier et son détail expose toutes les classes.
+L’activation des véhicules rapproche la carte d’un véhicule en circulation pour montrer sa modélisation ; Satellite reste une commande distincte.
+Dans l’accessibilité, **30 min**, **45 min** et **Depuis un pôle**, avec le choix du départ, se règlent directement sur la carte.
 
 À partir de 900 px, carte et panneau apparaissent côte à côte, avec les onglets dans l’en-tête et la barre horaire
 flottante sur la carte. L’adresse partage la vue (`#offre`, `#vitesse`, `#acces`), pas encore l’heure ou la sélection.

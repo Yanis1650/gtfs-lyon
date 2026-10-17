@@ -1,21 +1,33 @@
 <script setup lang="ts">
-// Boutons posés sur la carte : fond satellite, et relief (carte inclinée, immeubles debout).
+import type { Vue } from '../donnees'
+import { basculerVehicules } from '../etat/lecture'
+import { simulation } from '../etat/simulation'
+
+defineProps<{ vue: Vue; heure: number }>()
 const satellite = defineModel<boolean>('satellite', { required: true })
 const relief = defineModel<boolean>('relief', { required: true })
 
-const PHOTO = 'M4 5h16v14H4zM4 16l5-5 4 4 2.5-2.5L20 17'
+const SATELLITE = 'M9 9h6v6H9zM2 8h5v8H2zM17 8h5v8h-5zM7 12h2m6 0h2M12 9V4m-2-1 4 2'
 const CUBE = 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5'
+const VEHICULE = 'M5 5h14v12H5zM5 10h14M8 5v5m8-5v5M7 17v3m10-3v3M8 14h.01M16 14h.01'
 </script>
 
 <template>
-  <div class="commandes" role="group" aria-label="Affichage de la carte">
-    <button class="commandes__bouton" :aria-pressed="satellite" @click="satellite = !satellite">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="PHOTO" /></svg>
-      Satellite
+  <div :class="['commandes', { 'commandes--offre': vue === 'offre' }]" role="group" aria-label="Explorer la carte">
+    <button v-if="vue === 'offre'" class="commandes__bouton commandes__animation"
+      :aria-pressed="simulation.actif" :aria-label="simulation.actif ? 'Masquer les véhicules' : 'Animer les véhicules'"
+      @click="basculerVehicules(heure)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="VEHICULE" /></svg>
+      {{ simulation.actif ? 'Véhicules animés' : 'Animer les véhicules' }}
     </button>
-    <button class="commandes__bouton" :aria-pressed="relief" @click="relief = !relief">
+    <button class="commandes__bouton commandes__relief" :aria-pressed="relief" @click="relief = !relief"
+      title="Incliner la carte et voir les bâtiments en 3D">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="CUBE" /></svg>
-      3D
+      Vue 3D
+    </button>
+    <button class="commandes__bouton commandes__satellite" :aria-pressed="satellite" @click="satellite = !satellite"
+      aria-label="Vue satellite" title="Vue satellite">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="SATELLITE" transform="rotate(-35 12 12)" /></svg>
     </button>
   </div>
 </template>
@@ -28,30 +40,43 @@ const CUBE = 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5'
   z-index: 3;
   display: flex;
   gap: 6px;
+  max-width: calc(100% - 20px);
 }
 .commandes__bouton {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 6px;
   height: 44px;
-  padding: 0 12px;
+  padding: 0 9px;
   border: 1px solid var(--filet);
   border-radius: var(--rayon);
   background: var(--surface);
   box-shadow: var(--ombre-douce);
-  font: 500 14px/1 var(--police);
+  font: 500 13px/1 var(--police);
+  white-space: nowrap;
   color: var(--encre);
   cursor: pointer;
 }
 .commandes__bouton:hover {
   border-color: var(--ardoise);
 }
+.commandes__animation {
+  border-color: var(--terracotta-fort);
+  background: var(--terracotta-fort);
+  color: var(--surface);
+  font-weight: 600;
+}
+.commandes__animation:hover { border-color: var(--terracotta-fort); filter: brightness(.95); }
+.commandes__satellite { width: 44px; padding: 0; justify-content: center; }
+.commandes__relief { border-color: var(--ardoise); background: var(--plan); font-weight: 600; }
 .commandes__bouton[aria-pressed='true'] {
   background: var(--ardoise);
   border-color: var(--ardoise);
   color: var(--sur-ardoise);
 }
 .commandes__bouton svg {
+  flex: none;
   width: 18px;
   height: 18px;
   fill: none;
@@ -59,5 +84,14 @@ const CUBE = 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5'
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+@media (max-width: 599px) {
+  .commandes { gap: 4px; }
+  .commandes__bouton { padding-inline: 7px; font-size: 12px; }
+}
+@media (min-width: 900px) {
+  .commandes { top: 14px; left: 24px; gap: 8px; }
+  .commandes__bouton { padding-inline: 14px; font-size: 14px; }
+  .commandes__satellite { padding: 0; }
 }
 </style>

@@ -5,7 +5,7 @@ import type { Vue } from '../donnees'
 const props = defineProps<{ vue: Vue }>()
 const exploration = defineModel<boolean>({ required: true })
 const titre = computed(() => props.vue === 'offre' ? 'Arrêts et recherche'
-  : props.vue === 'vitesse' ? 'Lignes et filtres' : 'Indicateurs')
+  : props.vue === 'vitesse' ? 'Lignes et filtres' : 'Résultats et détails')
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { dateLongue } from '../format'
 
 const props = defineProps<{ date: string | null; sombre: boolean }>()
-const emit = defineEmits<{ basculerTheme: [] }>()
+const emit = defineEmits<{ basculerTheme: []; guide: [] }>()
 const dateCourte = computed(() => props.date && new Date(`${props.date}T12:00:00`).toLocaleDateString('fr-FR', {
   day: 'numeric', month: 'short', year: 'numeric',
 }))
@@ -19,6 +19,7 @@ const dateCourte = computed(() => props.date && new Date(`${props.date}T12:00:00
     <p v-if="date" class="entete__date" :title="`Horaires théoriques du ${dateLongue(date)}`">
       <span>Horaires théoriques</span><time :datetime="date">{{ dateCourte }}</time>
     </p>
+    <button class="entete__guide" aria-label="Comprendre l’atlas" title="Guide des trois vues" @click="emit('guide')">Aide</button>
     <button
       class="entete__theme"
       :aria-label="sombre ? 'Passer en thème clair' : 'Passer en thème sombre'"
@@ -36,7 +37,7 @@ const dateCourte = computed(() => props.date && new Date(`${props.date}T12:00:00
 <style scoped>
 .entete {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
   align-items: center;
   gap: 24px;
   padding: 12px 24px;
@@ -76,7 +77,7 @@ h1 {
   color: var(--discret);
   font-size: 11px;
 }
-.entete__theme {
+.entete__theme, .entete__guide {
   flex: none;
   width: 40px;
   height: 40px;
@@ -87,6 +88,7 @@ h1 {
   place-items: center;
   cursor: pointer;
 }
+.entete__guide { background: var(--plan); color: var(--encre); font-size: 12px; font-weight: 500; }
 .entete__theme:hover {
   border-color: var(--ardoise);
 }
@@ -105,7 +107,7 @@ h1 {
 }
 @media (max-width: 899px) {
   .entete {
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
     gap: 8px;
     padding: calc(6px + env(safe-area-inset-top, 0px)) 12px 6px;
     padding-inline: max(12px, env(safe-area-inset-left, 0px)) max(12px, env(safe-area-inset-right, 0px));
@@ -121,9 +123,10 @@ h1 {
   }
   .entete__date { font-size: 11px; }
   .entete__theme { width: 44px; height: 44px; border: 0; background: transparent; }
+  .entete__guide { width: 44px; height: 44px; }
 }
 @media (max-width: 379px) {
-  .entete { grid-template-columns: minmax(0, 1fr) auto; }
+  .entete { grid-template-columns: minmax(0, 1fr) auto auto; }
   .entete__date { display: none; }
 }
 </style>

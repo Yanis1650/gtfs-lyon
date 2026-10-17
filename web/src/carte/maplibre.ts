@@ -4,6 +4,7 @@ import { Map as CarteMapLibre, type MapOptions, Marker, setWorkerUrl, type Style
 import urlWorker from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 
 import { habillerSatellite, LUMIERE } from './relief'
+import { ajouterCredits } from './credits'
 
 setWorkerUrl(urlWorker)
 
@@ -76,7 +77,7 @@ export async function styleFond(sombre: boolean, satellite = false): Promise<Sty
 }
 
 export async function creerCarte(conteneur: HTMLElement, sombre: boolean, satellite: boolean, options: Partial<MapOptions> = {}) {
-  return new CarteMapLibre({
+  const carte = new CarteMapLibre({
     container: conteneur,
     style: await styleFond(sombre, satellite),
     center: LYON.centre,
@@ -85,9 +86,11 @@ export async function creerCarte(conteneur: HTMLElement, sombre: boolean, satell
     minZoom: 9,
     // Jusqu'au zoom 19, où un bus mesure une trentaine de pixels.
     maxZoom: 19,
-    attributionControl: { compact: true },
+    attributionControl: false,
     ...options,
   })
+  ajouterCredits(carte)
+  return carte
 }
 
 /** Première couche de texte du fond : nos données passent dessous pour garder les noms lisibles. */

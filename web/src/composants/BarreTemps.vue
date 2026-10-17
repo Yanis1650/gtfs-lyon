@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-import { arreterDefilement } from '../etat/lecture'
-import { debutTranche, simulation, VITESSES } from '../etat/simulation'
+import { basculerVehicules } from '../etat/lecture'
+import { simulation, VITESSES } from '../etat/simulation'
 import { nombre } from '../format'
 import Horloge from './Horloge.vue'
 
@@ -21,12 +21,6 @@ onMounted(() => {
   observation.observe(conteneur.value!)
   document.addEventListener('pointerdown', fermerOptions)
 })
-function basculerVehicules() {
-  arreterDefilement()
-  simulation.actif = !simulation.actif
-  simulation.temps = debutTranche(heure.value)
-  simulation.lecture = simulation.actif && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
 onBeforeUnmount(() => {
   simulation.lecture = false
   observation?.disconnect()
@@ -44,7 +38,7 @@ onBeforeUnmount(() => {
       </button>
       <div v-if="options" id="options-vehicules" class="barre-temps__menu" role="group" aria-label="Animation des véhicules">
         <p class="barre-temps__titre">Animation des véhicules</p>
-        <button class="barre-temps__animation" :aria-pressed="simulation.actif" :aria-label="simulation.actif ? 'Désactiver les véhicules' : 'Animer les véhicules'" @click="basculerVehicules">
+        <button class="barre-temps__animation" :aria-pressed="simulation.actif" :aria-label="simulation.actif ? 'Désactiver les véhicules' : 'Animer les véhicules'" @click="basculerVehicules(heure)">
           {{ simulation.actif ? 'Désactiver les véhicules' : 'Animer les véhicules' }}
         </button>
         <div v-if="simulation.actif" class="barre-temps__vitesses" role="group" aria-label="Vitesse de lecture">

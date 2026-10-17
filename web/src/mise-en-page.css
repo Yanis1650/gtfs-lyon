@@ -23,6 +23,8 @@
 .atlas__panneau {
   grid-area: espace;
   display: none;
+  flex-direction: column;
+  touch-action: pan-y;
   min-width: 0;
   min-height: 0;
   background: var(--surface);
@@ -36,16 +38,19 @@
   overscroll-behavior-y: contain;
   padding: 20px 18px 24px;
   scroll-padding-block: 12px;
+  touch-action: pan-y;
 }
+.atlas__balayage { padding: 7px 18px 0; color: var(--discret); font-size: 12px; text-align: center; }
 .atlas__temps { grid-area: temps; z-index: 5; min-width: 0; }
 .atlas__legende {
   position: absolute;
   right: max(10px, env(safe-area-inset-right, 0px));
-  bottom: 64px;
+  bottom: 12px;
   z-index: 4;
   max-height: calc(100% - 126px);
   overflow-y: auto;
 }
+.atlas__carte--acces .atlas__legende { max-height: calc(100% - var(--hauteur-acces, 72px) - 90px); }
 .atlas__pied { display: none; }
 .atlas__pied-mobile { margin: 28px -18px -24px; }
 @media (min-width: 900px) {
@@ -70,8 +75,13 @@
     bottom: calc(var(--hauteur-temps, 52px) + 44px);
     max-height: calc(100% - var(--hauteur-temps, 52px) - 105px);
   }
+  .atlas__carte--acces .atlas__legende { max-height: calc(100% - var(--hauteur-acces, 72px) - 60px); }
   .atlas__pied { grid-area: pied; display: flex; }
   .atlas__pied-mobile { display: none; }
+  .atlas__balayage { display: none; }
+}
+@media (min-width: 600px) and (max-width: 899px) and (max-height: 500px) {
+  .atlas__carte--acces .atlas__legende { left: 10px; right: auto; bottom: 48px; max-height: calc(100% - 114px); }
 }
 @media (min-width: 1440px) {
   .atlas { grid-template-columns: 360px minmax(0, 1fr); }

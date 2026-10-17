@@ -8,6 +8,7 @@ import { chargerLignes, chargerTroncons, chargerVehicules, type ProprietesLigne,
 import { terracotta } from '../palette'
 import { creerCalque, type Vehicule } from '../simulation/calque'
 import { silhouettes } from '../simulation/gabarits'
+import { montrerModele } from '../simulation/zoom'
 import { dessinerMaquettes, SOURCE_VEHICULES, ZOOM_MAQUETTES } from '../simulation/maquettes'
 import { avancement, type Course, indexerTroncons, pointCourse, preparer, type Trace } from '../simulation/trajets'
 
@@ -51,6 +52,8 @@ export function brancherSimulation(carte: CarteMapLibre, ctx: Contexte) {
   let enMaquettes = false
   let maquettesAffichees = false
   let source: unknown = null
+  let rapprocher = false
+  watch(() => simulation.actif, (actif) => { rapprocher = actif }, { immediate: true })
 
   async function charger(tranche: number) {
     if (tranche > 23 || heures.has(tranche)) return
@@ -82,6 +85,10 @@ export function brancherSimulation(carte: CarteMapLibre, ctx: Contexte) {
     // Dix minutes avant l'heure suivante, on la charge déjà.
     if (simulation.temps > debutTranche(tranche) + 3000) void charger(tranche + 1)
     const courses = heures.get(tranche)
+    if (rapprocher && courses && carte.getContainer().clientWidth > 0) {
+      rapprocher = false
+      montrerModele(carte, courses, simulation.temps)
+    }
     // De près, les véhicules prennent leur forme réelle (un peu plus tôt carte inclinée, où le
     // premier plan est plus proche que le centre) ; un style rechargé les redemande.
     const maquettes = carte.getZoom() + carte.getPitch() / 60 >= ZOOM_MAQUETTES
