@@ -19,7 +19,7 @@ const pole = defineModel<string>('pole', { required: true })
 const emit = defineEmits<{ fermerCarreau: [] }>()
 
 const habitants = computed(() => props.carreaux?.features.map((f) => f.properties) ?? [])
-const total = computed(() => props.meta.accessibilite?.population ?? population(habitants.value))
+const total = computed(() => population(habitants.value))
 const depart = computed(() => props.meta.accessibilite?.heure_depart ?? 8)
 const nomPole = computed(() => props.meta.poles.find((p) => p.id === pole.value)?.nom ?? '')
 const seuil = computed(() => (indicateur.value === 'pop_tc45' ? 45 : 30))

@@ -43,8 +43,6 @@ def test_meta_resume_le_jour(couches):
     assert meta["courses"] == 5
     assert {m["mode"] for m in meta["modes"]} == {"tram", "bus"}
     assert [p["id"] for p in meta["poles"]][0] == "part_dieu"
-    # Sans carreaux publiés, pas de population de référence.
-    assert meta["accessibilite"]["population"] is None
 
 
 def test_vitesse_de_troncon_invraisemblable_non_publiee(con, parametres, tmp_path):

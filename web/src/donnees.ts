@@ -54,8 +54,7 @@ export interface Meta {
   km_commerciaux: number
   modes: { mode: Mode; lignes: number; courses: number; vitesse: number }[]
   poles: { id: string; nom: string; lat: number; lon: number }[]
-  /** `population` : habitants de tous les carreaux, dénominateur des parts de la Métropole. */
-  accessibilite?: { heure_depart: number; fenetre_min: number; population: number | null }
+  accessibilite?: { heure_depart: number; fenetre_min: number }
   sources: { nom: string; licence: string }[]
 }
 

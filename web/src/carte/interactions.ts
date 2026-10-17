@@ -52,10 +52,14 @@ export function brancherInteractions(carte: CarteMapLibre, ctx: Contexte, rappel
     carreaux: (f) => {
       const c = f.properties as ProprietesCarreau
       const indicateur = ctx.indicateur()
-      return indicateur === 'temps'
-        ? `${minutes(c[`t_${ctx.pole()}`] as number | null)} depuis ${echapper(ctx.nomPole())}`
-        : `<strong>${part(c[indicateur] / Math.max(ctx.population(), 1))}</strong> des habitants de la Métropole` +
-          ` à moins de ${indicateur === 'pop_tc45' ? 45 : 30}&nbsp;min d’ici`
+      if (indicateur === 'temps') return `${minutes(c[`t_${ctx.pole()}`] as number | null)} depuis ${echapper(ctx.nomPole())}`
+      // Sans total connu, le nombre d'habitants plutôt qu'une part fausse.
+      const total = ctx.population()
+      const quantite =
+        total > 0
+          ? `<strong>${part(c[indicateur] / total)}</strong> des habitants de la Métropole`
+          : `<strong>${nombre(c[indicateur])}</strong> habitants`
+      return `${quantite} à moins de ${indicateur === 'pop_tc45' ? 45 : 30}&nbsp;min d’ici`
     },
   }
 

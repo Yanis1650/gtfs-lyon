@@ -76,7 +76,9 @@ export function couleurAcces({ indicateur, pole, sombre, population }: Reglages)
   if (indicateur === 'temps') {
     return expr(expressionClasses(['coalesce', ['get', `t_${pole}`], 999], classesTemps(sombre)))
   }
-  return expr(expressionClasses(['/', ['get', indicateur], Math.max(population, 1)], classesPart(sombre)))
+  // Sans total connu, les carreaux restent transparents plutôt que d'afficher une part fausse.
+  if (population <= 0) return expr('rgba(0,0,0,0)')
+  return expr(expressionClasses(['/', ['get', indicateur], population], classesPart(sombre)))
 }
 
 export const filtreId = (id: string | null): FilterSpecification => ['==', ['get', 'id'], id ?? '']

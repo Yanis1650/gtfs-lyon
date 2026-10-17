@@ -24,6 +24,7 @@ import {
   type ProprietesLigne,
   type ProprietesTroncon,
 } from './donnees'
+import { population } from './etat/statistiques'
 import { useTheme } from './etat/theme'
 import { useVue } from './etat/vue'
 
@@ -51,6 +52,8 @@ const methode = ref<InstanceType<typeof MethodeDialogue>>()
 const mentions = ref<InstanceType<typeof MentionsDialogue>>()
 
 const nomsArrets = computed(() => new Map(arrets.value.map((a) => [a.id, a.nom])))
+// Dénominateur des parts de la Métropole, tiré du même fichier que les chiffres des carreaux.
+const habitants = computed(() => population(carreaux.value?.features.map((f) => f.properties) ?? []))
 const plusDesservis = computed(() => [...arrets.value].sort((a, b) => b.departs - a.departs).slice(0, 8))
 
 onMounted(async () => {
@@ -99,6 +102,7 @@ function choisirLigne(id: string | null) {
         :modes="modes"
         :indicateur="indicateur"
         :pole="pole"
+        :population="habitants"
         :ligne="ligne"
         :arret="arret?.id ?? null"
         :carreau="carreau?.id ?? null"

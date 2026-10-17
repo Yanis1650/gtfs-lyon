@@ -37,6 +37,7 @@ const props = defineProps<{
   modes: Mode[]
   indicateur: IndicateurAcces
   pole: string
+  population: number
   ligne: string | null
   arret: string | null
   carreau: string | null
@@ -61,7 +62,7 @@ const reglages = computed<Reglages>(() => ({
   modes: props.modes,
   indicateur: props.indicateur,
   pole: props.pole,
-  population: props.meta?.accessibilite?.population ?? 0,
+  population: props.population,
 }))
 const selection = computed(() => ({ ligne: props.ligne, arret: props.arret, carreau: props.carreau }))
 const pret = () => !!carte?.getLayer('troncons-offre')
@@ -115,7 +116,7 @@ onMounted(async () => {
       indicateur: () => props.indicateur,
       pole: () => props.pole,
       nomPole: () => props.meta?.poles.find((p) => p.id === props.pole)?.nom ?? '',
-      population: () => reglages.value.population,
+      population: () => props.population,
     },
     { arret: (a) => emit('arret', a), troncon: (t) => emit('troncon', t), carreau: (c) => emit('carreau', c) },
   )
@@ -130,7 +131,7 @@ watch(() => props.vue, afficherVue)
 watch(() => props.heure, () => pret() && appliquerHeure(carte!, reglages.value))
 watch(() => props.modes, () => pret() && appliquerModes(carte!, reglages.value))
 watch(
-  () => [props.indicateur, props.pole, reglages.value.population],
+  () => [props.indicateur, props.pole, props.population],
   () => {
     if (!pret()) return
     appliquerAcces(carte!, reglages.value)
