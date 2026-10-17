@@ -1,7 +1,7 @@
 /* Mobile d'abord : en-tête, carte, onglets et panneau, pied de page, les uns sous les autres.
    En faisant défiler, l'en-tête s'en va, la carte et les onglets restent en haut. */
 .atlas {
-  --hauteur-carte: 50svh;
+  --hauteur-carte: 55svh;
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
@@ -30,8 +30,38 @@
 /* Tablette en largeur : un peu plus de carte. */
 @media (min-width: 600px) {
   .atlas {
-    --hauteur-carte: 56svh;
+    --hauteur-carte: 60svh;
   }
+}
+
+/* Carte en plein écran (téléphone et tablette) : tout l'écran, hors la barre d'onglets. */
+.atlas--agrandie {
+  --hauteur-carte: calc(100svh - var(--hauteur-onglets, 47px));
+}
+.atlas__agrandir {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon);
+  background: var(--surface);
+  box-shadow: var(--ombre-douce);
+  color: var(--encre);
+  cursor: pointer;
+}
+.atlas__agrandir svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Bureau : colonne de lecture à gauche, carte sur toute la hauteur à droite. */
@@ -66,6 +96,9 @@
   }
   .atlas__onglets {
     position: static;
+  }
+  .atlas__agrandir {
+    display: none;
   }
   .atlas__contenu {
     flex: 1;

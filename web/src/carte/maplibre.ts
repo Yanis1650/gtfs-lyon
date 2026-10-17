@@ -1,4 +1,4 @@
-import { Map as CarteMapLibre, type MapOptions, setWorkerUrl, type StyleSpecification } from 'maplibre-gl'
+import { Map as CarteMapLibre, type MapOptions, Marker, setWorkerUrl, type StyleSpecification } from 'maplibre-gl'
 // MapLibre 6 est livré en ESM seul : sans cette déclaration, Vite ne publie pas le
 // worker et la carte reste vide, sans la moindre erreur dans la console.
 import urlWorker from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
@@ -81,4 +81,12 @@ export async function creerCarte(conteneur: HTMLElement, sombre: boolean, option
 /** Première couche de texte du fond : nos données passent dessous pour garder les noms lisibles. */
 export function premiereCoucheTexte(carte: CarteMapLibre): string | undefined {
   return carte.getStyle().layers.find((c) => c.type === 'symbol')?.id
+}
+
+/** Repère du pôle de départ, dans la vue « temps depuis un pôle ». */
+export function marqueurDePole(carte: CarteMapLibre, pole: { nom: string; lon: number; lat: number }): Marker {
+  const el = document.createElement('div')
+  el.className = 'marqueur-pole'
+  el.title = pole.nom
+  return new Marker({ element: el }).setLngLat([pole.lon, pole.lat]).addTo(carte)
 }

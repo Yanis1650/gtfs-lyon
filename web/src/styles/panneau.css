@@ -150,3 +150,10 @@
   border-radius: 1px;
   background: var(--barre);
 }
+
+/* Sur téléphone, une fiche amenée à l'écran s'arrête sous la carte et les onglets, collés en haut. */
+@media (max-width: 899px) {
+  .fiche {
+    scroll-margin-top: calc(var(--hauteur-carte) + 56px);
+  }
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, shallowRef, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, shallowRef, watch } from 'vue'
 
 import CarteAtlas from './composants/CarteAtlas.vue'
 import EnTete from './composants/EnTete.vue'
@@ -72,6 +72,26 @@ watch(
   { immediate: true },
 )
 
+// Sur téléphone, la carte peut prendre tout l'écran ; une sélection la réduit pour montrer sa fiche.
+const agrandie = ref(false)
+const AGRANDIR = 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'
+const REDUIRE = 'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5'
+watch([arret, troncon, carreau], async (choix) => {
+  if (!choix.some(Boolean)) return
+  agrandie.value = false
+  // Sur téléphone, la fiche s'ouvre sous la carte : on l'amène juste sous les onglets.
+  if (!window.matchMedia('(max-width: 899px)').matches) return
+  await nextTick()
+  contenu.value?.querySelector('.fiche')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+})
+
+function basculerCarte() {
+  agrandie.value = !agrandie.value
+  // L'en-tête défile hors de l'écran : la carte, collée en haut, l'occupe alors en entier.
+  const entete = document.querySelector<HTMLElement>('.atlas__entete')?.offsetHeight ?? 0
+  if (agrandie.value && window.scrollY < entete) window.scrollTo({ top: entete, behavior: 'smooth' })
+}
+
 function choisirArret(a: ProprietesArret | null, centrer = false) {
   arret.value = a
   const point = a && centrer ? coordonnees.get(a.id) : undefined
@@ -89,7 +109,7 @@ function choisirLigne(id: string | null) {
 </script>
 
 <template>
-  <div class="atlas">
+  <div :class="['atlas', { 'atlas--agrandie': agrandie }]">
     <EnTete class="atlas__entete" :date="meta?.date_reference ?? null" :sombre="sombre" @basculer-theme="basculer" />
 
     <main class="atlas__carte">
@@ -103,6 +123,7 @@ function choisirLigne(id: string | null) {
         :indicateur="indicateur"
         :pole="pole"
         :population="habitants"
+        :agrandie="agrandie"
         :ligne="ligne"
         :arret="arret?.id ?? null"
         :carreau="carreau?.id ?? null"
@@ -110,6 +131,9 @@ function choisirLigne(id: string | null) {
         @troncon="(t) => (troncon = t)"
         @carreau="(c) => (carreau = c)"
       />
+      <button class="atlas__agrandir" aria-label="Carte en plein écran" :aria-pressed="agrandie" @click="basculerCarte">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="agrandie ? REDUIRE : AGRANDIR" /></svg>
+      </button>
     </main>
 
     <section class="atlas__panneau" aria-label="Lecture de la carte">

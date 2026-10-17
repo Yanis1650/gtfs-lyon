@@ -1,6 +1,9 @@
 # Données téléchargées et intermédiaires (régénérées par la chaîne)
 /data/
 
+# Identifiants (compte data.grandlyon.com) : jamais dans le dépôt
+.env
+
 # Environnements et dépendances
 pipeline/.venv/
 web/node_modules/

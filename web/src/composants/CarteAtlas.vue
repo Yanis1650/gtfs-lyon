@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Map as CarteMapLibre, Marker, type Popup } from 'maplibre-gl'
+import { type Map as CarteMapLibre, type Marker, type Popup } from 'maplibre-gl'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import {
@@ -14,7 +14,7 @@ import {
 } from '../carte/couches'
 import type { Reglages } from '../carte/expressions'
 import { brancherInteractions } from '../carte/interactions'
-import { creerCarte, styleFond } from '../carte/maplibre'
+import { creerCarte, marqueurDePole, styleFond } from '../carte/maplibre'
 import {
   chargerArrets,
   chargerCarreaux,
@@ -38,6 +38,7 @@ const props = defineProps<{
   indicateur: IndicateurAcces
   pole: string
   population: number
+  agrandie: boolean
   ligne: string | null
   arret: string | null
   carreau: string | null
@@ -92,20 +93,15 @@ async function afficherVue() {
 
 function placerPole() {
   marqueurPole?.remove()
-  marqueurPole = null
-  if (!carte || props.vue !== 'acces' || props.indicateur !== 'temps') return
-  const pole = props.meta?.poles.find((p) => p.id === props.pole)
-  if (!pole) return
-  const el = document.createElement('div')
-  el.className = 'marqueur-pole'
-  el.title = pole.nom
-  marqueurPole = new Marker({ element: el }).setLngLat([pole.lon, pole.lat]).addTo(carte)
+  const pole = props.indicateur === 'temps' ? props.meta?.poles.find((p) => p.id === props.pole) : undefined
+  marqueurPole = carte && pole && props.vue === 'acces' ? marqueurDePole(carte, pole) : null
 }
 
+const etroit = () => window.matchMedia('(max-width: 899px)').matches
+
 onMounted(async () => {
-  const etroit = window.matchMedia('(max-width: 899px)').matches
   // Sur téléphone, deux doigts pour déplacer la carte : un doigt fait défiler la page.
-  carte = await creerCarte(conteneur.value!, props.sombre, { cooperativeGestures: etroit })
+  carte = await creerCarte(conteneur.value!, props.sombre, { cooperativeGestures: etroit() })
   if (import.meta.env.DEV) Object.assign(window, { carteAtlas: carte })
   carte.on('style.load', () => void construire())
   bulle = brancherInteractions(
@@ -138,6 +134,8 @@ watch(
     placerPole()
   },
 )
+// Carte agrandie : il n'y a plus de page à faire défiler dessous, un doigt suffit à la déplacer.
+watch(() => props.agrandie, (a) => carte?.cooperativeGestures[a || !etroit() ? 'disable' : 'enable']())
 watch(selection, (s, avant) => {
   if (!pret()) return
   appliquerSelection(carte!, s)
