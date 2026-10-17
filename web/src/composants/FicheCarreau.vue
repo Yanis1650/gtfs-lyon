@@ -97,10 +97,8 @@ const effetReseau = computed(() =>
   font-weight: 400;
 }
 .joignables thead th {
-  font-family: var(--police-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--police);
+  font-size: 12px;
   color: var(--discret);
 }
 .joignables tbody th {

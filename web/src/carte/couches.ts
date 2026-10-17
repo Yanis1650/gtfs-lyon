@@ -76,7 +76,7 @@ export function ajouterCouches(carte: CarteMapLibre, d: Donnees, r: Reglages, s:
       source: 'troncons',
       filter: filtreTronconsOffre(r.heure),
       layout: ARRONDI,
-      paint: { ...peintureOffre(r), 'line-offset': decalageSens },
+      paint: { ...peintureOffre(r), 'line-offset': decalageSens, 'line-opacity': s.arret ? .65 : 1 },
     },
     avant,
   )
@@ -135,7 +135,8 @@ export function ajouterCouches(carte: CarteMapLibre, d: Donnees, r: Reglages, s:
     filter: filtreId(s.arret),
     paint: {
       'circle-radius': rayonArret(r.heure, 4),
-      'circle-color': 'rgba(0,0,0,0)',
+      'circle-color': selection,
+      'circle-opacity': .15,
       'circle-stroke-color': selection,
       'circle-stroke-width': 2.5,
     },
@@ -165,6 +166,7 @@ export function appliquerSelection(carte: CarteMapLibre, s: Selection) {
   carte.setFilter('ligne-trace', filtreId(s.ligne))
   carte.setPaintProperty('troncons-vitesse', 'line-opacity', s.ligne ? 0.35 : 1)
   carte.setFilter('arrets-selection', filtreId(s.arret))
+  carte.setPaintProperty('troncons-offre', 'line-opacity', s.arret ? .65 : 1)
   carte.setFilter('carreaux-selection', filtreId(s.carreau))
 }
 

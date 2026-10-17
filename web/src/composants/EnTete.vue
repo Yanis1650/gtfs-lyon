@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { dateLongue } from '../format'
 
-defineProps<{ date: string | null; sombre: boolean }>()
+const props = defineProps<{ date: string | null; sombre: boolean }>()
 const emit = defineEmits<{ basculerTheme: [] }>()
+const dateCourte = computed(() => props.date && new Date(`${props.date}T12:00:00`).toLocaleDateString('fr-FR', {
+  day: 'numeric', month: 'short', year: 'numeric',
+}))
 </script>
 
 <template>
@@ -10,9 +14,11 @@ const emit = defineEmits<{ basculerTheme: [] }>()
     <div class="entete__titres">
       <p class="etiquette entete__etiquette">Atlas des transports lyonnais</p>
       <h1>Lyon <span class="entete__relief">sans voiture</span></h1>
-      <p class="entete__accroche">Jusqu’où va le réseau TCL&nbsp;?</p>
-      <p v-if="date" class="entete__date">Horaires théoriques du {{ dateLongue(date) }}.</p>
     </div>
+    <div class="entete__navigation"><slot /></div>
+    <p v-if="date" class="entete__date" :title="`Horaires théoriques du ${dateLongue(date)}`">
+      <span>Horaires théoriques</span><time :datetime="date">{{ dateCourte }}</time>
+    </p>
     <button
       class="entete__theme"
       :aria-label="sombre ? 'Passer en thème clair' : 'Passer en thème sombre'"
@@ -28,14 +34,14 @@ const emit = defineEmits<{ basculerTheme: [] }>()
 </template>
 
 <style scoped>
-/* Les anneaux de la charte : le sillage du drakkar, dont on ne voit que des arcs. */
 .entete {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 18px 20px 14px;
-  background: repeating-radial-gradient(circle at 118% -18%, var(--arc) 0 1px, transparent 1px 78px);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--filet);
 }
 .entete__titres {
   min-width: 0;
@@ -43,35 +49,32 @@ const emit = defineEmits<{ basculerTheme: [] }>()
 .entete__etiquette {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-  color: var(--terracotta-fort);
-}
-.entete__etiquette::before {
-  content: '';
-  flex: none;
-  width: 26px;
-  height: 2px;
-  background: var(--terracotta);
+  margin-bottom: 5px;
+  font-size: 10px;
+  letter-spacing: .1em;
 }
 h1 {
-  font-size: 30px;
-  line-height: 1.07;
+  font-size: 24px;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 .entete__relief {
   color: var(--terracotta);
 }
-.entete__accroche {
-  margin-top: 8px;
-  font-family: var(--police-titre);
-  font-size: 18px;
-  line-height: 1.35;
-  color: var(--ardoise);
+.entete__navigation {
+  justify-self: center;
 }
 .entete__date {
-  margin-top: 4px;
-  font-size: 14px;
-  color: var(--encre-2);
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  text-align: right;
+  color: var(--encre);
+  white-space: nowrap;
+}
+.entete__date span {
+  color: var(--discret);
+  font-size: 11px;
 }
 .entete__theme {
   flex: none;
@@ -96,15 +99,27 @@ h1 {
   stroke-linecap: round;
 }
 
-@media (min-width: 900px) {
+@media (max-width: 1100px) {
+  .entete { gap: 14px; padding-inline: 18px; }
+  h1 { font-size: 22px; }
+}
+@media (max-width: 899px) {
   .entete {
-    padding: 24px 24px 16px;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 10px 12px;
+    padding: 12px 16px 10px;
   }
-  h1 {
-    font-size: 34px;
+  .entete__etiquette, .entete__date span { display: none; }
+  .entete__navigation {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
   }
-  .entete__accroche {
-    font-size: 20px;
-  }
+  .entete__date { font-size: 11px; }
+  .entete__theme { width: 34px; height: 34px; }
+}
+@media (max-width: 379px) {
+  .entete { grid-template-columns: minmax(0, 1fr) auto; }
+  .entete__date { display: none; }
 }
 </style>

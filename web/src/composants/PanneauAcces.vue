@@ -4,9 +4,7 @@ import { computed } from 'vue'
 import type { Carreaux, IndicateurAcces, Meta, ProprietesCarreau } from '../donnees'
 import { medianePonderee, partSous, population } from '../etat/statistiques'
 import { nombre, part, pourcent } from '../format'
-import { classesPart, classesTemps } from '../palette'
 import FicheCarreau from './FicheCarreau.vue'
-import Legende from './Legende.vue'
 
 const props = defineProps<{
   meta: Meta
@@ -31,11 +29,20 @@ const medianeMarche = computed(() => medianePonderee(habitants.value, (c) => c.p
 
 <template>
   <section class="panneau-vue">
+    <div class="panneau-entete"><p class="etiquette">Mesurer l’accessibilité</p><h2>La ville à portée.</h2></div>
     <p class="intro">
       Chaque carreau habité de 200&nbsp;m sert de point de départ. Le calcul simule les trajets en transports en commun,
       marche comprise, pour un départ entre {{ depart }}&nbsp;h et {{ depart + 1 }}&nbsp;h, et retient la durée médiane.
       La population est celle des données Insee Filosofi 2021.
     </p>
+
+    <FicheCarreau
+      v-if="carreau"
+      :carreau="carreau"
+      :poles="meta.poles"
+      :total="total"
+      @fermer="emit('fermerCarreau')"
+    />
 
     <div class="puces" role="group" aria-label="Indicateur affiché">
       <button class="puce" :aria-pressed="indicateur === 'pop_tc30'" @click="indicateur = 'pop_tc30'">
@@ -71,7 +78,7 @@ const medianeMarche = computed(() => medianePonderee(habitants.value, (c) => c.p
           <dd class="chiffres">{{ pourcent(partSous(habitants, pole, 45)) }}</dd>
         </div>
       </dl>
-      <Legende :titre="`Temps de trajet depuis ${nomPole}`" :classes="classesTemps(sombre)" forme="carre" />
+      <p class="note">Temps de trajet depuis {{ nomPole }}. La marche est comprise dans le calcul.</p>
     </template>
 
     <template v-else>
@@ -85,25 +92,11 @@ const medianeMarche = computed(() => medianePonderee(habitants.value, (c) => c.p
           <dd class="chiffres">{{ part(medianeMarche / total) }}<span class="unite">de la Métropole</span></dd>
         </div>
       </dl>
-      <Legende
-        :titre="`Habitants de la Métropole joignables en ${seuil} minutes`"
-        :classes="classesPart(sombre)"
-        forme="carre"
-        :note="
-          `Lecture : 20 % signifie qu’en partant de ce carreau, on rejoint en ${seuil} min les lieux ` +
-          `où vivent 20 % des ${nombre(total)} habitants de la Métropole (Insee, Filosofi 2021).`
-        "
-      />
+      <p class="note">Lecture : 20 % signifie qu’en partant de ce carreau, on rejoint en {{ seuil }} min les lieux
+        où vivent 20 % des {{ nombre(total) }} habitants de la Métropole (Insee, Filosofi 2021).</p>
     </template>
 
-    <FicheCarreau
-      v-if="carreau"
-      :carreau="carreau"
-      :poles="meta.poles"
-      :total="total"
-      @fermer="emit('fermerCarreau')"
-    />
-    <p v-else class="note">Touchez ou cliquez un carreau pour le détail.</p>
+    <p v-if="!carreau" class="note">Touchez ou cliquez un carreau pour le détail.</p>
   </section>
 </template>
 

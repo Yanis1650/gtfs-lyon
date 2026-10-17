@@ -23,7 +23,7 @@
   --pied-filet: #33474d; /* line-dark */
   --ombre-douce: 0 1px 2px rgba(28, 37, 35, 0.06), 0 4px 12px rgba(28, 37, 35, 0.06);
   --ombre-levee: 0 2px 6px rgba(28, 37, 35, 0.1), 0 16px 40px rgba(28, 37, 35, 0.14);
-  --rayon: 3px;
+  --rayon: 7px;
   --police-titre: 'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
   --police: 'IBM Plex Sans', system-ui, sans-serif;
   --police-mono: 'IBM Plex Mono', ui-monospace, monospace;

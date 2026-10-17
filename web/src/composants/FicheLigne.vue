@@ -17,7 +17,7 @@ const emit = defineEmits<{ fermer: [] }>()
       <button class="fiche__fermer" aria-label="Désélectionner la ligne" @click="emit('fermer')">×</button>
     </div>
     <p class="fiche__chiffres chiffres">
-      <strong>{{ kmh(ligne.vitesse) }}</strong> en moyenne · {{ nombre(ligne.courses) }} courses
+      <strong class="fiche__valeur">{{ kmh(ligne.vitesse) }}</strong> en moyenne · {{ nombre(ligne.courses) }} courses
       <template v-if="ligne.longueur_km">· {{ ligne.longueur_km.toLocaleString('fr-FR') }}&nbsp;km de bout en bout</template>
     </p>
     <ul class="periodes">
@@ -37,7 +37,7 @@ const emit = defineEmits<{ fermer: [] }>()
   gap: 8px;
 }
 .titre-ligne h2 {
-  font-size: 16px;
+  font-size: 18px;
 }
 .periodes {
   list-style: none;

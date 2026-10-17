@@ -14,9 +14,9 @@ export const LYON = { centre: [4.857, 45.757] as [number, number], zoom: 11.6 }
 /** Couleurs du fond, aux teintes de la charte : crème et ardoise, ou ardoise profonde. */
 const FOND = {
   clair: {
-    terre: '#f7f2e6', parc: '#ece5d2', habitat: '#f1ebdc', bati: '#ebe3cf', batiContour: '#e0d6bf',
+    terre: '#f7f2e6', parc: '#eee9da', habitat: '#f3eee2', bati: '#eee8d9', batiContour: '#e6dfcf',
     eau: '#c6d5d7', coursEau: '#a8bec3', route: '#fbf8f1', routeMineure: '#ebe3d0', bordure: '#dcd3bd',
-    rail: '#d2c8b0', limite: '#c9bb9b', texte: '#4a5654', texteFort: '#1c2523', texteEau: '#3c565d',
+    rail: '#d9d1be', limite: '#d3c8b2', texte: '#606f6a', texteFort: '#354b4c', texteEau: '#3c565d',
     halo: '#f7f2e6',
   },
   sombre: {
@@ -55,6 +55,9 @@ export async function styleFond(sombre: boolean, satellite = false): Promise<Sty
       else if (id.includes('minor') || id.includes('path') || id.includes('subtle') || id.includes('aeroway'))
         peinture['line-color'] = c.routeMineure
       else peinture['line-color'] = c.route
+      if (id !== 'waterway') peinture['line-opacity'] = [
+        'interpolate', ['linear'], ['zoom'], 10, id.includes('minor') || id.includes('casing') ? .3 : .55, 16, .85,
+      ]
     } else if (couche.type === 'symbol') {
       peinture['text-color'] = id.startsWith('water')
         ? c.texteEau
@@ -62,6 +65,9 @@ export async function styleFond(sombre: boolean, satellite = false): Promise<Sty
           ? c.texteFort
           : c.texte
       peinture['text-halo-color'] = c.halo
+      if (/poi|housenumber|road_label/.test(id)) peinture['text-opacity'] = [
+        'interpolate', ['linear'], ['zoom'], 11, .25, 15, .9,
+      ]
     }
   }
   style.light = LUMIERE

@@ -21,7 +21,7 @@ function choisir(arret: ProprietesArret) {
   <div class="recherche">
     <label class="sous-titre" for="recherche-arret">Rechercher un arrêt</label>
     <input id="recherche-arret" v-model="requete" class="champ-recherche" type="search"
-      placeholder="Bellecour, Part-Dieu, Grange Blanche…" autocomplete="off" @keydown.esc="requete = ''" />
+      placeholder="Bellecour, Part-Dieu…" autocomplete="off" @keydown.esc="requete = ''" />
     <template v-if="rechercheActive">
       <p class="note" role="status">{{ resultats.length }} résultat{{ resultats.length > 1 ? 's' : '' }}{{
         resultats.length > 6 ? ' · Les 6 arrêts les plus desservis sont affichés' : '' }}.</p>

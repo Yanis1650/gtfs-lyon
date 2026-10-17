@@ -107,10 +107,14 @@ compose.yaml          webmap (nginx derrière Traefik) et conteneur de la chaîn
 ## Charte
 
 L’interface suit une charte sobre : fond crème, ardoise pour les éléments d’action, terracotta en touches,
-Space Grotesk, IBM Plex Sans et IBM Plex Mono servies depuis le site, arrondi unique de 3 px. Les données en reprennent
+Space Grotesk, IBM Plex Sans et IBM Plex Mono servies depuis le site, commandes arrondies à 7 px. Les données en reprennent
 les rampes : ardoise pour les quantités, terracotta pour les temps, et une échelle divergente terracotta-ardoise pour
 les vitesses. Le fond OpenFreeMap est recoloré aux mêmes teintes. Mise en page pensée d’abord pour le téléphone,
 puis pour le bureau (une colonne de lecture et la carte en pleine hauteur, à partir de 900 px).
+
+La branche `codex/atlas-refonte-visuelle` propose la direction **Atlas** : en-tête sur toute la largeur,
+navigation segmentée, colonne de lecture resserrée, sélection mise en valeur et barre horaire directement sur la carte.
+Le détail de la proposition et des vérifications est dans `docs/refonte-atlas.md`.
 
 ## Sécurité
 
