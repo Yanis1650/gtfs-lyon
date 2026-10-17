@@ -15,6 +15,7 @@ import {
 import type { Reglages } from '../carte/expressions'
 import { brancherInteractions } from '../carte/interactions'
 import { creerCarte, marqueurDePole, styleFond } from '../carte/maplibre'
+import { brancherSimulation } from '../etat/simulation'
 import {
   chargerArrets,
   chargerCarreaux,
@@ -104,6 +105,7 @@ onMounted(async () => {
   carte = await creerCarte(conteneur.value!, props.sombre, { cooperativeGestures: etroit() })
   if (import.meta.env.DEV) Object.assign(window, { carteAtlas: carte })
   carte.on('style.load', () => void construire())
+  brancherSimulation(carte, { sombre: () => props.sombre, vue: () => props.vue })
   bulle = brancherInteractions(
     carte,
     {

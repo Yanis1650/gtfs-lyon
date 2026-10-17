@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 import type { Meta, ProprietesArret, ProprietesLigne } from '../donnees'
+import { debutTranche, simulation } from '../etat/simulation'
 import { nombre } from '../format'
 import { classesFrequence } from '../palette'
 import FicheArret from './FicheArret.vue'
@@ -22,6 +23,20 @@ const horloge = ref<InstanceType<typeof Horloge>>()
 function choisirHeure(i: number) {
   horloge.value?.arreter()
   heure.value = i
+  if (simulation.actif) simulation.temps = debutTranche(i)
+}
+
+// Les véhicules partent du début de l'heure choisie ; la lecture démarre d'elle-même,
+// sauf si le système demande de limiter les animations.
+function basculerVehicules() {
+  horloge.value?.arreter()
+  simulation.actif = !simulation.actif
+  if (!simulation.actif) {
+    simulation.lecture = false
+    return
+  }
+  simulation.temps = debutTranche(heure.value)
+  simulation.lecture = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 </script>
 
@@ -33,6 +48,14 @@ function choisirHeure(i: number) {
     </p>
 
     <Horloge ref="horloge" v-model="heure" />
+
+    <div class="vehicules">
+      <button class="puce" :aria-pressed="simulation.actif" @click="basculerVehicules">Véhicules en circulation</button>
+      <p v-if="simulation.actif" class="note">
+        <strong class="chiffres">{{ nombre(simulation.vehicules) }}</strong> véhicules sur le réseau, placés d’après les
+        horaires du jour (une heure par minute). Métros, trams et funiculaires à leurs couleurs, bus en terracotta.
+      </p>
+    </div>
 
     <Legende titre="Courses par heure sur le tronçon" :classes="classesFrequence(sombre)" />
 
@@ -66,3 +89,16 @@ function choisirHeure(i: number) {
     </dl>
   </section>
 </template>
+
+<style scoped>
+.vehicules {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: -6px;
+}
+.vehicules strong {
+  color: var(--encre);
+}
+</style>

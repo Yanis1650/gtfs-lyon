@@ -85,6 +85,14 @@ export const chargerTroncons = () => charger<Troncons>('troncons.geojson')
 export const chargerLignes = () => charger<Lignes>('lignes.geojson')
 export const chargerCarreaux = () => charger<Carreaux>('carreaux.geojson')
 
+/** Courses en circulation pendant une heure : [ligne, arrêts, heure du premier, écarts en s]. */
+export interface HeureVehicules {
+  debut: number
+  courses: [string, string[], number, number[]][]
+}
+/** `heure` : l'heure de début, « 08h » pour 8 h-9 h (fichiers produits par la chaîne). */
+export const chargerVehicules = (heure: string) => charger<HeureVehicules>(`vehicules/${heure}.json`)
+
 export const LIBELLES_MODES: Record<Mode, string> = {
   metro: 'Métro',
   tram: 'Tramway',

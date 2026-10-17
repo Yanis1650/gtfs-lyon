@@ -10,9 +10,9 @@ Toutes les mesures portent sur un jour de référence : le mardi 17 novembre 202
 
 | Vue | Ce qu’elle montre |
 |---|---|
-| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. |
+| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules en circulation s’animent d’après les horaires, une heure par minute. |
 | **La vitesse** | Vitesse commerciale de chaque tronçon (divergente autour de l’allure typique du réseau) et classement des lignes, par période. |
-| **L’accessibilité** | Habitants joignables en 30 et 45 minutes depuis chaque carreau habité, et temps de trajet depuis six grands pôles. |
+| **L’accessibilité** | Part des habitants de la Métropole joignables en 30 et 45 minutes depuis chaque carreau habité, et temps de trajet depuis six grands pôles. |
 
 ## Chaîne de traitement
 
@@ -28,6 +28,9 @@ Insee Filosofi 2021 ──► carreaux habités ──► r5py / R5 (Docker, Jav
   ordre ; 76 suites sur 78 sont ainsi recalées, à un écart moyen de 1 à 10 m.
 - **Vitesse commerciale.** Rapport de sommes (kilomètres cumulés sur heures cumulées), jamais moyenne de vitesses. Les
   horaires étant arrondis à la minute, la vitesse d’un tronçon est mesurée sur une fenêtre de cinq inter-arrêts.
+- **Véhicules en circulation.** Pour chaque course, une heure par arrêt ; quand le flux donne la même minute à plusieurs
+  arrêts de suite, le temps est réparti selon la distance. La carte déplace chaque véhicule le long des tronçons publiés,
+  avec un court arrêt puis une accélération et un freinage. Un fichier par heure, 50 Ko compressés au plus.
 - **Accessibilité.** r5py (moteur R5 de Conveyal) : départs minute par minute entre 8 h et 9 h, durée médiane, marche
   comprise, sur les 7 879 carreaux habités de la Métropole.
 
@@ -75,11 +78,13 @@ pipeline/atlas/       chaîne de traitement (Python + SQL DuckDB)
   sql/                une étape par fichier, de 01_courses à 06_lignes
   osm.py, traces.py   lecture des relations OpenStreetMap, reconstitution des tracés
   accessibilite.py    carreaux Insee et calcul r5py
+  vehicules.py        courses heure par heure, horaires lissés, pour l'animation
 pipeline/tests/       mini-réseau GTFS et tests
 web/src/
   carte/              MapLibre : fond recoloré, expressions, couches, interactions
   composants/         en-tête, onglets, panneaux, fiches, légendes, fenêtres
-  etat/               thème, vue active, statistiques
+  etat/               thème, vue active, statistiques, horloge des véhicules
+  simulation/         position des véhicules le long des tronçons, calque de dessin
 web/deploy/           nginx et ses en-têtes de sécurité
 web/public/data/      couches GeoJSON produites par la chaîne
 compose.yaml          webmap (nginx derrière Traefik) et conteneur de la chaîne

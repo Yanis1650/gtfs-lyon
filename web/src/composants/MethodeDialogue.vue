@@ -44,6 +44,14 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
       tronçon se mesure sur une fenêtre de cinq inter-arrêts centrée sur lui.
     </p>
 
+    <h3>Les véhicules en circulation</h3>
+    <p>
+      Chaque point est une course du jour de référence, placée d’après ses horaires théoriques&nbsp;: ce n’est pas un
+      suivi en direct. Le flux arrondit la plupart des horaires à la minute, si bien que plusieurs arrêts de suite
+      portent la même heure&nbsp;; je répartis alors le temps selon la distance, entre deux arrêts où l’heure change.
+      Entre deux arrêts, le véhicule suit le tracé du tronçon, marque un court arrêt, accélère puis freine.
+    </p>
+
     <h3>L’accessibilité</h3>
     <p>
       Je la calcule avec r5py, l’interface Python du moteur d’itinéraires R5 de Conveyal, sur le réseau piéton

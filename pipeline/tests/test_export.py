@@ -14,7 +14,8 @@ def couches(con, parametres, tmp_path_factory):
     # Pas d'accessibilité calculée dans les tests : la couche des carreaux est omise.
     p = replace(parametres, accessibilite=dossier / "absent.parquet")
     export.exporter(con, p, dossier)
-    return {f.stem: json.loads(f.read_text(encoding="utf-8")) for f in dossier.iterdir()}
+    # Les fichiers des véhicules, dans leur sous-dossier, ont leurs propres tests.
+    return {f.stem: json.loads(f.read_text(encoding="utf-8")) for f in dossier.iterdir() if f.is_file()}
 
 
 def test_couches_ecrites_sans_carreaux(couches):

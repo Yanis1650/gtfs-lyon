@@ -6,6 +6,7 @@ from pathlib import Path
 
 import duckdb
 
+from . import vehicules
 from .config import Parametres
 
 DECIMALES = 5  # ≈ 1 m à la latitude de Lyon
@@ -105,6 +106,8 @@ def exporter(con: duckdb.DuckDBPyConnection, p: Parametres, dossier: Path) -> No
                 """,
             ),
         )
+
+    vehicules.exporter(con, p, dossier / "vehicules")
 
     par_mode = con.sql(
         """

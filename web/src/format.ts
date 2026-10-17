@@ -16,6 +16,12 @@ export function heure(i: number, debut = 4): string {
   return `${(debut + i) % 24}${NBSP}h`
 }
 
+/** Heure à la minute d'un instant en secondes depuis minuit : « 8 h 05 », « 0 h 40 » après minuit. */
+export function horaire(s: number): string {
+  const minutes = Math.floor(s / 60)
+  return `${Math.floor(minutes / 60) % 24}${NBSP}h${NBSP}${String(minutes % 60).padStart(2, '0')}`
+}
+
 /** Libellé d'une tranche horaire du jour de service : « 8 h-9 h ». */
 export function tranche(i: number, debut = 4): string {
   return `${heure(i, debut)}-${heure(i + 1, debut)}`
