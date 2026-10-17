@@ -1,4 +1,4 @@
-// Rampes de couleur de la charte Drekky Studio. L'ardoise et le crème viennent des jetons
+// Rampes de couleur de la charte. L'ardoise et le crème viennent des jetons
 // de la charte ; la rampe terracotta a été calculée aux mêmes clartés OKLCH que l'ardoise,
 // en reprenant tels quels le terracotta (450) et le terracotta fort (500) de la charte.
 

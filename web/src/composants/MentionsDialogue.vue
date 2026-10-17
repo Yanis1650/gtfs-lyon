@@ -11,8 +11,8 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
   <Dialogue ref="cadre" id="titre-mentions" etiquette="Lyon sans voiture" titre="Mentions légales">
     <h3>Éditeur</h3>
     <p>
-      Yanis Lepesant, Drekky Studio, micro-entrepreneur. SIRET&nbsp;102&nbsp;161&nbsp;031&nbsp;00012. 63 route de
-      l’Épine, 50800 Bourguenolles. Contact&nbsp;: <a href="mailto:contact@drekky.fr">contact@drekky.fr</a>,
+      Yanis Lepesant, micro-entrepreneur. SIRET&nbsp;102&nbsp;161&nbsp;031&nbsp;00012. 63 route de
+      l’Épine, 50800 Bourguenolles. Contact&nbsp;: <a href="mailto:yanis@drekky.fr">yanis@drekky.fr</a>,
       07&nbsp;87&nbsp;15&nbsp;81&nbsp;60.
     </p>
     <p>Directeur de la publication&nbsp;: Yanis Lepesant.</p>
@@ -44,7 +44,7 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
     </p>
     <p>
       Vous pouvez demander l’accès à vos données, leur rectification ou leur effacement, en limiter le traitement ou
-      vous y opposer en écrivant à <a href="mailto:contact@drekky.fr">contact@drekky.fr</a>. Vous pouvez aussi adresser
+      vous y opposer en écrivant à <a href="mailto:yanis@drekky.fr">yanis@drekky.fr</a>. Vous pouvez aussi adresser
       une réclamation à la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">cnil.fr</a>).
     </p>
 

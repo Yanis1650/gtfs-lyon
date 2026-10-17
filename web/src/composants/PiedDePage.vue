@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import mot from '../assets/drekky/mot.svg?raw'
-import symbole from '../assets/drekky/symbole.svg?raw'
-
 const emit = defineEmits<{ methode: []; mentions: [] }>()
 </script>
 
 <template>
-  <!-- Pied de page de la charte, en bandeau compact : liens à gauche, signature à droite. -->
+  <!-- Pied de page en bandeau compact : liens à gauche, signature vers le portfolio à droite. -->
   <footer class="pied">
     <div class="pied__liens">
       <button class="pied__lien" @click="emit('methode')">Méthode et sources</button>
@@ -17,18 +14,13 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
     </div>
     <a
       class="pied__signature"
-      href="https://studio.drekky.fr"
+      href="https://portfolio.drekky.fr/"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Drekky Studio, conçu et développé par Yanis Lepesant"
       title="Conçu et développé par Yanis Lepesant"
     >
-      <!-- Logos de la charte, fichiers du dépôt (jamais de contenu venu des données). -->
-      <span class="pied__symbole" aria-hidden="true" v-html="symbole" />
-      <span class="pied__marque" aria-hidden="true">
-        <span class="pied__mot" v-html="mot" />
-        <span class="etiquette pied__studio">Studio</span>
-      </span>
+      <span class="pied__nom">Yanis Lepesant</span>
+      <span class="etiquette pied__portfolio">Portfolio</span>
     </a>
   </footer>
 </template>
@@ -69,8 +61,10 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
 .pied__signature {
   flex: none;
   display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  line-height: 1;
   color: #efe6d1;
   text-decoration: none;
   opacity: 0.85;
@@ -78,32 +72,18 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
 .pied__signature:hover {
   opacity: 1;
 }
-.pied__symbole {
-  flex: none;
-  display: block;
-  width: 22px;
-  height: 22px;
+.pied__nom {
+  font-family: var(--police-titre);
+  font-size: 13px;
+  font-weight: 600;
 }
-.pied__marque {
-  display: flex;
-  flex-direction: column;
+.pied__portfolio {
+  font-size: 9px;
   line-height: 1;
-}
-.pied__mot {
-  display: block;
-  width: 44px;
-  height: 12.5px;
-}
-.pied__symbole :deep(svg),
-.pied__mot :deep(svg) {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-.pied__studio {
-  margin-top: 2px;
-  font-size: 6.5px;
   color: var(--pied-texte);
+}
+.pied__signature:hover .pied__portfolio {
+  text-decoration: underline;
 }
 
 @media (min-width: 900px) {

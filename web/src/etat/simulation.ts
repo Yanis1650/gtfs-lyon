@@ -23,7 +23,8 @@ export const simulation = reactive({
   /** Secondes depuis minuit du jour de référence. */
   temps: 8 * 3600,
   vehicules: 0,
-  vitesse: 60 as (typeof VITESSES)[number],
+  /** Dix fois la réalité par défaut : assez vite pour voir le réseau vivre, assez lent pour suivre un tram. */
+  vitesse: 10 as (typeof VITESSES)[number],
 })
 
 /** Tranche horaire de l'instant simulé (0 = 4 h-5 h), comme le curseur des heures. */

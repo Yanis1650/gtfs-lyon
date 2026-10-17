@@ -10,7 +10,7 @@ Toutes les mesures portent sur un jour de référence : le mardi 17 novembre 202
 
 | Vue | Ce qu’elle montre |
 |---|---|
-| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules en circulation s’animent d’après les horaires, en temps réel ou accélérés dix ou soixante fois. |
+| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules en circulation s’animent d’après les horaires, dix fois plus vite que la réalité, en temps réel ou soixante fois plus vite au choix. |
 | **La vitesse** | Vitesse commerciale de chaque tronçon (divergente autour de l’allure typique du réseau) et classement des lignes, par période. |
 | **L’accessibilité** | Part des habitants de la Métropole joignables en 30 et 45 minutes depuis chaque carreau habité, et temps de trajet depuis six grands pôles. |
 
@@ -97,7 +97,7 @@ compose.yaml          webmap (nginx derrière Traefik) et conteneur de la chaîn
 
 ## Charte
 
-L’interface suit la charte de Drekky Studio : fond crème, ardoise pour les éléments d’action, terracotta en touches,
+L’interface suit une charte sobre : fond crème, ardoise pour les éléments d’action, terracotta en touches,
 Space Grotesk, IBM Plex Sans et IBM Plex Mono servies depuis le site, arrondi unique de 3 px. Les données en reprennent
 les rampes : ardoise pour les quantités, terracotta pour les temps, et une échelle divergente terracotta-ardoise pour
 les vitesses. Le fond OpenFreeMap est recoloré aux mêmes teintes. Mise en page pensée d’abord pour le téléphone,
@@ -119,8 +119,8 @@ comme le décrivent les mentions légales.
 - CI : tests, typage, construction, `npm audit --omit=dev`, gitleaks, actions épinglées par empreinte SHA ;
   Dependabot chaque semaine. Image sans les pages d’exemple de nginx.
 
-Vérifié le 17/10/2026 sur l’image de production lancée en local, puis relu par une session indépendante selon la
-liste de contrôle du studio (aucun point bloquant ; ses trois écarts mineurs sont corrigés). À refaire en ligne le
+Vérifié le 17/10/2026 sur l’image de production lancée en local, puis relu par une session indépendante selon une
+liste de contrôle de sécurité (aucun point bloquant ; ses trois écarts mineurs sont corrigés). À refaire en ligne le
 jour du déploiement : redirection HTTPS, en-têtes à travers Traefik, `verifier.py` et `scanner.py`.
 
 ## Sources et licences
@@ -133,4 +133,4 @@ jour du déploiement : redirection HTTPS, en-têtes à travers Traefik, `verifie
 Les couches dérivées publiées dans `web/public/data/` sont diffusées sous la même licence ODbL.
 Elles décrivent l’offre théorique publiée, pas la circulation réelle.
 
-Conçu et développé par Yanis Lepesant, [Drekky Studio](https://studio.drekky.fr).
+Conçu et développé par Yanis Lepesant · [portfolio](https://portfolio.drekky.fr/) · yanis@drekky.fr

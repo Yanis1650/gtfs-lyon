@@ -1,4 +1,4 @@
-/* Charte Drekky Studio : crème, ardoise, touches de terracotta ; typographie d'atelier. */
+/* Charte : crème, ardoise, touches de terracotta ; typographie d'atelier. */
 :root {
   color-scheme: light;
   --surface: #f7f2e6; /* paper */
@@ -139,9 +139,21 @@ p {
   position: absolute;
   width: 1px;
   height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* Bureau : la page tient dans l'écran, seul le panneau défile ; rien ne peut la faire déborder. */
+@media (min-width: 900px) {
+  html,
+  body {
+    overflow: hidden;
+  }
 }
 
 .chiffres {

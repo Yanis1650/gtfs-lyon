@@ -73,13 +73,16 @@ const bulle = computed(() =>
       </svg>
       <div v-if="bulle" class="profil__bulle chiffres" role="status">{{ bulle }}</div>
     </div>
-    <table class="visuellement-cache">
-      <caption>{{ titre }}</caption>
-      <tr v-for="(v, i) in valeurs" :key="i">
-        <th scope="row">{{ tranche(i) }}</th>
-        <td>{{ v }}</td>
-      </tr>
-    </table>
+    <!-- Un tableau ignore la hauteur qu'on lui impose : c'est son conteneur qui le cache. -->
+    <div class="visuellement-cache">
+      <table>
+        <caption>{{ titre }}</caption>
+        <tr v-for="(v, i) in valeurs" :key="i">
+          <th scope="row">{{ tranche(i) }}</th>
+          <td>{{ v }}</td>
+        </tr>
+      </table>
+    </div>
   </figure>
 </template>
 
