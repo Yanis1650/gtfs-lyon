@@ -1,5 +1,5 @@
 # Chaîne de traitement complète, Java 21 compris pour le moteur R5 (r5py).
-FROM eclipse-temurin:21-jre-noble
+FROM eclipse-temurin:24-jre-noble
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends python3 python3-venv \
