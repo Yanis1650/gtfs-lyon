@@ -105,6 +105,12 @@ def exporter(con: duckdb.DuckDBPyConnection, p: Parametres, dossier: Path) -> No
                 """,
             ),
         )
+        # Dénominateur des parts affichées : les habitants de tous les carreaux publiés.
+        (population,) = con.sql(
+            f"select sum(round(c.ind)::int) from carreaux c join read_parquet({chemin}) using (idcar)"
+        ).fetchone()
+    else:
+        population = None
 
     par_mode = con.sql(
         """
@@ -136,6 +142,7 @@ def exporter(con: duckdb.DuckDBPyConnection, p: Parametres, dossier: Path) -> No
             "accessibilite": {
                 "heure_depart": p.heure_depart,
                 "fenetre_min": p.fenetre_depart_min,
+                "population": population,
             },
             "sources": [
                 {"nom": "Horaires théoriques GTFS du réseau TCL, SYTRAL Mobilités", "licence": "ODbL"},

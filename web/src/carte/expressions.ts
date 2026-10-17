@@ -4,7 +4,7 @@ import type { ExpressionSpecification, FilterSpecification } from 'maplibre-gl'
 import type { IndicateurAcces, Mode } from '../donnees'
 import {
   classesFrequence,
-  classesPopulation,
+  classesPart,
   classesTemps,
   classesVitesse,
   expressionClasses,
@@ -16,6 +16,8 @@ export interface Reglages {
   modes: Mode[]
   indicateur: IndicateurAcces
   pole: string
+  /** Habitants de la Métropole : les carreaux affichent la part qu'on en joint. */
+  population: number
 }
 
 const expr = (e: unknown) => e as ExpressionSpecification
@@ -70,11 +72,11 @@ export const largeurVitesse = largeurZoom(['interpolate', ['linear'], ['get', 'c
 
 export const filtreModes = (modes: Mode[]): FilterSpecification => ['in', ['get', 'mode'], ['literal', modes]]
 
-export function couleurAcces({ indicateur, pole, sombre }: Reglages): ExpressionSpecification {
+export function couleurAcces({ indicateur, pole, sombre, population }: Reglages): ExpressionSpecification {
   if (indicateur === 'temps') {
     return expr(expressionClasses(['coalesce', ['get', `t_${pole}`], 999], classesTemps(sombre)))
   }
-  return expr(expressionClasses(['get', indicateur], classesPopulation(sombre)))
+  return expr(expressionClasses(['/', ['get', indicateur], Math.max(population, 1)], classesPart(sombre)))
 }
 
 export const filtreId = (id: string | null): FilterSpecification => ['==', ['get', 'id'], id ?? '']

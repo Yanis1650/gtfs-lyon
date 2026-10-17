@@ -51,6 +51,12 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
       simule les départs minute par minute entre {{ depart }}&nbsp;h et {{ depart + 1 }}&nbsp;h et je retiens la durée
       médiane, marche à 3,6&nbsp;km/h comprise. Les temps «&nbsp;depuis un pôle&nbsp;» partent du pôle vers chaque carreau.
     </p>
+    <p>
+      Pour chaque carreau de départ, j’additionne les habitants des carreaux atteints dans le délai, puis je rapporte ce
+      total à la population de la Métropole. «&nbsp;20&nbsp;% en 30&nbsp;min&nbsp;» signifie donc qu’en partant de ce
+      carreau, on rejoint en une demi-heure les lieux où vivent 20&nbsp;% des habitants&nbsp;: une mesure de ce que le
+      réseau met à portée, et non des habitants du carreau lui-même.
+    </p>
 
     <h3>Outils</h3>
     <p>

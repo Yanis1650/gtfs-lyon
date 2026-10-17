@@ -8,6 +8,8 @@ const decimal = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maxim
 export const nombre = (n: number) => entier.format(n).replace(/ /g, NBSP)
 export const kmh = (v: number | null) => (v == null ? 'non mesurée' : `${decimal.format(v)}${NBSP}km/h`)
 export const pourcent = (x: number) => `${nombre(Math.round(x * 100))}${NBSP}%`
+/** Une part : une décimale sous 10 %, où l'arrondi à l'unité écraserait les écarts. */
+export const part = (x: number) => (x < 0.1 ? `${decimal.format(x * 100)}${NBSP}%` : pourcent(x))
 
 /** Heure de début d'une tranche du jour de service (0 = 4 h). */
 export function heure(i: number, debut = 4): string {

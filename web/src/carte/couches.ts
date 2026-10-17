@@ -40,15 +40,18 @@ export interface Selection {
 
 const VIDE: Carreaux = { type: 'FeatureCollection', features: [] }
 const ARRONDI = { 'line-cap': 'round', 'line-join': 'round' } as const
+// Crédits des données, affichés dans l'attribution de la carte quand la couche est visible.
+const TCL = '© SYTRAL Mobilités (ODbL)'
+const INSEE = '© Insee'
 
 export function ajouterCouches(carte: CarteMapLibre, d: Donnees, r: Reglages, s: Selection) {
   const avant = premiereCoucheTexte(carte)
   const { encre, surface, selection } = encres(r.sombre)
 
-  carte.addSource('troncons', { type: 'geojson', data: d.troncons })
-  carte.addSource('lignes', { type: 'geojson', data: d.lignes })
-  carte.addSource('arrets', { type: 'geojson', data: d.arrets, promoteId: 'id' })
-  carte.addSource('carreaux', { type: 'geojson', data: d.carreaux ?? VIDE, promoteId: 'id' })
+  carte.addSource('troncons', { type: 'geojson', data: d.troncons, attribution: TCL })
+  carte.addSource('lignes', { type: 'geojson', data: d.lignes, attribution: TCL })
+  carte.addSource('arrets', { type: 'geojson', data: d.arrets, promoteId: 'id', attribution: TCL })
+  carte.addSource('carreaux', { type: 'geojson', data: d.carreaux ?? VIDE, promoteId: 'id', attribution: `${INSEE} · ${TCL}` })
 
   carte.addLayer(
     { id: 'carreaux', type: 'fill', source: 'carreaux', paint: { 'fill-color': couleurAcces(r), 'fill-opacity': 0.85 } },

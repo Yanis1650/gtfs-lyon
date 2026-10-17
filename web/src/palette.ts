@@ -27,8 +27,6 @@ export interface Classe {
 const classes = (bornes: number[], libelles: string[], couleurs: string[]): Classe[] =>
   bornes.map((min, i) => ({ min, libelle: libelles[i], couleur: couleurs[i] }))
 
-// Séparateur de milliers français (espace fine insécable).
-const milliers = (n: number) => n.toLocaleString('fr-FR').replace(/ /g, ' ')
 const NBSP = ' '
 
 /** Courses par heure sur un tronçon, dans un sens. Séquentiel ardoise, du clair au foncé. */
@@ -55,16 +53,18 @@ export function classesVitesse(sombre: boolean): Classe[] {
   )
 }
 
-/** Habitants joignables. Séquentiel ardoise. */
-export function classesPopulation(sombre: boolean): Classe[] {
-  // La moitié des carreaux joignent moins de 19 000 habitants en 30 min, le centre plus de 500 000.
-  const bornes = [0, 10_000, 25_000, 50_000, 100_000, 200_000, 400_000]
+/** Part des habitants de la Métropole joignables depuis un carreau (0 à 1). Séquentiel ardoise. */
+export function classesPart(sombre: boolean): Classe[] {
+  // Un habitant sur deux joint au moins 6 % de la Métropole en 30 min, 26 % en 45 min ;
+  // les mêmes classes servent aux deux seuils, pour les comparer.
+  const bornes = [0, 0.02, 0.05, 0.1, 0.2, 0.35, 0.5]
+  const pc = (b: number) => Math.round(b * 100)
   const libelles = bornes.map((b, i) =>
     i === 0
-      ? `moins de ${milliers(bornes[1])}`
+      ? `moins de ${pc(bornes[1])}${NBSP}%`
       : i === bornes.length - 1
-        ? `${milliers(b)} et plus`
-        : `${milliers(b)} à ${milliers(bornes[i + 1])}`,
+        ? `${pc(b)}${NBSP}% et plus`
+        : `${pc(b)} à ${pc(bornes[i + 1])}${NBSP}%`,
   )
   return classes(
     bornes,

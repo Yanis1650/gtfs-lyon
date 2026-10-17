@@ -2,7 +2,7 @@
 import { type Map as CarteMapLibre, type MapGeoJSONFeature, Popup } from 'maplibre-gl'
 
 import type { IndicateurAcces, ProprietesArret, ProprietesCarreau, ProprietesTroncon, Vue } from '../donnees'
-import { kmh, minutes, nombre, tranche } from '../format'
+import { kmh, minutes, nombre, part, tranche } from '../format'
 import { COUCHES_PAR_VUE } from './couches'
 
 export interface Contexte {
@@ -11,6 +11,7 @@ export interface Contexte {
   indicateur: () => IndicateurAcces
   pole: () => string
   nomPole: () => string
+  population: () => number
 }
 
 export interface Rappels {
@@ -53,7 +54,8 @@ export function brancherInteractions(carte: CarteMapLibre, ctx: Contexte, rappel
       const indicateur = ctx.indicateur()
       return indicateur === 'temps'
         ? `${minutes(c[`t_${ctx.pole()}`] as number | null)} depuis ${echapper(ctx.nomPole())}`
-        : `${nombre(c[indicateur])} habitants joignables`
+        : `<strong>${part(c[indicateur] / Math.max(ctx.population(), 1))}</strong> des habitants de la Métropole` +
+          ` à moins de ${indicateur === 'pop_tc45' ? 45 : 30}&nbsp;min d’ici`
     },
   }
 

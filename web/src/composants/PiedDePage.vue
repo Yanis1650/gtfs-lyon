@@ -6,7 +6,7 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
 </script>
 
 <template>
-  <!-- Pied de page de la charte : fond ardoise, texte muted-dark, symbole en crème. -->
+  <!-- Pied de page de la charte, en bandeau compact : liens à gauche, signature à droite. -->
   <footer class="pied">
     <div class="pied__liens">
       <button class="pied__lien" @click="emit('methode')">Méthode et sources</button>
@@ -15,15 +15,19 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
         Code source
       </a>
     </div>
-    <a class="pied__signature" href="https://studio.drekky.fr" target="_blank" rel="noopener noreferrer">
+    <a
+      class="pied__signature"
+      href="https://studio.drekky.fr"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Drekky Studio, conçu et développé par Yanis Lepesant"
+      title="Conçu et développé par Yanis Lepesant"
+    >
       <!-- Logos de la charte, fichiers du dépôt (jamais de contenu venu des données). -->
       <span class="pied__symbole" aria-hidden="true" v-html="symbole" />
       <span class="pied__marque" aria-hidden="true">
         <span class="pied__mot" v-html="mot" />
         <span class="etiquette pied__studio">Studio</span>
-      </span>
-      <span class="pied__auteur">
-        Conçu et développé par Yanis Lepesant. Données&nbsp;: SYTRAL Mobilités (ODbL), Insee, OpenStreetMap.
       </span>
     </a>
   </footer>
@@ -31,24 +35,26 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
 
 <style scoped>
 .pied {
-  display: grid;
-  gap: 10px;
-  padding: 16px 20px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 10px 20px;
   background: var(--pied);
   color: var(--pied-texte);
   font-size: 13px;
 }
 .pied__liens {
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 18px;
+  gap: 4px 16px;
 }
 .pied__lien {
   padding: 0;
   border: none;
   background: none;
   color: #f7f2e6;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
@@ -61,19 +67,22 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
   text-decoration: underline;
 }
 .pied__signature {
+  flex: none;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding-top: 12px;
-  border-top: 1px solid var(--pied-filet);
+  gap: 6px;
   color: #efe6d1;
   text-decoration: none;
+  opacity: 0.85;
+}
+.pied__signature:hover {
+  opacity: 1;
 }
 .pied__symbole {
   flex: none;
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 22px;
+  height: 22px;
 }
 .pied__marque {
   display: flex;
@@ -82,8 +91,8 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
 }
 .pied__mot {
   display: block;
-  width: 60px;
-  height: 17px;
+  width: 44px;
+  height: 12.5px;
 }
 .pied__symbole :deep(svg),
 .pied__mot :deep(svg) {
@@ -92,25 +101,14 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
   height: 100%;
 }
 .pied__studio {
-  margin-top: 3px;
-  font-size: 8px;
+  margin-top: 2px;
+  font-size: 6.5px;
   color: var(--pied-texte);
-}
-.pied__auteur {
-  margin-left: auto;
-  max-width: 240px;
-  font-size: 12px;
-  line-height: 1.4;
-  color: var(--pied-texte);
-  text-align: right;
-}
-.pied__signature:hover .pied__auteur {
-  color: #f7f2e6;
 }
 
 @media (min-width: 900px) {
   .pied {
-    padding: 14px 24px 16px;
+    padding: 10px 24px;
   }
 }
 </style>
