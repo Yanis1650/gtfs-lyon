@@ -16,6 +16,7 @@ les trois familles typographiques et les classes de données de l’atlas.
 - Animer les véhicules et Vue 3D sont directement visibles en haut de la carte ; le satellite conserve un pictogramme seul.
 - Un balayage horizontal dans un panneau revient à la carte. Le défilement vertical, les champs et les graphiques gardent leur usage.
 - Dans l’accessibilité, les boutons 30 min, 45 min et Depuis un pôle, puis le choix du départ, sont accessibles sur la carte.
+- Ce bandeau se replie avec la flèche : une commande compacte conserve la durée ou le pôle actif et permet de le rouvrir sans perdre les réglages.
 - Le bouton Aide ouvre un guide des trois usages, avec des raccourcis vers les vues et une explication des gestes.
 - Les liens Méthode et sources, Mentions légales et Code source se trouvent au bas du panneau défilant.
 
@@ -61,6 +62,7 @@ Le parcours manuel couvre :
 - navigation entre les trois vues et bascule Carte/exploration ;
 - recherche d’arrêt, ouverture de fiche et retour à la carte ;
 - défilement jusqu’aux sources, recherche de ligne et choix d’indicateur 30/45 minutes ;
+- repli et réouverture des commandes d’accessibilité, avec conservation de la mesure et du pôle sélectionnés ;
 - curseur au clavier, lecture/pause et options d’animation ;
 - thème sombre, fond satellite et vue 3D ;
 - petits écrans, hauteur réduite en paysage et disposition bureau.
@@ -69,6 +71,6 @@ Le parcours manuel couvre :
 Le [contrôle responsive local](http://localhost:5180/verification-mobile.html), défini dans `web/verification-mobile.html`,
 propose 320 × 568, 390 × 568, 390 × 844 et 844 × 390. Il n’est pas inclus dans la construction de production.
 Captures : [commandes et modèles](images/atlas-mobile.png), [panneau mobile et retour à la carte](images/atlas-mobile-exploration.png),
-[durées sur la carte](images/atlas-accessibilite-mobile.png), [bureau](images/atlas-bureau.png) et [paysage](images/atlas-paysage.png).
+[durées sur la carte](images/atlas-accessibilite-mobile.png), [bandeau replié](images/atlas-accessibilite-repliee.png), [bureau](images/atlas-bureau.png) et [paysage](images/atlas-paysage.png).
 Ces vérifications dans le navigateur ne remplacent pas un essai sur téléphone physique, notamment pour le clavier et le balayage tactiles.
 La compilation contrôle TypeScript ; les tests du pipeline et la règle des fichiers de 200 lignes complètent ces contrôles.

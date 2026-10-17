@@ -8,7 +8,7 @@
 - Navigation mobile en bas, avec espaces Carte et exploration séparés ; déplacement de la carte avec un doigt.
 - Animer les véhicules et Vue 3D mis en avant en tête de carte, sur mobile comme sur bureau.
 - Zoom vers un véhicule en circulation pour montrer sa modélisation ; satellite compact avec un pictogramme dédié.
-- Durées 30/45 minutes et pôle de départ directement sur la carte ; guide Aide et retour par balayage depuis les panneaux.
+- Durées 30/45 minutes et pôle de départ dans un bandeau repliable sur la carte ; guide Aide et retour par balayage depuis les panneaux.
 - Barre horaire d’environ 52 px, persistante pendant la lecture des fiches ; vitesses d’animation dans les réglages.
 - Recherche d’arrêt et choix de l’indicateur placés en tête des panneaux ; fiches défilantes sur toute la hauteur disponible.
 - Simulation et horaires théoriques explicités près de l’horloge et dans l’en-tête.
