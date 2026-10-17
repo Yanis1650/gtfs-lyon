@@ -17,7 +17,9 @@ import {
   rayonArret,
   type Reglages,
 } from './expressions'
+import { ajouterMaquettes } from '../simulation/maquettes'
 import { premiereCoucheTexte } from './maplibre'
+import { ajouterBatiments, BATIMENTS } from './relief'
 
 export const COUCHES_PAR_VUE: Record<Vue, string[]> = {
   offre: ['troncons-offre', 'arrets-offre', 'arrets-selection'],
@@ -110,6 +112,9 @@ export function ajouterCouches(carte: CarteMapLibre, d: Donnees, r: Reglages, s:
       avant,
     )
   }
+  // Les immeubles passent devant les traits, les véhicules entre les immeubles, les arrêts par-dessus.
+  ajouterBatiments(carte, r, avant)
+  ajouterMaquettes(carte, r.sombre, avant, BATIMENTS)
   // Disque clair cerclé d'encre, comme une station sur un plan de réseau.
   carte.addLayer({
     id: 'arrets-offre',

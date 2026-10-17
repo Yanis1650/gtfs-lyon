@@ -10,9 +10,12 @@ Toutes les mesures portent sur un jour de référence : le mardi 17 novembre 202
 
 | Vue | Ce qu’elle montre |
 |---|---|
-| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules en circulation s’animent d’après les horaires, une heure par minute. |
+| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules en circulation s’animent d’après les horaires, en temps réel ou accélérés dix ou soixante fois. |
 | **La vitesse** | Vitesse commerciale de chaque tronçon (divergente autour de l’allure typique du réseau) et classement des lignes, par période. |
 | **L’accessibilité** | Part des habitants de la Métropole joignables en 30 et 45 minutes depuis chaque carreau habité, et temps de trajet depuis six grands pôles. |
+
+Sur chaque vue, la carte passe en vue satellite (photographies aériennes de l’IGN) et en relief : carte inclinée,
+immeubles à leur hauteur OpenStreetMap.
 
 ## Chaîne de traitement
 
@@ -30,7 +33,9 @@ Insee Filosofi 2021 ──► carreaux habités ──► r5py / R5 (Docker, Jav
   horaires étant arrondis à la minute, la vitesse d’un tronçon est mesurée sur une fenêtre de cinq inter-arrêts.
 - **Véhicules en circulation.** Pour chaque course, une heure par arrêt ; quand le flux donne la même minute à plusieurs
   arrêts de suite, le temps est réparti selon la distance. La carte déplace chaque véhicule le long des tronçons publiés,
-  avec un court arrêt puis une accélération et un freinage. Un fichier par heure, 50 Ko compressés au plus.
+  avec un court arrêt puis une accélération et un freinage. Un fichier par heure, 50 Ko compressés au plus. De près,
+  chaque véhicule prend son gabarit (bus de 12 m, articulés de 18 m, trams en cinq modules, métros voiture par voiture),
+  chaque caisse suivant la courbe de la voie ; métros et funiculaires, souterrains, restent à plat sous les immeubles.
 - **Accessibilité.** r5py (moteur R5 de Conveyal) : départs minute par minute entre 8 h et 9 h, durée médiane, marche
   comprise, sur les 7 879 carreaux habités de la Métropole.
 
@@ -81,10 +86,10 @@ pipeline/atlas/       chaîne de traitement (Python + SQL DuckDB)
   vehicules.py        courses heure par heure, horaires lissés, pour l'animation
 pipeline/tests/       mini-réseau GTFS et tests
 web/src/
-  carte/              MapLibre : fond recoloré, expressions, couches, interactions
+  carte/              MapLibre : fond recoloré, satellite et relief, expressions, couches, interactions
   composants/         en-tête, onglets, panneaux, fiches, légendes, fenêtres
   etat/               thème, vue active, statistiques, horloge des véhicules
-  simulation/         position des véhicules le long des tronçons, calque de dessin
+  simulation/         position des véhicules le long des tronçons, gabarits et maquettes 3D, calque de dessin
 web/deploy/           nginx et ses en-têtes de sécurité
 web/public/data/      couches GeoJSON produites par la chaîne
 compose.yaml          webmap (nginx derrière Traefik) et conteneur de la chaîne
@@ -106,8 +111,8 @@ comme le décrivent les mentions légales.
 
 - nginx 1.31.7 sans droits root (`nginx-unprivileged`), conteneur en lecture seule, sans capacités
   (`cap_drop: ALL`, `no-new-privileges`), mémoire et processeur limités, aucun port publié (Traefik seulement).
-- En-têtes sur toutes les réponses, erreurs 400, 404, 405 et 414 comprises : CSP stricte (seul tiers : les
-  tuiles OpenFreeMap, sans `blob:`), HSTS, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`. Version de nginx masquée.
+- En-têtes sur toutes les réponses, erreurs 400, 404, 405 et 414 comprises : CSP stricte (seuls tiers : les
+  tuiles OpenFreeMap et, en vue satellite, les photographies de l’IGN, sans `blob:`), HSTS, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`. Version de nginx masquée.
 - Une adresse inconnue répond un vrai 404 ; fichiers cachés jamais servis ; seuls `GET` et `HEAD` sont acceptés.
 - Polices hébergées sur le site, aucune requête vers Google.
 - Textes venus des données échappés avant tout affichage en HTML.
@@ -122,7 +127,8 @@ jour du déploiement : redirection HTTPS, en-têtes à travers Traefik, `verifie
 
 - Horaires théoriques GTFS du réseau TCL, SYTRAL Mobilités, via data.gouv.fr (ODbL).
 - Insee, Filosofi 2021, données carroyées à 200 m (Licence Ouverte).
-- Contributeurs OpenStreetMap : tracés, réseau piéton, fond de carte OpenFreeMap (ODbL).
+- Contributeurs OpenStreetMap : tracés, réseau piéton, fond de carte OpenFreeMap, hauteur des immeubles (ODbL).
+- IGN, BD ORTHO® : photographies aériennes de la vue satellite (Licence Ouverte 2.0).
 
 Les couches dérivées publiées dans `web/public/data/` sont diffusées sous la même licence ODbL.
 Elles décrivent l’offre théorique publiée, pas la circulation réelle.

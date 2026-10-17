@@ -2,6 +2,7 @@
 import { computed, nextTick, onMounted, ref, shallowRef, watch } from 'vue'
 
 import CarteAtlas from './composants/CarteAtlas.vue'
+import CommandesCarte from './composants/CommandesCarte.vue'
 import EnTete from './composants/EnTete.vue'
 import MentionsDialogue from './composants/MentionsDialogue.vue'
 import MethodeDialogue from './composants/MethodeDialogue.vue'
@@ -34,6 +35,8 @@ const heure = ref(4) // tranche 4 = 8 h-9 h
 const modes = ref<Mode[]>(['metro', 'tram', 'trolleybus', 'bus', 'funiculaire', 'navette_fluviale'])
 const indicateur = ref<IndicateurAcces>('pop_tc30')
 const pole = ref('part_dieu')
+const satellite = ref(false)
+const relief = ref(false)
 
 const meta = shallowRef<Meta | null>(null)
 const lignes = shallowRef(new Map<string, ProprietesLigne>())
@@ -118,6 +121,8 @@ function choisirLigne(id: string | null) {
         :vue="vue"
         :heure="heure"
         :sombre="sombre"
+        :satellite="satellite"
+        :relief="relief"
         :meta="meta"
         :modes="modes"
         :indicateur="indicateur"
@@ -131,6 +136,7 @@ function choisirLigne(id: string | null) {
         @troncon="(t) => (troncon = t)"
         @carreau="(c) => (carreau = c)"
       />
+      <CommandesCarte v-model:satellite="satellite" v-model:relief="relief" />
       <button class="atlas__agrandir" aria-label="Carte en plein écran" :aria-pressed="agrandie" @click="basculerCarte">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="agrandie ? REDUIRE : AGRANDIR" /></svg>
       </button>

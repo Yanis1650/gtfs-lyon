@@ -39,7 +39,8 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
     <p>
       Le fond de carte est chargé chez OpenFreeMap, dont les serveurs passent par Cloudflare, société établie aux
       États-Unis&nbsp;: votre adresse IP leur parvient, comme à tout site que l’on consulte, et peut être traitée hors
-      de l’Union européenne.
+      de l’Union européenne. En vue satellite seulement, les photographies aériennes viennent de la Géoplateforme de
+      l’IGN, établissement public français, qui reçoit de même votre adresse IP.
     </p>
     <p>
       Vous pouvez demander l’accès à vos données, leur rectification ou leur effacement, en limiter le traitement ou
@@ -51,6 +52,8 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
     <p>
       Les couches de la carte dérivent des horaires du réseau TCL (SYTRAL Mobilités) et d’OpenStreetMap, sous licence
       ODbL, et des données carroyées de l’Insee (Licence Ouverte). Elles sont rediffusées sous la même licence ODbL.
+      Les photographies aériennes de la vue satellite proviennent de la BD ORTHO® de l’IGN (Licence Ouverte 2.0)&nbsp;;
+      la hauteur des immeubles en relief, d’OpenStreetMap.
     </p>
     <p class="note">Mis à jour le 17 octobre 2026.</p>
   </Dialogue>

@@ -11,6 +11,8 @@ export interface Trace {
 
 export interface Course {
   mode: Mode
+  /** Nom court de la ligne (« T1 », « C3 »…), pour choisir le gabarit du véhicule. */
+  ligne: string
   couleur: string
   /** Heures de passage aux arrêts, en secondes depuis minuit (au-delà de 24 h après minuit). */
   heures: number[]
@@ -52,6 +54,7 @@ export function preparer(
     const infos = lignes.get(ligne)
     return {
       mode: infos?.mode ?? 'bus',
+      ligne: infos?.ligne ?? '',
       couleur: infos?.couleur ?? '#5b7880',
       heures,
       traces: arrets.slice(1).map((vers, k) => index.get(`${arrets[k]}>${vers}`) ?? null),
@@ -59,20 +62,23 @@ export function preparer(
   })
 }
 
-/** Le point situé à la fraction `f` (0 à 1) de la longueur du tracé. */
-export function pointSur({ points, cumul }: Trace, f: number): Point {
-  const cible = f * cumul[cumul.length - 1]
+/** Le point situé à la distance `d` du début du tracé (en degrés, comme `cumul`). */
+export function pointA({ points, cumul }: Trace, d: number): Point {
   let bas = 0
   let haut = cumul.length - 1
   while (haut - bas > 1) {
     const milieu = (bas + haut) >> 1
-    if (cumul[milieu] <= cible) bas = milieu
+    if (cumul[milieu] <= d) bas = milieu
     else haut = milieu
   }
   const longueur = cumul[haut] - cumul[bas]
-  const r = longueur > 0 ? (cible - cumul[bas]) / longueur : 0
+  // Hors du tracé, le point prolonge le premier ou le dernier segment : l'arrière d'un véhicule
+  // qui quitte son terminus reste dans l'axe de la voie.
+  const r = longueur > 0 ? (d - cumul[bas]) / longueur : 0
   return [points[bas][0] + r * (points[haut][0] - points[bas][0]), points[bas][1] + r * (points[haut][1] - points[bas][1])]
 }
+
+export const longueurDe = (trace: Trace) => trace.cumul[trace.cumul.length - 1]
 
 /** Dernier arrêt dont l'heure est passée, parmi tous sauf le terminus. */
 function arretPrecedent(heures: number[], t: number): number {
@@ -86,17 +92,31 @@ function arretPrecedent(heures: number[], t: number): number {
   return bas
 }
 
-/** Où est le véhicule à l'instant t ? `null` s'il ne circule pas (pas parti ou arrivé).
- *  Il marque un court arrêt, puis accélère et freine en douceur jusqu'à l'arrêt suivant. */
-export function position(course: Course, t: number): Point | null {
+/** Où en est le véhicule à l'instant t : tronçon k et distance d parcourue dessus.
+ *  `null` s'il ne circule pas (pas parti ou arrivé). Il marque un court arrêt, puis
+ *  accélère et freine en douceur jusqu'à l'arrêt suivant. */
+export function avancement(course: Course, t: number): { k: number; d: number } | null {
   const { heures, traces } = course
   if (t < heures[0] || t > heures[heures.length - 1]) return null
   const k = arretPrecedent(heures, t)
   const trace = traces[k]
   if (!trace) return null
   const duree = heures[k + 1] - heures[k]
-  if (duree <= 0) return pointSur(trace, 1)
+  if (duree <= 0) return { k, d: longueurDe(trace) }
   const pause = Math.min(PAUSE_MAX, duree * PART_PAUSE)
   const u = Math.min(1, Math.max(0, (t - heures[k] - pause) / (duree - pause)))
-  return pointSur(trace, u * u * (3 - 2 * u))
+  return { k, d: longueurDe(trace) * u * u * (3 - 2 * u) }
+}
+
+/** Le point à la distance d du début du tronçon k ; une distance négative remonte les tronçons
+ *  précédents, pour que les caisses d'un tram qui vient de quitter l'arrêt suivent la voie. */
+export function pointCourse({ traces }: Course, k: number, d: number): Point {
+  while (d < 0 && k > 0 && traces[k - 1]) d += longueurDe(traces[--k]!)
+  return pointA(traces[k]!, d)
+}
+
+/** Position de l'avant du véhicule à l'instant t. */
+export function position(course: Course, t: number): Point | null {
+  const a = avancement(course, t)
+  return a && pointCourse(course, a.k, a.d)
 }

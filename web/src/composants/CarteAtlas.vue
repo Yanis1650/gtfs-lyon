@@ -15,6 +15,7 @@ import {
 import type { Reglages } from '../carte/expressions'
 import { brancherInteractions } from '../carte/interactions'
 import { creerCarte, marqueurDePole, styleFond } from '../carte/maplibre'
+import { basculerRelief } from '../carte/relief'
 import { brancherSimulation } from '../etat/simulation'
 import {
   chargerArrets,
@@ -34,6 +35,8 @@ const props = defineProps<{
   vue: Vue
   heure: number
   sombre: boolean
+  satellite: boolean
+  relief: boolean
   meta: Meta | null
   modes: Mode[]
   indicateur: IndicateurAcces
@@ -65,6 +68,8 @@ const reglages = computed<Reglages>(() => ({
   indicateur: props.indicateur,
   pole: props.pole,
   population: props.population,
+  satellite: props.satellite,
+  relief: props.relief,
 }))
 const selection = computed(() => ({ ligne: props.ligne, arret: props.arret, carreau: props.carreau }))
 const pret = () => !!carte?.getLayer('troncons-offre')
@@ -102,7 +107,7 @@ const etroit = () => window.matchMedia('(max-width: 899px)').matches
 
 onMounted(async () => {
   // Sur téléphone, deux doigts pour déplacer la carte : un doigt fait défiler la page.
-  carte = await creerCarte(conteneur.value!, props.sombre, { cooperativeGestures: etroit() })
+  carte = await creerCarte(conteneur.value!, props.sombre, props.satellite, { cooperativeGestures: etroit() })
   if (import.meta.env.DEV) Object.assign(window, { carteAtlas: carte })
   carte.on('style.load', () => void construire())
   brancherSimulation(carte, { sombre: () => props.sombre, vue: () => props.vue })
@@ -144,13 +149,15 @@ watch(selection, (s, avant) => {
   const trace = s.ligne && s.ligne !== avant?.ligne ? donnees.lignes?.features.find((f) => f.properties.id === s.ligne) : null
   if (trace) carte!.fitBounds(emprise(trace.geometry), { padding: 60, duration: 900, maxZoom: 14 })
 })
+// Thème ou fond satellite : un nouveau style, puis les couches de l'atlas reconstruites dessus.
 watch(
-  () => props.sombre,
-  async (sombre) => {
+  () => [props.sombre, props.satellite],
+  async () => {
     chargement.value = true
-    carte?.setStyle(await styleFond(sombre))
+    carte?.setStyle(await styleFond(props.sombre, props.satellite))
   },
 )
+watch(() => props.relief, (relief) => carte && basculerRelief(carte, relief))
 
 defineExpose({
   voler(lon: number, lat: number, zoom = 14) {
@@ -188,13 +195,5 @@ defineExpose({
   box-shadow: var(--ombre-douce);
   font-size: 13px;
   color: var(--encre-2);
-}
-:global(.marqueur-pole) {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--terracotta);
-  border: 3px solid var(--surface);
-  box-shadow: 0 0 0 2px var(--encre);
 }
 </style>

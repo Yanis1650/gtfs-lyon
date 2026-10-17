@@ -18,6 +18,9 @@ export interface Reglages {
   pole: string
   /** Habitants de la Métropole : les carreaux affichent la part qu'on en joint. */
   population: number
+  satellite: boolean
+  /** Carte inclinée, immeubles en relief. */
+  relief: boolean
 }
 
 const expr = (e: unknown) => e as ExpressionSpecification

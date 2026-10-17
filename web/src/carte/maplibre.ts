@@ -3,6 +3,8 @@ import { Map as CarteMapLibre, type MapOptions, Marker, setWorkerUrl, type Style
 // worker et la carte reste vide, sans la moindre erreur dans la console.
 import urlWorker from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 
+import { habillerSatellite, LUMIERE } from './relief'
+
 setWorkerUrl(urlWorker)
 
 const STYLE_FOND = 'https://tiles.openfreemap.org/styles/positron'
@@ -27,8 +29,9 @@ const FOND = {
 
 let fondBrut: Promise<StyleSpecification> | null = null
 
-/** Style du fond de carte OpenFreeMap (Positron), recoloré aux teintes de la charte. */
-export async function styleFond(sombre: boolean): Promise<StyleSpecification> {
+/** Style du fond de carte OpenFreeMap (Positron), recoloré aux teintes de la charte,
+ *  ou réduit à ses noms par-dessus la photographie aérienne. */
+export async function styleFond(sombre: boolean, satellite = false): Promise<StyleSpecification> {
   fondBrut ??= fetch(STYLE_FOND).then((r) => r.json() as Promise<StyleSpecification>)
   const style: StyleSpecification = structuredClone(await fondBrut)
   const c = sombre ? FOND.sombre : FOND.clair
@@ -61,18 +64,21 @@ export async function styleFond(sombre: boolean): Promise<StyleSpecification> {
       peinture['text-halo-color'] = c.halo
     }
   }
+  style.light = LUMIERE
+  if (satellite) habillerSatellite(style, sombre)
   return style
 }
 
-export async function creerCarte(conteneur: HTMLElement, sombre: boolean, options: Partial<MapOptions> = {}) {
+export async function creerCarte(conteneur: HTMLElement, sombre: boolean, satellite: boolean, options: Partial<MapOptions> = {}) {
   return new CarteMapLibre({
     container: conteneur,
-    style: await styleFond(sombre),
+    style: await styleFond(sombre, satellite),
     center: LYON.centre,
     // Sur téléphone, un cran plus large pour voir toute l'agglomération.
     zoom: conteneur.clientWidth < 500 ? LYON.zoom - 0.9 : LYON.zoom,
     minZoom: 9,
-    maxZoom: 17,
+    // Jusqu'au zoom 19, où un bus mesure une trentaine de pixels.
+    maxZoom: 19,
     attributionControl: { compact: true },
     ...options,
   })

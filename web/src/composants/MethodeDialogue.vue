@@ -51,6 +51,12 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
       portent la même heure&nbsp;; je répartis alors le temps selon la distance, entre deux arrêts où l’heure change.
       Entre deux arrêts, le véhicule suit le tracé du tronçon, marque un court arrêt, accélère puis freine.
     </p>
+    <p>
+      De près, chacun prend sa forme et sa taille réelles, en ordres de grandeur&nbsp;: bus de 12&nbsp;m, articulés de
+      18&nbsp;m sur les lignes C et les trolleybus, trams de 32&nbsp;m en cinq modules, métros de deux ou trois
+      voitures. Chaque caisse suit la courbe de la voie. Métros et funiculaires, souterrains, restent à plat sous les
+      immeubles, dont la hauteur vient d’OpenStreetMap.
+    </p>
 
     <h3>L’accessibilité</h3>
     <p>

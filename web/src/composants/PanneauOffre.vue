@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import type { Meta, ProprietesArret, ProprietesLigne } from '../donnees'
-import { debutTranche, simulation } from '../etat/simulation'
+import { debutTranche, simulation, VITESSES } from '../etat/simulation'
 import { nombre } from '../format'
 import { classesFrequence } from '../palette'
 import FicheArret from './FicheArret.vue'
@@ -20,6 +20,11 @@ const heure = defineModel<number>('heure', { required: true })
 const emit = defineEmits<{ choisirArret: [ProprietesArret | null] }>()
 
 const horloge = ref<InstanceType<typeof Horloge>>()
+const RYTHMES: Record<(typeof VITESSES)[number], string> = {
+  1: 'en temps réel',
+  10: 'dix fois plus vite que la réalité',
+  60: 'une heure par minute',
+}
 function choisirHeure(i: number) {
   horloge.value?.arreter()
   heure.value = i
@@ -51,10 +56,24 @@ function basculerVehicules() {
 
     <div class="vehicules">
       <button class="puce" :aria-pressed="simulation.actif" @click="basculerVehicules">Véhicules en circulation</button>
-      <p v-if="simulation.actif" class="note">
-        <strong class="chiffres">{{ nombre(simulation.vehicules) }}</strong> véhicules sur le réseau, placés d’après les
-        horaires du jour (une heure par minute). Métros, trams et funiculaires à leurs couleurs, bus en terracotta.
-      </p>
+      <template v-if="simulation.actif">
+        <div class="puces" role="group" aria-label="Vitesse de lecture">
+          <button
+            v-for="v in VITESSES"
+            :key="v"
+            class="puce chiffres"
+            :aria-pressed="simulation.vitesse === v"
+            @click="simulation.vitesse = v"
+          >
+            ×{{ v }}
+          </button>
+        </div>
+        <p class="note">
+          <strong class="chiffres">{{ nombre(simulation.vehicules) }}</strong> véhicules sur le réseau, placés d’après
+          les horaires du jour ({{ RYTHMES[simulation.vitesse] }}). Métros, trams et funiculaires à leurs couleurs, bus
+          en terracotta. Zoomez sur une rue&nbsp;: chacun prend sa forme et sa taille réelles.
+        </p>
+      </template>
     </div>
 
     <Legende titre="Courses par heure sur le tronçon" :classes="classesFrequence(sombre)" />
