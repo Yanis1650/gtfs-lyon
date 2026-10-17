@@ -1,0 +1,174 @@
+/* Charte Drekky Studio : crème, ardoise, touches de terracotta ; typographie d'atelier. */
+:root {
+  color-scheme: light;
+  --surface: #f7f2e6; /* paper */
+  --plan: #efe6d1; /* paper-dim */
+  --encre: #1c2523; /* ink */
+  --encre-2: #4a5654; /* muted */
+  --discret: #5f6a68; /* muted-2 */
+  --filet: #dcd3bd; /* line */
+  --arc: #e4d8bc; /* creme-300 */
+  --grille: #e4d8bc;
+  --axe: #c9bb9b;
+  --survol: rgba(60, 86, 93, 0.07);
+  --ardoise: #3c565d; /* accent */
+  --ardoise-survol: #334a50;
+  --sur-ardoise: #f7f2e6;
+  --terracotta: #bc6a4a;
+  --terracotta-fort: #a0553f;
+  --barre: #7a9199; /* ardoise-400 */
+  --barre-active: #bc6a4a;
+  --pied: #3c565d;
+  --pied-texte: #cfd9d9; /* muted-dark */
+  --pied-filet: #33474d; /* line-dark */
+  --ombre-douce: 0 1px 2px rgba(28, 37, 35, 0.06), 0 4px 12px rgba(28, 37, 35, 0.06);
+  --ombre-levee: 0 2px 6px rgba(28, 37, 35, 0.1), 0 16px 40px rgba(28, 37, 35, 0.14);
+  --rayon: 3px;
+  --police-titre: 'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
+  --police: 'IBM Plex Sans', system-ui, sans-serif;
+  --police-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* Thème sombre, sur demande seulement (la charte écarte les fonds sombres par défaut) :
+   l'ardoise profonde de l'échelle, le crème en texte. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --surface: #1c2a2e;
+  --plan: #162225; /* ardoise-950 */
+  --encre: #f7f2e6;
+  --encre-2: #cfd9d9;
+  --discret: #a8bec3;
+  --filet: #33474d;
+  --arc: #233237;
+  --grille: #2b3d42;
+  --axe: #5b7880;
+  --survol: rgba(247, 242, 230, 0.06);
+  --ardoise: #c6d5d7;
+  --ardoise-survol: #e3eaeb;
+  --sur-ardoise: #162225;
+  --terracotta: #eda68b;
+  --terracotta-fort: #eda68b;
+  --barre: #5b7880;
+  --barre-active: #eda68b;
+  --pied: #162225;
+  --pied-texte: #a8bec3;
+  --pied-filet: #2b3d42;
+  --ombre-douce: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.25);
+  --ombre-levee: 0 2px 6px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--surface);
+  color: var(--encre);
+  font-family: var(--police);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  height: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--terracotta-fort);
+}
+a:hover {
+  color: var(--encre);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--police-titre);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* Étiquette « atelier » : mono, capitales par le style, jamais tapées. */
+.etiquette {
+  font-family: var(--police-mono);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--discret);
+}
+
+/* Lien d'action secondaire : terracotta, suivi d'une flèche. */
+.lien-action {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--terracotta-fort);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+.lien-action::after {
+  content: ' →';
+}
+.lien-action:hover {
+  color: var(--encre);
+}
+
+.visuellement-cache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.chiffres {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ardoise);
+  outline-offset: 2px;
+}
+
+.maplibregl-popup-content {
+  background: var(--surface);
+  color: var(--encre);
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon);
+  padding: 8px 10px;
+  box-shadow: var(--ombre-douce);
+  font: 13px/1.4 var(--police);
+}
+.maplibregl-popup-content strong {
+  font-family: var(--police-titre);
+  font-weight: 600;
+}
+.maplibregl-popup-tip {
+  display: none;
+}
+.maplibregl-ctrl-attrib {
+  font-size: 11px;
+}

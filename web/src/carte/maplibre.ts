@@ -1,0 +1,84 @@
+import { Map as CarteMapLibre, type MapOptions, setWorkerUrl, type StyleSpecification } from 'maplibre-gl'
+// MapLibre 6 est livré en ESM seul : sans cette déclaration, Vite ne publie pas le
+// worker et la carte reste vide, sans la moindre erreur dans la console.
+import urlWorker from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
+
+setWorkerUrl(urlWorker)
+
+const STYLE_FOND = 'https://tiles.openfreemap.org/styles/positron'
+
+export const LYON = { centre: [4.857, 45.757] as [number, number], zoom: 11.6 }
+
+/** Couleurs du fond, aux teintes de la charte : crème et ardoise, ou ardoise profonde. */
+const FOND = {
+  clair: {
+    terre: '#f7f2e6', parc: '#ece5d2', habitat: '#f1ebdc', bati: '#ebe3cf', batiContour: '#e0d6bf',
+    eau: '#c6d5d7', coursEau: '#a8bec3', route: '#fbf8f1', routeMineure: '#ebe3d0', bordure: '#dcd3bd',
+    rail: '#d2c8b0', limite: '#c9bb9b', texte: '#4a5654', texteFort: '#1c2523', texteEau: '#3c565d',
+    halo: '#f7f2e6',
+  },
+  sombre: {
+    terre: '#162225', parc: '#182729', habitat: '#18262a', bati: '#1d2c30', batiContour: '#233237',
+    eau: '#0e181a', coursEau: '#2b3d42', route: '#2f4247', routeMineure: '#233237', bordure: '#1d2c30',
+    rail: '#2b3d42', limite: '#33474d', texte: '#a8bec3', texteFort: '#e3eaeb', texteEau: '#7a9199',
+    halo: '#162225',
+  },
+}
+
+let fondBrut: Promise<StyleSpecification> | null = null
+
+/** Style du fond de carte OpenFreeMap (Positron), recoloré aux teintes de la charte. */
+export async function styleFond(sombre: boolean): Promise<StyleSpecification> {
+  fondBrut ??= fetch(STYLE_FOND).then((r) => r.json() as Promise<StyleSpecification>)
+  const style: StyleSpecification = structuredClone(await fondBrut)
+  const c = sombre ? FOND.sombre : FOND.clair
+  for (const couche of style.layers) {
+    const id = couche.id
+    const peinture = (couche.paint ??= {}) as Record<string, unknown>
+    if (couche.type === 'background') peinture['background-color'] = c.terre
+    else if (couche.type === 'fill') {
+      if (id === 'water') peinture['fill-color'] = c.eau
+      else if (id === 'park' || id.startsWith('landcover')) peinture['fill-color'] = c.parc
+      else if (id === 'building') {
+        peinture['fill-color'] = c.bati
+        peinture['fill-outline-color'] = c.batiContour
+      } else peinture['fill-color'] = id.startsWith('landuse') ? c.habitat : c.terre
+    } else if (couche.type === 'line') {
+      if (id === 'waterway') peinture['line-color'] = c.coursEau
+      else if (id.startsWith('boundary')) peinture['line-color'] = c.limite
+      else if (id.includes('dashline')) peinture['line-color'] = c.terre
+      else if (id.startsWith('railway')) peinture['line-color'] = c.rail
+      else if (id.includes('casing')) peinture['line-color'] = c.bordure
+      else if (id.includes('minor') || id.includes('path') || id.includes('subtle') || id.includes('aeroway'))
+        peinture['line-color'] = c.routeMineure
+      else peinture['line-color'] = c.route
+    } else if (couche.type === 'symbol') {
+      peinture['text-color'] = id.startsWith('water')
+        ? c.texteEau
+        : /label_(city|town|village|country|state)/.test(id)
+          ? c.texteFort
+          : c.texte
+      peinture['text-halo-color'] = c.halo
+    }
+  }
+  return style
+}
+
+export async function creerCarte(conteneur: HTMLElement, sombre: boolean, options: Partial<MapOptions> = {}) {
+  return new CarteMapLibre({
+    container: conteneur,
+    style: await styleFond(sombre),
+    center: LYON.centre,
+    // Sur téléphone, un cran plus large pour voir toute l'agglomération.
+    zoom: conteneur.clientWidth < 500 ? LYON.zoom - 0.9 : LYON.zoom,
+    minZoom: 9,
+    maxZoom: 17,
+    attributionControl: { compact: true },
+    ...options,
+  })
+}
+
+/** Première couche de texte du fond : nos données passent dessous pour garder les noms lisibles. */
+export function premiereCoucheTexte(carte: CarteMapLibre): string | undefined {
+  return carte.getStyle().layers.find((c) => c.type === 'symbol')?.id
+}

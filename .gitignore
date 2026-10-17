@@ -1,0 +1,19 @@
+# Données téléchargées et intermédiaires (régénérées par la chaîne)
+/data/
+
+# Environnements et dépendances
+pipeline/.venv/
+web/node_modules/
+web/dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Travaux personnels antérieurs, hors du dépôt public
+GTFS.docx
+GTFS_YANIS.pdf
+R.R
+R_Carto.R
+
+# Outils locaux
+.claude/

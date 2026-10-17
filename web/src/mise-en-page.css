@@ -1,0 +1,87 @@
+/* Mobile d'abord : en-tête, carte, onglets et panneau, pied de page, les uns sous les autres.
+   En faisant défiler, l'en-tête s'en va, la carte et les onglets restent en haut. */
+.atlas {
+  --hauteur-carte: 50svh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--surface);
+}
+.atlas__carte {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: var(--hauteur-carte);
+  border-block: 1px solid var(--filet);
+}
+.atlas__onglets {
+  position: sticky;
+  top: var(--hauteur-carte);
+  z-index: 1;
+}
+.atlas__panneau {
+  flex: 1;
+}
+.atlas__contenu {
+  padding: 18px 20px 28px;
+  scroll-margin-top: calc(var(--hauteur-carte) + 48px);
+}
+
+/* Tablette en largeur : un peu plus de carte. */
+@media (min-width: 600px) {
+  .atlas {
+    --hauteur-carte: 56svh;
+  }
+}
+
+/* Bureau : colonne de lecture à gauche, carte sur toute la hauteur à droite. */
+@media (min-width: 900px) {
+  .atlas {
+    display: grid;
+    grid-template-columns: 400px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'entete carte'
+      'panneau carte'
+      'pied carte';
+    height: 100dvh;
+    min-height: 0;
+  }
+  .atlas__entete {
+    grid-area: entete;
+    border-right: 1px solid var(--filet);
+  }
+  .atlas__carte {
+    grid-area: carte;
+    position: relative;
+    height: auto;
+    border: none;
+  }
+  .atlas__panneau {
+    grid-area: panneau;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-right: 1px solid var(--filet);
+  }
+  .atlas__onglets {
+    position: static;
+  }
+  .atlas__contenu {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 20px 24px 28px;
+    scroll-margin-top: 0;
+  }
+  .atlas__pied {
+    grid-area: pied;
+  }
+}
+
+/* Grand écran : la colonne s'élargit un peu. */
+@media (min-width: 1440px) {
+  .atlas {
+    grid-template-columns: 440px minmax(0, 1fr);
+  }
+}

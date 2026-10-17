@@ -1,0 +1,152 @@
+.panneau-vue {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.intro {
+  color: var(--encre-2);
+}
+/* Titre de bloc : l'étiquette « atelier » de la charte. */
+.sous-titre {
+  margin-bottom: 8px;
+  font-family: var(--police-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--discret);
+}
+.note {
+  font-size: 13px;
+  color: var(--discret);
+}
+/* Fiche d'un arrêt, d'une ligne ou d'un carreau : la carte de formule de la charte. */
+.fiche {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--filet);
+  border-left: 6px solid var(--terracotta);
+  border-radius: var(--rayon);
+  background: var(--surface);
+}
+.fiche__entete {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.fiche__entete h2 {
+  font-size: 20px;
+}
+.fiche__fermer {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: var(--rayon);
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--encre-2);
+  cursor: pointer;
+}
+.fiche__fermer:hover {
+  border-color: var(--filet);
+  color: var(--encre);
+}
+.fiche__chiffres {
+  color: var(--encre-2);
+}
+.fiche__chiffres strong {
+  font-family: var(--police-titre);
+  font-weight: 600;
+  color: var(--encre);
+}
+.classement ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.classement__ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 8px;
+  margin: 0 -8px;
+  width: calc(100% + 16px);
+  border: none;
+  border-radius: var(--rayon);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.classement__ligne:hover {
+  background: var(--survol);
+}
+.classement__ligne span:last-child {
+  color: var(--encre-2);
+}
+.tuiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0;
+}
+.tuiles div {
+  padding: 10px 12px;
+  border-radius: var(--rayon);
+  background: var(--plan);
+}
+.tuiles dt {
+  font-family: var(--police-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--discret);
+}
+.tuiles dd {
+  margin: 4px 0 0;
+  font-family: var(--police-titre);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.puces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.puce {
+  padding: 5px 11px;
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon);
+  background: var(--surface);
+  font-size: 14px;
+  cursor: pointer;
+}
+.puce:hover {
+  border-color: var(--ardoise);
+}
+.puce[aria-pressed='true'] {
+  background: var(--ardoise);
+  border-color: var(--ardoise);
+  color: var(--sur-ardoise);
+}
+/* Jauge horizontale : une barre ardoise sur un rail crème. */
+.jauge {
+  display: block;
+  height: 8px;
+  border-radius: 1px;
+  background: var(--grille);
+  overflow: hidden;
+}
+.jauge span {
+  display: block;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--barre);
+}

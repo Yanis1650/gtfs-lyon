@@ -1,0 +1,46 @@
+# Webmap : docker compose up -d --build web   (derrière Traefik, aucun port publié)
+# Chaîne de traitement : docker compose --profile pipeline run --rm pipeline <étape>
+services:
+  web:
+    build: ./web
+    restart: unless-stopped
+    expose:
+      - "8080"
+    networks:
+      - atlas
+      - traefik-public
+    # Conteneur durci : sans root (image nginx-unprivileged), sans capacités, lecture seule.
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 128m
+    cpus: 0.5
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.atlas-lyon.rule=Host(`${ATLAS_DOMAINE:-atlas-lyon.drekky.fr}`)
+      - traefik.http.routers.atlas-lyon.entrypoints=websecure
+      - traefik.http.routers.atlas-lyon.tls.certresolver=letsencrypt
+      - traefik.http.services.atlas-lyon.loadbalancer.server.port=8080
+
+  pipeline:
+    build: ./pipeline
+    volumes:
+      - ./:/projet
+      # Le jar R5 et le réseau construit par r5py, gardés d'une exécution à l'autre.
+      - r5py-cache:/home/atlas/.cache/r5py
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    profiles: [pipeline]
+
+networks:
+  atlas:
+  traefik-public:
+    external: true
+
+volumes:
+  r5py-cache:

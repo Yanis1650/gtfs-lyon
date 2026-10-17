@@ -1,0 +1,24 @@
+[project]
+name = "atlas-lyon"
+version = "0.1.0"
+description = "Chaîne de traitement GTFS → couches cartographiques pour l'atlas des transports lyonnais"
+requires-python = ">=3.11"
+dependencies = ["duckdb>=1.4"]
+
+[project.optional-dependencies]
+accessibilite = ["r5py>=1.0", "geopandas>=1.0", "pyarrow>=17"]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["atlas"]
+
+[tool.setuptools.package-data]
+atlas = ["sql/*.sql"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
