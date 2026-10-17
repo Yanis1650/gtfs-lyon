@@ -24,7 +24,7 @@ const emit = defineEmits<{
   fermerTroncon: []
 }>()
 
-const MODES_FILTRABLES: Mode[] = ['metro', 'tram', 'trolleybus', 'bus', 'funiculaire']
+const MODES_FILTRABLES: Mode[] = ['metro', 'tram', 'trolleybus', 'bus', 'funiculaire', 'navette_fluviale']
 const ORDRE_TUILES: Mode[] = ['metro', 'tram', 'bus', 'trolleybus']
 
 function basculer(mode: Mode) {
@@ -42,7 +42,7 @@ const modesAffiches = computed(() =>
 <template>
   <section class="panneau-vue">
     <p class="intro">
-      La vitesse commerciale rapporte la distance parcourue au temps de trajet, arrêts et attentes aux feux compris.
+      La vitesse commerciale rapporte la distance parcourue au temps prévu dans les horaires, arrêts compris.
       Terracotta&nbsp;: plus lent que l’allure typique du réseau&nbsp;; ardoise&nbsp;: plus rapide.
     </p>
 

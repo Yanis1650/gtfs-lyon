@@ -34,6 +34,7 @@ const medianeMarche = computed(() => medianePonderee(habitants.value, (c) => c.p
     <p class="intro">
       Chaque carreau habité de 200&nbsp;m sert de point de départ. Le calcul simule les trajets en transports en commun,
       marche comprise, pour un départ entre {{ depart }}&nbsp;h et {{ depart + 1 }}&nbsp;h, et retient la durée médiane.
+      La population est celle des données Insee Filosofi 2021.
     </p>
 
     <div class="puces" role="group" aria-label="Indicateur affiché">

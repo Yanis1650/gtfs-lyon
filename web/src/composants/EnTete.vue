@@ -11,7 +11,7 @@ const emit = defineEmits<{ basculerTheme: [] }>()
       <p class="etiquette entete__etiquette">Atlas des transports lyonnais</p>
       <h1>Lyon <span class="entete__relief">sans voiture</span></h1>
       <p class="entete__accroche">Jusqu’où va le réseau TCL&nbsp;?</p>
-      <p v-if="date" class="entete__date">Un {{ dateLongue(date) }}, heure par heure.</p>
+      <p v-if="date" class="entete__date">Horaires théoriques du {{ dateLongue(date) }}.</p>
     </div>
     <button
       class="entete__theme"

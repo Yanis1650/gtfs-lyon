@@ -1,0 +1,28 @@
+À Lyon, deux lignes de tram peuvent afficher des vitesses commerciales presque du simple au double.
+
+T1 : 14,9 km/h.
+T3 : 29,5 km/h.
+
+Ce sont les vitesses calculées à partir des horaires théoriques, sur les lignes complètes, arrêts compris. Un écart qui donne envie de regarder le réseau d’un peu plus près.
+
+J’ai développé « Lyon sans voiture », un atlas interactif du réseau TCL pour explorer trois questions :
+
+→ Où et quand passent les transports ?
+→ À quelle vitesse circulent les différentes lignes ?
+→ Que peut-on rejoindre en 30 ou 45 minutes ?
+
+Le projet croise les horaires GTFS, les tracés d’OpenStreetMap et les données de population de l’Insee. On peut parcourir l’offre heure par heure, comparer les lignes et animer les véhicules sur la carte, jusque dans une vue satellite en 3D.
+
+Pour le jour de référence, le réseau représente 20 705 courses programmées et 2 588 arrêts desservis.
+
+J’ai travaillé toute la chaîne : préparation des données avec Python et DuckDB, calcul d’accessibilité avec R5, puis interface avec Vue, TypeScript et MapLibre.
+
+La carte et le code sont accessibles ici :
+https://atlas-lyon.drekky.fr/#vitesse
+https://github.com/Yanis1650/gtfs-lyon
+
+Jour étudié : mardi 17 novembre 2026. Les résultats décrivent l’offre théorique programmée ; ils ne mesurent ni les retards ni les perturbations. La comparaison T1/T3 ne permet pas, à elle seule, d’expliquer les causes de l’écart.
+
+Quelle ligne ou quel quartier aimeriez-vous explorer ?
+
+#Cartographie #OpenData #Mobilité #Lyon

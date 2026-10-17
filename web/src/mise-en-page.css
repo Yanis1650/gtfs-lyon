@@ -1,7 +1,7 @@
 /* Mobile d'abord : en-tête, carte, onglets et panneau, pied de page, les uns sous les autres.
    En faisant défiler, l'en-tête s'en va, la carte et les onglets restent en haut. */
 .atlas {
-  --hauteur-carte: 55svh;
+  --hauteur-carte: 42svh;
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
@@ -32,7 +32,7 @@
 /* Tablette en largeur : un peu plus de carte. */
 @media (min-width: 600px) {
   .atlas {
-    --hauteur-carte: 60svh;
+    --hauteur-carte: 46svh;
   }
 }
 

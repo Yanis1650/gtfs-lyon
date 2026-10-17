@@ -82,10 +82,10 @@ const REDUIRE = 'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5'
 watch([arret, troncon, carreau], async (choix) => {
   if (!choix.some(Boolean)) return
   agrandie.value = false
-  // Sur téléphone, la fiche s'ouvre sous la carte : on l'amène juste sous les onglets.
-  if (!window.matchMedia('(max-width: 899px)').matches) return
+  // La fiche reste visible après une recherche ; sur téléphone, elle passe sous les onglets.
   await nextTick()
-  contenu.value?.querySelector('.fiche')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const etroit = window.matchMedia('(max-width: 899px)').matches
+  contenu.value?.querySelector('.fiche')?.scrollIntoView({ behavior: 'smooth', block: etroit ? 'start' : 'nearest' })
 })
 
 function basculerCarte() {
@@ -152,6 +152,7 @@ function choisirLigne(id: string | null) {
             :meta="meta"
             :sombre="sombre"
             :arret="arret"
+            :arrets="arrets"
             :plus-desservis="plusDesservis"
             :lignes="lignes"
             @choisir-arret="(a) => choisirArret(a, true)"

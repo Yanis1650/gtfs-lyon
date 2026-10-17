@@ -11,13 +11,13 @@ L'étape r5py tourne dans le conteneur `pipeline` (Java 21), voir le Dockerfile.
 
 import datetime as dt
 import os
-import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 import duckdb
 
 from .config import Parametres
+from .gtfs_r5 import preparer_gtfs_r5
 
 TAILLE_LOT = 200
 FILS = max(1, (os.cpu_count() or 2) - 1)
@@ -67,16 +67,6 @@ def preparer_carreaux(con: duckdb.DuckDBPyConnection, p: Parametres) -> None:
     print(f"  {n} carreaux habités, {pop:,.0f} habitants".replace(",", " "))
 
 
-def gtfs_sans_tables_vides(source: Path, cible: Path) -> Path:
-    """R5 refuse un fichier présent mais vide (ici `frequencies.txt`, réduit à son en-tête)."""
-    with zipfile.ZipFile(source) as entree, zipfile.ZipFile(cible, "w", zipfile.ZIP_DEFLATED) as sortie:
-        for membre in entree.infolist():
-            contenu = entree.read(membre)
-            if len(contenu.strip().splitlines()) > 1:
-                sortie.writestr(membre, contenu)
-    return cible
-
-
 def calculer(p: Parametres, limite: int | None = None) -> None:
     """`limite` : ne traite que les N premiers carreaux, pour mesurer la durée du calcul."""
     # Importés ici : r5py, Java et numpy ne sont présents que dans le conteneur.
@@ -93,13 +83,14 @@ def calculer(p: Parametres, limite: int | None = None) -> None:
         crs="EPSG:4326",
     )
     population = carreaux.set_index("idcar")["ind"]
-    gtfs = gtfs_sans_tables_vides(p.gtfs_zip, p.base.parent / "gtfs_r5.zip")
+    gtfs = preparer_gtfs_r5(p.gtfs_zip, p.base.parent / "gtfs_r5.zip", p.agences_exclues)
     print(f"  réseau R5 : {p.osm_pbf.name} + {gtfs.name}")
     reseau = TransportNetwork(p.osm_pbf, [gtfs])
     commun = dict(
         departure=dt.datetime.combine(p.date_ref, dt.time(p.heure_depart)),
         departure_time_window=dt.timedelta(minutes=p.fenetre_depart_min),
         percentiles=[50],
+        speed_walking=3.6,
     )
     tc = [TransportMode.TRANSIT, TransportMode.WALK]
 

@@ -6,6 +6,21 @@
 .intro {
   color: var(--encre-2);
 }
+.champ-recherche {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 11px;
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon);
+  background: var(--surface);
+  color: var(--encre);
+  font: inherit;
+  font-size: 16px;
+}
+.champ-recherche::placeholder {
+  color: var(--discret);
+  opacity: 1;
+}
 /* Titre de bloc : l'étiquette « atelier » de la charte. */
 .sous-titre {
   margin-bottom: 8px;
