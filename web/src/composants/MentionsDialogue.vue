@@ -18,16 +18,33 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
     <p>Directeur de la publication&nbsp;: Yanis Lepesant.</p>
 
     <h3>Hébergeur</h3>
-    <p>OVH SAS, 2 rue Kellermann, 59100 Roubaix.</p>
+    <p>
+      OVH SAS, société par actions simplifiée au capital de 50&nbsp;000&nbsp;000&nbsp;€, RCS Lille Métropole
+      424&nbsp;761&nbsp;419. Siège&nbsp;: 2 rue Kellermann, 59100 Roubaix, France.
+    </p>
 
     <h3>Données personnelles</h3>
     <p>
-      Ce site ne collecte aucune donnée personnelle&nbsp;: ni compte, ni formulaire, ni mesure d’audience, ni cookie.
-      Votre choix de thème clair ou sombre reste dans votre navigateur (stockage local) et n’est envoyé nulle part.
+      Ce site ne vous demande aucune donnée personnelle&nbsp;: ni compte, ni formulaire, ni cookie, ni mesure
+      d’audience. Votre choix de thème clair ou sombre reste dans votre navigateur (stockage local) et n’est envoyé
+      nulle part.
     </p>
     <p>
-      Le fond de carte est chargé chez OpenFreeMap, qui reçoit à ce titre votre adresse IP, comme tout site que l’on
-      consulte. Le serveur du site garde ses journaux de connexion techniques le temps nécessaire à sa sécurité.
+      Pour sa sécurité, le serveur web enregistre chaque requête dans un journal&nbsp;: adresse IP, date et heure, page
+      demandée et navigateur. Base légale&nbsp;: l’intérêt légitime à protéger le site (article 6.1.f du RGPD). Ce
+      journal tient dans trois fichiers de 10&nbsp;Mo au plus&nbsp;; au-delà, les lignes les plus anciennes sont
+      effacées, si bien que sa durée de conservation dépend de la fréquentation. Il reste sur le serveur, chez
+      l’hébergeur OVH, et n’est transmis à personne.
+    </p>
+    <p>
+      Le fond de carte est chargé chez OpenFreeMap, dont les serveurs passent par Cloudflare, société établie aux
+      États-Unis&nbsp;: votre adresse IP leur parvient, comme à tout site que l’on consulte, et peut être traitée hors
+      de l’Union européenne.
+    </p>
+    <p>
+      Vous pouvez demander l’accès à vos données, leur rectification ou leur effacement, en limiter le traitement ou
+      vous y opposer en écrivant à <a href="mailto:contact@drekky.fr">contact@drekky.fr</a>. Vous pouvez aussi adresser
+      une réclamation à la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">cnil.fr</a>).
     </p>
 
     <h3>Données et licences</h3>
@@ -35,5 +52,6 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
       Les couches de la carte dérivent des horaires du réseau TCL (SYTRAL Mobilités) et d’OpenStreetMap, sous licence
       ODbL, et des données carroyées de l’Insee (Licence Ouverte). Elles sont rediffusées sous la même licence ODbL.
     </p>
+    <p class="note">Mis à jour le 17 octobre 2026.</p>
   </Dialogue>
 </template>

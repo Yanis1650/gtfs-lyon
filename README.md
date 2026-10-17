@@ -96,18 +96,22 @@ puis pour le bureau (une colonne de lecture et la carte en pleine hauteur, à pa
 ## Sécurité
 
 Le site est **statique** : ni serveur applicatif, ni base, ni formulaire, ni cookie, ni mesure d’audience.
+Seuls les journaux d’accès du serveur web gardent des adresses IP, bornés à trois fichiers de 10 Mo (`compose.yaml`),
+comme le décrivent les mentions légales.
 
 - nginx 1.31.7 sans droits root (`nginx-unprivileged`), conteneur en lecture seule, sans capacités
   (`cap_drop: ALL`, `no-new-privileges`), mémoire et processeur limités, aucun port publié (Traefik seulement).
-- En-têtes sur toutes les réponses, page, données et 404 compris : CSP stricte (seul tiers : les tuiles
-  OpenFreeMap), HSTS, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`. Version de nginx masquée.
+- En-têtes sur toutes les réponses, erreurs 400, 404, 405 et 414 comprises : CSP stricte (seul tiers : les
+  tuiles OpenFreeMap, sans `blob:`), HSTS, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`. Version de nginx masquée.
 - Une adresse inconnue répond un vrai 404 ; fichiers cachés jamais servis ; seuls `GET` et `HEAD` sont acceptés.
 - Polices hébergées sur le site, aucune requête vers Google.
 - Textes venus des données échappés avant tout affichage en HTML.
-- CI : tests, typage, construction, `npm audit --omit=dev`, gitleaks ; Dependabot chaque semaine.
+- CI : tests, typage, construction, `npm audit --omit=dev`, gitleaks, actions épinglées par empreinte SHA ;
+  Dependabot chaque semaine. Image sans les pages d’exemple de nginx.
 
-Vérifié le 17/10/2026 sur l’image de production lancée en local (en-têtes, codes de réponse, absence de violation
-de la CSP). À refaire en ligne le jour du déploiement, avec la liste de contrôle du studio.
+Vérifié le 17/10/2026 sur l’image de production lancée en local, puis relu par une session indépendante selon la
+liste de contrôle du studio (aucun point bloquant ; ses trois écarts mineurs sont corrigés). À refaire en ligne le
+jour du déploiement : redirection HTTPS, en-têtes à travers Traefik, `verifier.py` et `scanner.py`.
 
 ## Sources et licences
 
