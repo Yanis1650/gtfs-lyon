@@ -50,6 +50,6 @@ jobs:
       - name: Fichiers de 200 lignes au plus
         run: python3 outils/verifier_longueurs.py
       - name: Aucun secret dans le code ni l'historique
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
