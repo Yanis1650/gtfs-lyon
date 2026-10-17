@@ -1,6 +1,8 @@
 # Vérification locale
 
 Les captures de ce dossier servent à contrôler l’interface ; les images destinées à la publication sont dans `../images/`.
+Elles documentent la préparation initiale du kit. Pour l’interface actuelle, consulter `../../docs/refonte-atlas.md`
+et les captures de `../../docs/images/` ; la navigation mobile et la barre horaire ont été revues depuis.
 
 - `apercu-bureau.png` : classement filtré sur « T3 » et tracé de la ligne sélectionnée, à 1 280 × 720 pixels.
 - `apercu-mobile.png` : interface dans une fenêtre de contenu de 390 × 844 pixels, affichée à échelle réduite dans une page de contrôle. Il s’agit d’un test de mise en page, pas d’une capture sur un téléphone physique.
@@ -10,7 +12,7 @@ Contrôles effectués :
 - Recherche « part dieu » : noms avec tirets retrouvés, sélection de Gare Part-Dieu V.Merle et fiche ouverte.
 - Recherche « T3 » : classement filtré, fiche à 29,5 km/h et cadrage sur le tracé.
 - Recherche de ligne sans correspondance : message explicite.
-- Format téléphone : horloge, indication de simulation et bouton d’animation visibles dès le premier écran.
+- Ancien format téléphone : horloge, indication de simulation et bouton d’animation visibles dès le premier écran.
 - Les quatre visuels générés ont été ouverts et vérifiés visuellement.
 - Image publique d’aperçu identique à la couverture du dossier ; chiffres du post contrôlés dans les données sources.
 

@@ -24,7 +24,7 @@ const CUBE = 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5'
 .commandes {
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: max(10px, env(safe-area-inset-left, 0px));
   z-index: 3;
   display: flex;
   gap: 6px;
@@ -33,7 +33,7 @@ const CUBE = 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5'
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 40px;
+  height: 44px;
   padding: 0 12px;
   border: 1px solid var(--filet);
   border-radius: var(--rayon);

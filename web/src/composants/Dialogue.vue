@@ -67,8 +67,8 @@ article :slotted(.note) {
 }
 .fermer {
   flex: none;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border: 1px solid transparent;
   border-radius: var(--rayon);
   background: transparent;

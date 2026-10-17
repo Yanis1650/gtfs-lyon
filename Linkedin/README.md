@@ -13,6 +13,7 @@ Joindre les trois images portrait, dans cet ordre, avec `post.txt` :
 Dimensions : 1 080 × 1 350 pixels. Ces fichiers peuvent être joints comme série de trois images. Aucun PDF n’est nécessaire.
 
 Autre option : utiliser `images/capture-satellite-3d.png` seule pour mettre l’accent sur la démonstration visuelle. C’est la capture fournie, conservée sans modification ; ses petits textes sont moins lisibles dans un fil d’actualité.
+Cette capture montre une version antérieure de l’interface. Les captures de `../docs/images/` montrent la navigation actuelle.
 
 `textes-alternatifs.txt` fournit une description pour chaque image.
 

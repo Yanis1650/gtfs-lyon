@@ -1,39 +1,63 @@
-# Direction visuelle Atlas
+# Interface Atlas
 
-Branche : `codex/atlas-refonte-visuelle`.
+Cette page décrit l’interface du dépôt. Elle conserve la palette crème, ardoise et terracotta,
+les trois familles typographiques et les classes de données de l’atlas.
 
-La proposition conserve la palette crème, ardoise et terracotta, les trois familles typographiques et les données existantes.
+## Téléphone et tablette : moins de 900 px
 
-## Changements
+- L’application tient dans la hauteur disponible de l’écran, avec les marges de sécurité du téléphone.
+- L’en-tête contient le titre, le thème et, quand la largeur le permet, la date des horaires.
+- La navigation du bas donne toujours accès à L’offre, La vitesse et L’accessibilité.
+- La commande Carte utilise tout l’espace central. Le déplacement se fait avec un doigt ; le zoom utilise les gestes de la carte.
+- La commande voisine ouvre Arrêts et recherche, Lignes et filtres ou Indicateurs, selon la vue.
+- Le panneau défile indépendamment. La carte ne reste pas figée au-dessus des recherches et des fiches.
+- Une sélection sur la carte ouvre sa fiche. Le bouton Carte permet de revenir au cadrage conservé.
+- La recherche d’arrêt et les choix d’indicateur sont placés au début de leur panneau.
+- Les liens Méthode et sources, Mentions légales et Code source se trouvent au bas du panneau défilant.
 
-- En-tête compact sur toute la largeur : titre, navigation, date et thème.
-- Onglets segmentés avec un état actif plus visible.
-- Colonne de lecture de 340 à 360 pixels sur ordinateur, avec titres plus courts et casse normale pour les légendes secondaires.
-- Horloge et animation placées sur la carte, accessibles pendant la lecture des fiches.
-- Légende compacte sur la carte, avec le détail complet des classes à déplier. Elle suit la hauteur de la barre horaire pour éviter les chevauchements.
-- Résultat principal de l’arrêt et vitesse de la ligne mis en valeur ; fiches de sélection placées avant les chiffres de contexte.
-- Fond de carte atténué et halo coloré sur l’arrêt sélectionné. Les classes de données et leurs valeurs sont conservées.
-- Commandes harmonisées et pied de page allégé.
-- Sur téléphone : en-tête et carte restent visibles pendant le défilement ; le mode carte agrandie est conservé.
+Il n’existe plus de mode carte agrandie distinct : Carte est déjà l’espace consacré à la carte.
 
-## Prévisualisation locale
+## Barre horaire et animation
 
-```powershell
-cd web
-npm run dev -- --host 127.0.0.1 --port 5180 --strictPort
-```
+Dans L’offre, la barre d’environ 52 px regroupe lecture/pause, heure et curseur fin.
+Elle reste présente au-dessus de la navigation du bas, y compris pendant la lecture d’une fiche.
+Sur bureau, elle flotte sur la carte, avec une largeur plafonnée à 640 px.
 
-Ouvrir [localhost:5180](http://localhost:5180/).
+Le bouton Options d’animation ouvre les véhicules et les vitesses ×1, ×10 ou ×60.
+Un clic à l’extérieur ou Échap ferme le menu. Les cibles principales gardent 44 px de hauteur.
+Le libellé Théorique ou Simulation précise la nature de l’affichage ; les horaires ne décrivent pas les retards réels.
+L’activation respecte la préférence système de réduction des animations.
 
-## Vérifications
+## Bureau : à partir de 900 px
 
-- Compilation de production et vérification TypeScript.
-- Règle des fichiers de 200 lignes.
-- Tests existants du projet.
-- Parcours des trois vues et des indicateurs 30/45 minutes et depuis un pôle.
-- Recherche et sélection d’un arrêt et d’une ligne ; sélection d’un carreau en 2D.
-- Curseur horaire au clavier, animation, pause et changement de vue.
-- Thème sombre, fond satellite et vue 3D.
-- Mise en page à 390 × 844 et 320 × 568 pixels, animation active et carte agrandie. Ces contrôles utilisent des fenêtres de contenu dans le navigateur, pas des appareils physiques.
+- En-tête de 78 px avec titre, onglets segmentés, date et thème.
+- Colonne de lecture de 340 px, puis 360 px à partir de 1 440 px ; seule cette colonne défile.
+- Carte et panneau visibles ensemble ; barre horaire compacte flottante.
+- Résultats principaux des fiches mis en valeur ; totaux journaliers séparés des mesures horaires.
+- Fond atténué et halo sur l’arrêt sélectionné, avec conservation des classes de données.
+- Légende repliable, détail complet des classes et position au-dessus de la barre horaire.
 
-Les captures de la proposition sont dans `docs/images/`. La version publique n’a pas été redéployée.
+## Démarrage et publication
+
+Les commandes de lancement, de recalcul, de vérification et de déploiement sont centralisées
+dans le [README](../README.md#lancer-le-projet).
+L’aperçu habituel est [localhost:5180](http://localhost:5180/).
+Le dépôt et l’aperçu local ne suffisent pas à confirmer la version déployée sur le serveur public.
+
+## Vérifications de l’interface
+
+Le parcours manuel couvre :
+
+- navigation entre les trois vues et bascule Carte/exploration ;
+- recherche d’arrêt, ouverture de fiche et retour à la carte ;
+- défilement jusqu’aux sources, recherche de ligne et choix d’indicateur 30/45 minutes ;
+- curseur au clavier, lecture/pause et options d’animation ;
+- thème sombre, fond satellite et vue 3D ;
+- petits écrans, hauteur réduite en paysage et disposition bureau.
+
+Le [contrôle responsive local](http://localhost:5180/verification-mobile.html), défini dans `web/verification-mobile.html`,
+propose 320 × 568, 390 × 568, 390 × 844 et 844 × 390. Il n’est pas inclus dans la construction de production.
+Captures : [petits écrans](images/atlas-mobile.png), [fiche d’arrêt sur mobile](images/atlas-mobile-exploration.png),
+[bureau](images/atlas-bureau.png) et [paysage](images/atlas-paysage.png).
+Ces vérifications dans le navigateur ne remplacent pas un essai sur téléphone physique, notamment pour le clavier tactile.
+La compilation contrôle TypeScript ; les tests du pipeline et la règle des fichiers de 200 lignes complètent ces contrôles.

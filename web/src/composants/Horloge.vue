@@ -49,11 +49,10 @@ defineExpose({ arreter })
       <svg v-if="!enLecture" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" /></svg>
       <svg v-else viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" /></svg>
     </button>
-    <div class="horloge__curseur">
-      <div class="horloge__entete">
-        <label for="heure" class="horloge__libelle chiffres">{{ libelle }}</label>
-        <span class="horloge__contexte">{{ simulation.actif ? 'Animation simulée' : 'Horaires théoriques' }}</span>
-      </div>
+    <label for="heure" class="horloge__libelle chiffres">
+      {{ libelle }}
+      <span class="horloge__contexte">{{ simulation.actif ? 'Simulation' : 'Théorique' }}</span>
+    </label>
       <input
         id="heure"
         type="range"
@@ -63,15 +62,16 @@ defineExpose({ arreter })
         :aria-valuetext="tranche(heure)"
         @input="choisir(Number(($event.target as HTMLInputElement).value))"
       />
-    </div>
   </div>
 </template>
 
 <style scoped>
 .horloge {
-  display: flex;
+  display: grid;
+  grid-template-columns: 44px auto minmax(0, 1fr);
   align-items: center;
-  gap: 14px;
+  gap: 8px;
+  min-width: 0;
 }
 .horloge__lecture {
   flex: none;
@@ -79,46 +79,46 @@ defineExpose({ arreter })
   height: 44px;
   border: none;
   border-radius: var(--rayon);
-  background: var(--ardoise);
-  color: var(--sur-ardoise);
+  background: transparent;
+  color: var(--ardoise);
   display: grid;
   place-items: center;
   cursor: pointer;
 }
 .horloge__lecture:hover {
-  background: var(--ardoise-survol);
+  background: var(--plan);
 }
 .horloge__lecture svg {
   width: 16px;
   height: 16px;
   fill: currentColor;
 }
-.horloge__curseur {
-  flex: 1;
-  min-width: 0;
-}
-.horloge__entete {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
 .horloge__contexte {
+  display: block;
   color: var(--discret);
-  font-size: 12px;
+  font: 400 10px/1.3 var(--police);
 }
 .horloge__libelle {
   display: block;
   font-family: var(--police-titre);
-  font-size: 22px;
+  min-width: 68px;
+  font-size: 15px;
+  line-height: 1.3;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 /* Curseur assez haut pour se saisir au doigt. */
 input[type='range'] {
+  appearance: none;
   width: 100%;
-  height: 28px;
+  min-width: 0;
+  height: 44px;
   margin: 0;
-  accent-color: var(--terracotta);
+  background: transparent;
+  cursor: pointer;
 }
+input::-webkit-slider-runnable-track { height: 3px; background: var(--filet); border-radius: 2px; }
+input::-moz-range-track { height: 3px; background: var(--filet); border-radius: 2px; }
+input::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; margin-top: -4.5px; border: 0; border-radius: 50%; background: var(--terracotta); }
+input::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 50%; background: var(--terracotta); }
 </style>

@@ -106,17 +106,21 @@ h1 {
 @media (max-width: 899px) {
   .entete {
     grid-template-columns: minmax(0, 1fr) auto auto;
-    gap: 10px 12px;
-    padding: 12px 16px 10px;
+    gap: 8px;
+    padding: calc(6px + env(safe-area-inset-top, 0px)) 12px 6px;
+    padding-inline: max(12px, env(safe-area-inset-left, 0px)) max(12px, env(safe-area-inset-right, 0px));
   }
+  h1 { font-size: 20px; }
   .entete__etiquette, .entete__date span { display: none; }
   .entete__navigation {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 9;
+    width: 100%;
     justify-self: stretch;
   }
   .entete__date { font-size: 11px; }
-  .entete__theme { width: 34px; height: 34px; }
+  .entete__theme { width: 44px; height: 44px; border: 0; background: transparent; }
 }
 @media (max-width: 379px) {
   .entete { grid-template-columns: minmax(0, 1fr) auto; }

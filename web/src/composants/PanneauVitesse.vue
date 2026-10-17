@@ -54,7 +54,7 @@ const modesAffiches = computed(() =>
       @fermer="emit('fermerTroncon')"
       @choisir-ligne="(id) => emit('choisirLigne', id)"
     />
-    <FicheLigne v-if="ligneChoisie" :ligne="ligneChoisie" :vitesse-max="vitesseMax" @fermer="emit('choisirLigne', null)" />
+    <FicheLigne v-if="ligneChoisie" class="fiche-ligne" :ligne="ligneChoisie" :vitesse-max="vitesseMax" @fermer="emit('choisirLigne', null)" />
 
     <dl class="tuiles">
       <div v-for="m in modesAffiches" :key="m.mode">

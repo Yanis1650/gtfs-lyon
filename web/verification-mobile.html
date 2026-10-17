@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Vérification mobile</title>
+<style>body{margin:0;padding:12px;background:#e5e7eb;font:13px system-ui}header{margin-bottom:12px}select{padding:6px;font:inherit}main{display:flex;flex-wrap:wrap;align-items:flex-start;gap:24px}h2{font-size:13px;margin:0 0 8px}iframe{display:block;border:1px solid #bbb;box-sizing:content-box}section[hidden]{display:none}</style>
+</head><body>
+<header><label for="format">Formats à vérifier </label><select id="format"><option value="compact">Petits écrans</option><option value="portrait">Portrait · 390 × 844</option><option value="paysage">Paysage · 844 × 390</option></select></header>
+<main>
+<section><h2>320 × 568</h2><iframe title="Téléphone compact" src="/#offre" width="320" height="568"></iframe></section>
+<section><h2>390 × 568</h2><iframe title="Téléphone" src="/#offre" width="390" height="568"></iframe></section>
+</main>
+<script type="module">
+const formats = { compact: [[320, 568], [390, 568]], portrait: [[390, 844]], paysage: [[844, 390]] };
+document.querySelector('select').addEventListener('change', (e) => {
+  document.querySelectorAll('section').forEach((section, i) => {
+    const taille = formats[e.target.value][i];
+    section.hidden = !taille;
+    if (!taille) return;
+    section.querySelector('h2').textContent = taille.join(' × ');
+    const cadre = section.querySelector('iframe');
+    [cadre.width, cadre.height] = taille;
+  });
+});
+</script>
+</body></html>

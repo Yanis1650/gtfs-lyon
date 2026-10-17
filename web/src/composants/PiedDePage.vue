@@ -94,4 +94,7 @@ const emit = defineEmits<{ methode: []; mentions: [] }>()
     flex-direction: column;
   }
 }
+@media (pointer: coarse) {
+  .pied__lien { display: inline-flex; align-items: center; min-height: 44px; }
+}
 </style>

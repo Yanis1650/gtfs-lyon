@@ -30,6 +30,17 @@ const medianeMarche = computed(() => medianePonderee(habitants.value, (c) => c.p
 <template>
   <section class="panneau-vue">
     <div class="panneau-entete"><p class="etiquette">Mesurer l’accessibilité</p><h2>La ville à portée.</h2></div>
+    <div class="puces" role="group" aria-label="Indicateur affiché">
+      <button class="puce" :aria-pressed="indicateur === 'pop_tc30'" @click="indicateur = 'pop_tc30'">
+        Métropole à 30&nbsp;min
+      </button>
+      <button class="puce" :aria-pressed="indicateur === 'pop_tc45'" @click="indicateur = 'pop_tc45'">
+        à 45&nbsp;min
+      </button>
+      <button class="puce" :aria-pressed="indicateur === 'temps'" @click="indicateur = 'temps'">
+        Temps depuis un pôle
+      </button>
+    </div>
     <p class="intro">
       Chaque carreau habité de 200&nbsp;m sert de point de départ. Le calcul simule les trajets en transports en commun,
       marche comprise, pour un départ entre {{ depart }}&nbsp;h et {{ depart + 1 }}&nbsp;h, et retient la durée médiane.
@@ -43,18 +54,6 @@ const medianeMarche = computed(() => medianePonderee(habitants.value, (c) => c.p
       :total="total"
       @fermer="emit('fermerCarreau')"
     />
-
-    <div class="puces" role="group" aria-label="Indicateur affiché">
-      <button class="puce" :aria-pressed="indicateur === 'pop_tc30'" @click="indicateur = 'pop_tc30'">
-        Métropole à 30&nbsp;min
-      </button>
-      <button class="puce" :aria-pressed="indicateur === 'pop_tc45'" @click="indicateur = 'pop_tc45'">
-        à 45&nbsp;min
-      </button>
-      <button class="puce" :aria-pressed="indicateur === 'temps'" @click="indicateur = 'temps'">
-        Temps depuis un pôle
-      </button>
-    </div>
 
     <template v-if="indicateur === 'temps'">
       <div class="puces" role="group" aria-label="Pôle de départ">

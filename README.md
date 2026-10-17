@@ -17,6 +17,21 @@ Toutes les mesures portent sur un jour de référence : le mardi 17 novembre 202
 Sur chaque vue, la carte passe en vue satellite (photographies aériennes de l’IGN) et en relief : carte inclinée,
 immeubles à leur hauteur OpenStreetMap.
 
+## Navigation
+
+Sur téléphone et tablette (moins de 900 px), les trois vues restent accessibles dans la barre du bas. Le bouton
+**Carte** affiche la carte sur tout l’espace disponible : on la déplace directement avec un doigt. Le bouton voisin
+ouvre **Arrêts et recherche**, **Lignes et filtres** ou **Indicateurs**, selon la vue. Ce panneau défile indépendamment,
+sans carte figée au-dessus. Toucher un arrêt, un tronçon ou un carreau ouvre sa fiche ; le bouton Carte permet d’y revenir.
+
+Dans l’offre, la barre horaire fine reste accessible sur la carte comme pendant la lecture des fiches. Le bouton de
+réglages ouvre l’animation des véhicules et ses vitesses ×1, ×10 et ×60. Le libellé distingue les horaires théoriques
+de la simulation. La légende peut se replier et son détail expose toutes les classes.
+
+À partir de 900 px, carte et panneau apparaissent côte à côte, avec les onglets dans l’en-tête et la barre horaire
+flottante sur la carte. L’adresse partage la vue (`#offre`, `#vitesse`, `#acces`), pas encore l’heure ou la sélection.
+La description et les captures de l’interface sont dans [docs/refonte-atlas.md](docs/refonte-atlas.md).
+
 ## Chaîne de traitement
 
 ```
@@ -52,7 +67,19 @@ métadonnées de la page. Les visuels sont régénérables avec `node outils/gen
 
 ## Lancer le projet
 
-Prérequis : Python 3.11+, Node 24, Docker.
+Pour consulter les données déjà exportées : Node.js 24. Aucun recalcul n’est nécessaire.
+
+```powershell
+cd web
+npm ci
+npm run dev -- --host 127.0.0.1 --port 5180 --strictPort
+```
+
+Ouvrir [localhost:5180](http://localhost:5180/). Le fond de carte et les photographies aériennes demandent une connexion.
+Le [contrôle responsive local](http://localhost:5180/verification-mobile.html) propose les petits écrans, le portrait
+et le paysage. Cette page de développement ne fait pas partie du site construit pour la production.
+
+Pour recalculer les données : Python 3.11+ et Docker ; R5 et Java 21 s’exécutent dans le conteneur du pipeline.
 
 ```bash
 # 1. Chaîne de traitement (DuckDB)
@@ -74,14 +101,29 @@ La chaîne complète tient aussi dans le conteneur : `docker compose --profile p
 
 ## Tests
 
-```bash
-cd pipeline && .venv/Scripts/python -m pytest
+Depuis la racine du dépôt, sous PowerShell :
+
+```powershell
+pipeline/.venv/Scripts/python -m pytest pipeline/tests
+pipeline/.venv/Scripts/python outils/verifier_longueurs.py
+cd web
+npm run build
 ```
 
 Les calculs sont vérifiés sur un mini-réseau GTFS (`tests/conftest.py`) dont chaque résultat se calcule à la main :
 services actifs avec ajouts et retraits, exclusion des lignes scolaires, heures après minuit, terminus, vitesse
 pondérée, fenêtre glissante, reconstitution des tracés. Chaque test a été éprouvé par mutation : on casse
 volontairement le code qu’il couvre et on vérifie qu’il échoue.
+
+La compilation vérifie aussi TypeScript. La CI ajoute l’audit des dépendances de production et la recherche de secrets.
+Le parcours manuel de l’interface et les limites des vérifications mobiles sont décrits dans la documentation de l’interface.
+
+## Déploiement sur le serveur
+
+Le dépôt définit une CI de vérification. La commande prévue pour reconstruire le site sur le serveur, depuis le dépôt
+actualisé, est `docker compose up -d --build web`. Elle utilise nginx derrière le réseau externe `traefik-public`.
+Le domaine peut être défini avec `ATLAS_DOMAINE` ; sa valeur par défaut est `atlas-lyon.drekky.fr`.
+L’envoi des commits et cette reconstruction sont deux étapes distinctes.
 
 ## Organisation
 
@@ -96,12 +138,14 @@ pipeline/atlas/       chaîne de traitement (Python + SQL DuckDB)
 pipeline/tests/       mini-réseau GTFS et tests
 web/src/
   carte/              MapLibre : fond recoloré, satellite et relief, expressions, couches, interactions
-  composants/         en-tête, onglets, panneaux, fiches, légendes, fenêtres
+  composants/         en-tête, navigation mobile, onglets, barre horaire, panneaux, fiches, légendes, fenêtres
   etat/               thème, vue active, statistiques, horloge des véhicules
   simulation/         position des véhicules le long des tronçons, gabarits et maquettes 3D, calque de dessin
 web/deploy/           nginx et ses en-têtes de sécurité
 web/public/data/      couches GeoJSON produites par la chaîne
 compose.yaml          webmap (nginx derrière Traefik) et conteneur de la chaîne
+docs/                 description de l’interface et captures de vérification
+Linkedin/             publication, visuels, sources et archive du kit
 ```
 
 ## Charte
@@ -112,9 +156,9 @@ les rampes : ardoise pour les quantités, terracotta pour les temps, et une éch
 les vitesses. Le fond OpenFreeMap est recoloré aux mêmes teintes. Mise en page pensée d’abord pour le téléphone,
 puis pour le bureau (une colonne de lecture et la carte en pleine hauteur, à partir de 900 px).
 
-La branche `codex/atlas-refonte-visuelle` propose la direction **Atlas** : en-tête sur toute la largeur,
-navigation segmentée, colonne de lecture resserrée, sélection mise en valeur et barre horaire directement sur la carte.
-Le détail de la proposition et des vérifications est dans `docs/refonte-atlas.md`.
+La direction **Atlas** utilise un en-tête compact, une navigation adaptée au téléphone, une colonne de lecture
+resserrée sur bureau et des fiches qui mettent le résultat principal en valeur. La barre horaire mesure environ 52 px ;
+les réglages secondaires se déplient à la demande. Les marges de sécurité de l’écran sont prises en compte sur mobile.
 
 ## Sécurité
 

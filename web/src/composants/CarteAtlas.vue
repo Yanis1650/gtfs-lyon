@@ -42,7 +42,6 @@ const props = defineProps<{
   indicateur: IndicateurAcces
   pole: string
   population: number
-  agrandie: boolean
   ligne: string | null
   arret: string | null
   carreau: string | null
@@ -103,11 +102,9 @@ function placerPole() {
   marqueurPole = carte && pole && props.vue === 'acces' ? marqueurDePole(carte, pole) : null
 }
 
-const etroit = () => window.matchMedia('(max-width: 899px)').matches
-
 onMounted(async () => {
-  // Sur téléphone, deux doigts pour déplacer la carte : un doigt fait défiler la page.
-  carte = await creerCarte(conteneur.value!, props.sombre, props.satellite, { cooperativeGestures: etroit() })
+  // La carte a son propre écran sur téléphone : elle se déplace directement avec un doigt.
+  carte = await creerCarte(conteneur.value!, props.sombre, props.satellite)
   if (import.meta.env.DEV) Object.assign(window, { carteAtlas: carte })
   carte.on('style.load', () => void construire())
   brancherSimulation(carte, { sombre: () => props.sombre, vue: () => props.vue })
@@ -141,8 +138,6 @@ watch(
     placerPole()
   },
 )
-// Carte agrandie : il n'y a plus de page à faire défiler dessous, un doigt suffit à la déplacer.
-watch(() => props.agrandie, (a) => carte?.cooperativeGestures[a || !etroit() ? 'disable' : 'enable']())
 watch(selection, (s, avant) => {
   if (!pret()) return
   appliquerSelection(carte!, s)

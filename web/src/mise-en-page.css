@@ -1,98 +1,77 @@
-/* Atlas : en-tête commun, colonne de lecture et commandes sur la carte. */
+/* Téléphone : un seul espace à la fois, avec navigation toujours accessible. */
 .atlas {
-  --hauteur-entete: 108px;
-  --hauteur-carte: max(320px, 46svh);
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
+  --hauteur-entete: calc(56px + env(safe-area-inset-top, 0px));
+  --hauteur-navigation: calc(60px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--hauteur-entete) 48px minmax(0, 1fr) auto var(--hauteur-navigation);
+  grid-template-areas: 'entete' 'navigation' 'espace' 'temps' 'onglets';
+  height: 100dvh;
+  min-height: 0;
+  background: var(--surface);
+  overflow: hidden;
+}
+.atlas__entete { grid-area: entete; z-index: 7; }
+.atlas__navigation { grid-area: navigation; z-index: 6; }
+.atlas__carte {
+  grid-area: espace;
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+}
+.atlas__carte--masquee { display: none; }
+.atlas__panneau {
+  grid-area: espace;
+  display: none;
+  min-width: 0;
+  min-height: 0;
   background: var(--surface);
 }
-.atlas__entete {
-  position: sticky;
-  top: 0;
-  z-index: 6;
-  min-height: var(--hauteur-entete);
-}
-.atlas__carte {
-  position: sticky;
-  top: var(--hauteur-entete);
-  z-index: 2;
-  height: var(--hauteur-carte);
-  border-bottom: 1px solid var(--filet);
-}
-.atlas__panneau { flex: 1; min-width: 0; }
+.atlas__panneau--ouvert { display: flex; }
 .atlas__contenu {
   position: relative;
-  padding: 24px 20px 30px;
-  scroll-margin-top: calc(var(--hauteur-entete) + var(--hauteur-carte) + 12px);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: 20px 18px 24px;
+  scroll-padding-block: 12px;
 }
-.atlas__temps {
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 29px;
-  z-index: 3;
-}
+.atlas__temps { grid-area: temps; z-index: 5; min-width: 0; }
 .atlas__legende {
   position: absolute;
-  right: 16px;
-  bottom: 32px;
+  right: max(10px, env(safe-area-inset-right, 0px));
+  bottom: 64px;
   z-index: 4;
-  max-height: calc(100% - 90px);
+  max-height: calc(100% - 126px);
   overflow-y: auto;
 }
-.atlas__carte--offre .atlas__legende {
-  bottom: calc(var(--hauteur-temps, 136px) + 45px);
-  max-height: calc(100% - var(--hauteur-temps, 136px) - 105px);
-}
-.atlas__agrandir {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--filet);
-  border-radius: var(--rayon);
-  background: var(--surface);
-  color: var(--encre);
-  cursor: pointer;
-}
-.atlas__agrandir svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.atlas--agrandie { --hauteur-carte: calc(100svh - var(--hauteur-entete)); }
-@media (max-width: 599px) {
-  .atlas__temps { left: 10px; right: 10px; bottom: 35px; }
-  .atlas__legende { right: 10px; bottom: 38px; }
-  .atlas__contenu { padding: 22px 18px 28px; }
-}
+.atlas__pied { display: none; }
+.atlas__pied-mobile { margin: 28px -18px -24px; }
 @media (min-width: 900px) {
   .atlas {
     --hauteur-entete: 78px;
-    display: grid;
     grid-template-columns: 340px minmax(0, 1fr);
     grid-template-rows: var(--hauteur-entete) minmax(0, 1fr) auto;
     grid-template-areas: 'entete entete' 'panneau carte' 'pied pied';
-    height: 100dvh;
-    min-height: 0;
   }
-  .atlas__entete { grid-area: entete; position: relative; }
-  .atlas__carte { grid-area: carte; position: relative; top: auto; height: auto; border: 0; }
-  .atlas__panneau { grid-area: panneau; display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--filet); }
-  .atlas__contenu { flex: 1; min-height: 0; overflow-y: auto; padding: 26px 24px 30px; scroll-margin-top: 0; }
-  .atlas__pied { grid-area: pied; }
-  .atlas__agrandir { display: none; }
-  .atlas__temps { left: 24px; right: 24px; bottom: 32px; }
-  .atlas__legende { right: 24px; bottom: 32px; }
+  .atlas__carte { grid-area: carte; display: block; }
+  .atlas__panneau { grid-area: panneau; display: flex; border-right: 1px solid var(--filet); }
+  .atlas__contenu { padding: 26px 24px 30px; }
+  .atlas__temps {
+    grid-area: carte;
+    align-self: end;
+    justify-self: center;
+    width: min(640px, calc(100% - 48px));
+    margin-bottom: 32px;
+  }
+  .atlas__legende { right: 24px; bottom: 32px; max-height: calc(100% - 90px); }
+  .atlas__carte--offre .atlas__legende {
+    bottom: calc(var(--hauteur-temps, 52px) + 44px);
+    max-height: calc(100% - var(--hauteur-temps, 52px) - 105px);
+  }
+  .atlas__pied { grid-area: pied; display: flex; }
+  .atlas__pied-mobile { display: none; }
 }
 @media (min-width: 1440px) {
   .atlas { grid-template-columns: 360px minmax(0, 1fr); }

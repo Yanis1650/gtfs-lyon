@@ -15,7 +15,7 @@ const titre = computed(() => props.vue === 'offre' ? 'Passages par heure'
 </script>
 
 <template>
-  <aside class="legende-carte" aria-label="Lecture des couleurs">
+  <aside :class="['legende-carte', { 'legende-carte--ouverte': ouverte }]" aria-label="Lecture des couleurs">
     <button class="legende-carte__titre" :aria-expanded="ouverte" aria-controls="couleurs-carte" @click="ouverte = !ouverte">
       {{ titre }} <span aria-hidden="true">{{ ouverte ? '−' : '+' }}</span>
     </button>
@@ -75,6 +75,7 @@ const titre = computed(() => props.vue === 'offre' ? 'Passages par heure'
 .legende-carte p { margin-top: 6px; color: var(--discret); font-size: 11px; }
 @media (max-width: 599px) {
   .legende-carte { width: 230px; }
-  .legende-carte__titre { min-height: 40px; }
+  .legende-carte:not(.legende-carte--ouverte) { width: auto; }
+  .legende-carte__titre { min-height: 44px; }
 }
 </style>

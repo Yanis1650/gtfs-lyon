@@ -1,11 +1,13 @@
 # Améliorations du projet
 
-## Appliquées dans cette version locale
+## Présentes dans le dépôt
 
 - Image d’aperçu du lien, URL canonique et métadonnées de partage.
 - Recherche d’arrêt tolérante aux accents, à la casse et aux tirets, avec centrage sur la carte.
 - Recherche dans le classement des lignes, par numéro ou destination.
-- Carte plus compacte sur mobile ; le mode plein écran reste disponible.
+- Navigation mobile en bas, avec espaces Carte et exploration séparés ; déplacement de la carte avec un doigt.
+- Barre horaire d’environ 52 px, persistante pendant la lecture des fiches ; animation et vitesses dans un menu.
+- Recherche d’arrêt et choix de l’indicateur placés en tête des panneaux ; fiches défilantes sur toute la hauteur disponible.
 - Simulation et horaires théoriques explicités près de l’horloge et dans l’en-tête.
 - Totaux et classement des arrêts identifiés comme portant sur la journée complète.
 - Millésime de population rappelé dans la vue d’accessibilité.
@@ -15,7 +17,8 @@
 
 Le recalcul complet d’accessibilité a été exécuté sur les 7 879 carreaux, contrôlé puis exporté dans les données locales du site. Le rapport est dans `verification/recalcul-accessibilite.json`. Les résultats précédents ont été conservés dans les données de travail pour permettre un retour en arrière.
 
-Le serveur public doit être redéployé pour recevoir l’interface, l’image d’aperçu et les données corrigées.
+La présence dans le dépôt ne confirme pas l’état du serveur public. La reconstruction du site est décrite dans le README.
+La description actuelle de l’interface et ses captures sont dans `../docs/refonte-atlas.md`.
 
 ## Prochaine série utile
 

@@ -36,8 +36,8 @@
 .fiche__mesure small { display: block; margin-top: 3px; color: var(--discret); font-size: 12px; }
 .fiche__valeur { display: block; margin-bottom: 5px; font: 600 36px/1.1 var(--police-titre); color: var(--encre); letter-spacing: -1px; }
 @media (max-width: 899px) {
-  .fiche { scroll-margin-top: calc(var(--hauteur-entete) + var(--hauteur-carte) + 16px); }
+  .fiche { scroll-margin-block: 12px; }
 }
 @media (pointer: coarse) {
-  .fiche__fermer { width: 40px; height: 40px; }
+  .fiche__fermer { width: 44px; height: 44px; }
 }

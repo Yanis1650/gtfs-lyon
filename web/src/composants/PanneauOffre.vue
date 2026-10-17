@@ -31,12 +31,12 @@ function choisirHeure(i: number) {
       <p class="etiquette">Explorer le réseau</p>
       <h2>L’offre, heure par heure.</h2>
     </div>
+    <RechercheArret :arrets="arrets" @choisir="(a) => emit('choisirArret', a)" />
+
     <p class="intro">
       Les traits montrent les passages dans l’heure&nbsp;; les disques, les départs aux arrêts.
       Cliquez un arrêt pour le détail.
     </p>
-
-    <RechercheArret :arrets="arrets" @choisir="(a) => emit('choisirArret', a)" />
 
     <FicheArret
       v-if="arret"

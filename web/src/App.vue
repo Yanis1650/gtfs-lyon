@@ -8,6 +8,7 @@ import CommandesCarte from './composants/CommandesCarte.vue'
 import EnTete from './composants/EnTete.vue'
 import MentionsDialogue from './composants/MentionsDialogue.vue'
 import MethodeDialogue from './composants/MethodeDialogue.vue'
+import NavigationMobile from './composants/NavigationMobile.vue'
 import Onglets from './composants/Onglets.vue'
 import PanneauAcces from './composants/PanneauAcces.vue'
 import PanneauOffre from './composants/PanneauOffre.vue'
@@ -39,7 +40,8 @@ const indicateur = ref<IndicateurAcces>('pop_tc30')
 const pole = ref('part_dieu')
 const satellite = ref(false)
 const relief = ref(false)
-const hauteurTemps = ref(136)
+const hauteurTemps = ref(52)
+const exploration = ref(false)
 
 const meta = shallowRef<Meta | null>(null)
 const lignes = shallowRef(new Map<string, ProprietesLigne>())
@@ -78,22 +80,14 @@ watch(
   { immediate: true },
 )
 
-// Sur téléphone, la carte peut prendre tout l'écran ; une sélection la réduit pour montrer sa fiche.
-const agrandie = ref(false)
-const AGRANDIR = 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'
-const REDUIRE = 'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5'
+// Une sélection ouvre la lecture sur téléphone, sans conserver la carte au-dessus.
 watch([arret, troncon, carreau], async (choix) => {
   if (!choix.some(Boolean)) return
-  agrandie.value = false
-  // La fiche reste visible après une recherche, sous la carte sur téléphone.
+  exploration.value = true
   await nextTick()
-  const etroit = window.matchMedia('(max-width: 899px)').matches
-  contenu.value?.querySelector('.fiche')?.scrollIntoView({ behavior: 'smooth', block: etroit ? 'start' : 'nearest' })
+  contenu.value?.querySelector('.fiche')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 })
-
-function basculerCarte() {
-  agrandie.value = !agrandie.value
-}
+watch(vue, () => { exploration.value = false; contenu.value?.scrollTo({ top: 0 }) })
 
 function choisirArret(a: ProprietesArret | null, centrer = false) {
   arret.value = a
@@ -101,23 +95,23 @@ function choisirArret(a: ProprietesArret | null, centrer = false) {
   if (point) carte.value?.voler(point[0], point[1], 14.5)
 }
 
-function choisirLigne(id: string | null) {
+async function choisirLigne(id: string | null) {
   ligne.value = id
-  // La fiche de la ligne s'ouvre en haut du panneau : on y remonte (le panneau défile sur
-  // bureau, la page sur téléphone).
+  exploration.value = true
+  await nextTick()
   if (!id || !contenu.value) return
-  contenu.value.scrollTo({ top: 0, behavior: 'smooth' })
-  if (window.matchMedia('(max-width: 899px)').matches) contenu.value.scrollIntoView({ behavior: 'smooth' })
+  contenu.value.querySelector('.fiche-ligne')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 </script>
 
 <template>
-  <div :class="['atlas', { 'atlas--agrandie': agrandie }]">
+  <div class="atlas" :style="{ '--hauteur-temps': `${hauteurTemps}px` }">
     <EnTete class="atlas__entete" :date="meta?.date_reference ?? null" :sombre="sombre" @basculer-theme="basculer">
       <Onglets v-model="vue" />
     </EnTete>
+    <NavigationMobile v-model="exploration" :vue="vue" class="atlas__navigation" />
 
-    <main :class="['atlas__carte', { 'atlas__carte--offre': vue === 'offre' }]" :style="{ '--hauteur-temps': `${hauteurTemps}px` }">
+    <main id="atlas-carte" :class="['atlas__carte', { 'atlas__carte--offre': vue === 'offre', 'atlas__carte--masquee': exploration }]">
       <CarteAtlas
         ref="carte"
         :vue="vue"
@@ -130,7 +124,6 @@ function choisirLigne(id: string | null) {
         :indicateur="indicateur"
         :pole="pole"
         :population="habitants"
-        :agrandie="agrandie"
         :ligne="ligne"
         :arret="arret?.id ?? null"
         :carreau="carreau?.id ?? null"
@@ -140,13 +133,10 @@ function choisirLigne(id: string | null) {
       />
       <CommandesCarte v-model:satellite="satellite" v-model:relief="relief" />
       <LegendeCarte class="atlas__legende" :vue="vue" :sombre="sombre" :indicateur="indicateur" />
-      <BarreTemps v-if="vue === 'offre'" v-model:heure="heure" class="atlas__temps" @hauteur="hauteurTemps = $event" />
-      <button class="atlas__agrandir" aria-label="Carte en plein écran" :aria-pressed="agrandie" @click="basculerCarte">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="agrandie ? REDUIRE : AGRANDIR" /></svg>
-      </button>
     </main>
+    <BarreTemps v-if="vue === 'offre'" v-model:heure="heure" class="atlas__temps" @hauteur="hauteurTemps = $event" />
 
-    <section class="atlas__panneau" aria-label="Lecture de la carte">
+    <section id="atlas-lecture" :class="['atlas__panneau', { 'atlas__panneau--ouvert': exploration }]" aria-label="Lecture de la carte">
       <div ref="contenu" class="atlas__contenu">
         <template v-if="meta">
           <PanneauOffre
@@ -183,6 +173,7 @@ function choisirLigne(id: string | null) {
             @fermer-carreau="carreau = null"
           />
         </template>
+        <PiedDePage class="atlas__pied-mobile" @methode="methode?.ouvrir()" @mentions="mentions?.ouvrir()" />
       </div>
     </section>
 
