@@ -13,7 +13,7 @@ les trois familles typographiques et les classes de données de l’atlas.
 - Le panneau défile indépendamment. La carte ne reste pas figée au-dessus des recherches et des fiches.
 - Une sélection sur la carte ouvre sa fiche. Le bouton Carte permet de revenir au cadrage conservé.
 - La recherche d’arrêt et les choix d’indicateur sont placés au début de leur panneau.
-- Animer les véhicules et Vue 3D sont directement visibles en haut de la carte ; le satellite conserve un pictogramme seul.
+- Voir l’animation et Vue 3D sont directement visibles en haut de la carte ; le satellite conserve un pictogramme seul.
 - Un balayage horizontal dans un panneau revient à la carte. Le défilement vertical, les champs et les graphiques gardent leur usage.
 - Dans l’accessibilité, les boutons 30 min, 45 min et Depuis un pôle, puis le choix du départ, sont accessibles sur la carte.
 - Ce bandeau se replie avec la flèche : une commande compacte conserve la durée ou le pôle actif et permet de le rouvrir sans perdre les réglages.
@@ -29,9 +29,12 @@ Dans L’offre, la barre d’environ 52 px regroupe lecture/pause, heure et curs
 Elle reste présente au-dessus de la navigation du bas, y compris pendant la lecture d’une fiche.
 Sur bureau, elle flotte sur la carte, avec une largeur plafonnée à 640 px.
 
-Le bouton Animer les véhicules, mis en avant sur la carte, active la simulation en un clic.
-La carte zoome au niveau 17 sur un véhicule en circulation, de préférence un tram dans le cadrage,
-pour montrer sa modélisation. Un cadrage déjà rapproché est conservé ; une heure sans véhicule ne crée pas de démonstration fictive.
+Le bouton Voir le réseau s’animer (Voir l’animation sur petit écran) ouvre une scène à 8 h 30, à vitesse ×1,
+avec la 3D activée et un zoom 18 sur un tram réellement en circulation, choisi près du centre de Lyon.
+Le lien `#offre-demo`, le panneau de l’offre et l’aide ouvrent la même scène ; les sélections précédentes sont effacées.
+Le curseur et le cadrage restent libres ensuite. La préférence de réduction des animations suspend la lecture et supprime le vol de caméra.
+Les options de la barre horaire conservent l’activation ordinaire à l’heure choisie : zoom 17 sur un véhicule du cadrage,
+de préférence un tram, sans déplacer une vue déjà rapprochée. Une heure vide ne crée pas de véhicule fictif.
 Vue 3D incline et rapproche la carte pour montrer les bâtiments et les véhicules en volume.
 Le bouton Options d’animation conserve les vitesses ×1, ×10 ou ×60 et une commande des véhicules accessible pendant la lecture d’une fiche.
 Un clic à l’extérieur ou Échap ferme le menu. Les cibles principales gardent 44 px de hauteur.
@@ -44,7 +47,7 @@ L’activation respecte la préférence système de réduction des animations.
 - En-tête de 78 px avec titre, onglets segmentés, date et thème.
 - Colonne de lecture de 340 px, puis 360 px à partir de 1 440 px ; seule cette colonne défile.
 - Carte et panneau visibles ensemble ; barre horaire compacte flottante.
-- Animer les véhicules et Vue 3D mis en avant dès l’ouverture ; satellite compact, identifié au survol et pour les lecteurs d’écran.
+- Voir le réseau s’animer et Vue 3D mis en avant dès l’ouverture ; satellite compact, identifié au survol et pour les lecteurs d’écran.
 - Résultats principaux des fiches mis en valeur ; totaux journaliers séparés des mesures horaires.
 - Fond atténué et halo sur l’arrêt sélectionné, avec conservation des classes de données.
 - Légende repliable, détail complet des classes et position au-dessus de la barre horaire.
@@ -76,4 +79,6 @@ propose 320 × 568, 390 × 568, 390 × 844 et 844 × 390. Il n’est pas inclus 
 Captures : [commandes et modèles](images/atlas-mobile.png), [panneau mobile et retour à la carte](images/atlas-mobile-exploration.png),
 [durées sur la carte](images/atlas-accessibilite-mobile.png), [bandeau replié](images/atlas-accessibilite-repliee.png), [bureau](images/atlas-bureau.png) et [paysage](images/atlas-paysage.png).
 Ces vérifications dans le navigateur ne remplacent pas un essai sur téléphone physique, notamment pour le clavier et le balayage tactiles.
+La scène de découverte est vérifiée sur [bureau](images/atlas-decouverte-bureau.png) et [petits écrans](images/atlas-decouverte-mobile.png),
+avec lancement par le lien, le bouton et l’aide, puis changement d’heure au clavier.
 La compilation contrôle TypeScript ; les tests du pipeline et la règle des fichiers de 200 lignes complètent ces contrôles.

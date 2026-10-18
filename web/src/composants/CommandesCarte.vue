@@ -3,6 +3,7 @@ import type { Vue } from '../donnees'
 import { basculerVehicules } from '../etat/lecture'
 import { simulation } from '../etat/simulation'
 import { isochrones } from '../etat/isochrones'
+import { ouvrirDemonstration } from '../etat/vue'
 
 defineProps<{ vue: Vue; heure: number }>()
 const satellite = defineModel<boolean>('satellite', { required: true })
@@ -21,10 +22,12 @@ const VEHICULE = 'M5 5h14v12H5zM5 10h14M8 5v5m8-5v5M7 17v3m10-3v3M8 14h.01M16 14
       Isochrones
     </button>
     <button v-if="vue === 'offre'" class="commandes__bouton commandes__animation"
-      :aria-pressed="simulation.actif" :aria-label="simulation.actif ? 'Masquer les véhicules' : 'Animer les véhicules'"
-      @click="basculerVehicules(heure)">
+      :aria-pressed="simulation.actif" :aria-label="simulation.actif ? 'Masquer les véhicules' : 'Voir le réseau s’animer'"
+      :title="simulation.actif ? 'Masquer les véhicules' : 'Démo 3D à 8 h 30, d’après les horaires théoriques'"
+      @click="simulation.actif ? basculerVehicules(heure) : ouvrirDemonstration()">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="VEHICULE" /></svg>
-      {{ simulation.actif ? 'Véhicules animés' : 'Animer les véhicules' }}
+      <span v-if="simulation.actif">Véhicules animés</span>
+      <template v-else><span class="commandes__libelle-long">Voir le réseau s’animer</span><span class="commandes__libelle-court">Voir l’animation</span></template>
     </button>
     <button class="commandes__bouton commandes__relief" :aria-pressed="relief" @click="relief = !relief"
       title="Incliner la carte et voir les bâtiments en 3D">
@@ -74,6 +77,7 @@ const VEHICULE = 'M5 5h14v12H5zM5 10h14M8 5v5m8-5v5M7 17v3m10-3v3M8 14h.01M16 14
   font-weight: 600;
 }
 .commandes__animation:hover { border-color: var(--terracotta-fort); filter: brightness(.95); }
+.commandes__libelle-court { display: none; }
 .commandes__satellite { width: 44px; padding: 0; justify-content: center; }
 .commandes__relief { border-color: var(--ardoise); background: var(--plan); font-weight: 600; }
 .commandes__bouton[aria-pressed='true'] {
@@ -92,6 +96,8 @@ const VEHICULE = 'M5 5h14v12H5zM5 10h14M8 5v5m8-5v5M7 17v3m10-3v3M8 14h.01M16 14
   stroke-linejoin: round;
 }
 @media (max-width: 599px) {
+  .commandes__libelle-long { display: none; }
+  .commandes__libelle-court { display: inline; }
   .commandes { gap: 4px; }
   .commandes__bouton { padding-inline: 7px; font-size: 12px; }
 }

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import type { Vue } from '../donnees'
 import Dialogue from './Dialogue.vue'
+import { ouvrirDemonstration } from '../etat/vue'
 
 const emit = defineEmits<{ choisir: [Vue] }>()
 const cadre = ref<InstanceType<typeof Dialogue>>()
@@ -16,8 +17,8 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
       <section>
         <h3>Les départs</h3>
         <p>Touchez un arrêt pour ses horaires. Changez l’heure avec le curseur fin.</p>
-        <p><strong>Animer les véhicules</strong> rapproche la carte pour montrer leur modélisation. <strong>Vue 3D</strong> incline la vue et révèle les bâtiments.</p>
-        <button @click="choisir('offre')">Explorer les départs →</button>
+        <p><strong>Voir l’animation</strong> lance une scène à 8 h 30 : un tram modélisé, les bâtiments en 3D et les horaires théoriques à vitesse ×1. Modifiez ensuite l’heure ou le cadrage librement.</p>
+        <button @click="choisir('offre'); ouvrirDemonstration()">Voir le réseau s’animer →</button>
       </section>
       <section>
         <h3>Les vitesses</h3>

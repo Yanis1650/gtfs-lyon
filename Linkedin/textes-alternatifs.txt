@@ -1,3 +1,6 @@
+videos/01-reseau-anime.mp4 et images/01-demo-3d.png
+Capture de la carte Lyon sans voiture : des trams bleus et des bus terracotta se déplacent entre les bâtiments en 3D, près de la Part-Dieu. L’horloge indique 8 h 30 et Simulation. Les positions sont calculées à partir des horaires théoriques TCL du 17 novembre 2026, à vitesse ×1. La vidéo de 22 secondes porte des sous-titres décrivant la simulation et son lien d’accès. Elle est sans piste audio.
+
 01-atlas.png
 Lyon sans voiture, un atlas interactif des transports lyonnais. Une carte montre un extrait géographique des tracés du réseau TCL. Pour le mardi 17 novembre 2026, le périmètre complet retenu compte 20 705 courses programmées et 2 588 arrêts desservis. Sources : horaires théoriques SYTRAL Mobilités et tracés OpenStreetMap.
 

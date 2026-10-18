@@ -10,7 +10,7 @@ Toutes les mesures portent sur un jour de référence : le mardi 17 novembre 202
 
 | Vue | Ce qu’elle montre |
 |---|---|
-| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules s’animent d’après les horaires théoriques, dix fois plus vite que la réalité, à vitesse réelle ou soixante fois plus vite au choix. Une recherche permet de trouver un arrêt. |
+| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules s’animent d’après les horaires théoriques, à vitesse ×1, ×10 ou ×60. Une recherche permet de trouver un arrêt. |
 | **La vitesse** | Vitesse commerciale de chaque tronçon (divergente autour de l’allure typique du réseau) et classement des lignes, par période. |
 | **L’accessibilité** | Part des habitants de la Métropole joignables en 30 et 45 minutes depuis chaque carreau habité, et temps de trajet depuis six grands pôles. |
 
@@ -25,15 +25,15 @@ ouvre **Arrêts et recherche**, **Lignes et filtres** ou **Résultats et détail
 sans carte figée au-dessus. Toucher un arrêt, un tronçon ou un carreau ouvre sa fiche ; le bouton Carte permet d’y revenir.
 Un balayage horizontal dans le panneau ramène aussi à la carte. Le bouton **Aide** explique les trois usages et permet de les ouvrir.
 
-Dans l’offre, **Animer les véhicules** et **Vue 3D** sont visibles en tête de carte, sur téléphone comme sur bureau.
+Dans l’offre, **Voir le réseau s’animer** et **Vue 3D** sont visibles en tête de carte, sur téléphone comme sur bureau.
 La barre horaire fine reste accessible pendant la lecture des fiches ; ses réglages regroupent les vitesses ×1, ×10 et ×60. Le libellé distingue les horaires théoriques
 de la simulation. La légende peut se replier et son détail expose toutes les classes.
-L’activation des véhicules rapproche la carte d’un véhicule en circulation pour montrer sa modélisation ; Satellite reste une commande distincte.
+**Voir le réseau s’animer** ouvre une scène en 3D à 8 h 30, à vitesse ×1, centrée sur un tram en circulation ; le lien `#offre-demo` ouvre la même scène. Satellite reste distinct.
 Dans l’accessibilité, **30 min**, **45 min** et **Depuis un pôle**, avec le choix du départ, se règlent sur la carte ; le bandeau se replie en conservant le choix actif.
 Le mode **Isochrones** suit le survol sans attendre l’arrêt de la souris, ou le toucher sur mobile, et trace les zones habitées joignables à 15/30/45 min ([méthode, fluidité et recalcul](docs/isochrones.md)).
 
 À partir de 900 px, carte et panneau apparaissent côte à côte, avec les onglets dans l’en-tête et la barre horaire
-flottante sur la carte. L’adresse partage la vue (`#offre`, `#vitesse`, `#acces`), pas encore l’heure ou la sélection.
+flottante sur la carte. L’adresse partage la vue (`#offre`, `#vitesse`, `#acces`) ou la scène fixe (`#offre-demo`), pas les autres sélections.
 La description et les captures de l’interface sont dans [docs/refonte-atlas.md](docs/refonte-atlas.md).
 
 ## Chaîne de traitement
@@ -63,8 +63,8 @@ Le détail est repris dans la fenêtre « Méthode et sources » de la carte.
 
 ## Communication LinkedIn
 
-Le dossier `Linkedin/` contient le post, trois visuels portrait, la capture 3D, les textes alternatifs et les sources
-modifiables. Son `README.md` décrit l’ordre des images et les précautions de lecture.
+Le dossier `Linkedin/` contient le post sur l’animation, une vidéo de 22 secondes sous-titrée, sa couverture et les textes alternatifs.
+Son `README.md` décrit les fichiers à publier ; le texte T1/T3 et les anciens visuels restent disponibles pour une publication séparée.
 
 L’image de partage de 1 200 × 627 pixels est dans `web/public/partage/lyon-sans-voiture.png` et déclarée dans les
 métadonnées de la page. Les visuels sont régénérables avec `node outils/generer_linkedin.cjs` (Node.js et `sharp` requis).

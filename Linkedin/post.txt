@@ -1,28 +1,23 @@
-À Lyon, deux lignes de tram peuvent afficher des vitesses commerciales presque du simple au double.
+J’ai donné vie au réseau TCL à partir de ses horaires.
 
-T1 : 14,9 km/h.
-T3 : 29,5 km/h.
+Des trams qui suivent leurs voies, des bus qui traversent les carrefours, les bâtiments de Lyon en 3D : j’avais envie de rendre les données de transport plus concrètes.
 
-Ce sont les vitesses calculées à partir des horaires théoriques, sur les lignes complètes, arrêts compris. Un écart qui donne envie de regarder le réseau d’un peu plus près.
+J’ai développé « Lyon sans voiture », une carte interactive du réseau lyonnais.
 
-J’ai développé « Lyon sans voiture », un atlas interactif du réseau TCL pour explorer trois questions :
+La vidéo montre une scène à 8 h 30, à vitesse ×1. On peut ensuite changer l’heure, se déplacer dans la ville et observer les véhicules modélisés de près.
 
-→ Où et quand passent les transports ?
-→ À quelle vitesse circulent les différentes lignes ?
-→ Que peut-on rejoindre en 30 ou 45 minutes ?
+Il s’agit d’une simulation fondée sur les horaires théoriques TCL du 17 novembre 2026. Les positions sont calculées ; elles ne proviennent pas d’un suivi GPS et ne représentent pas les retards ou les perturbations.
 
-Le projet croise les horaires GTFS, les tracés d’OpenStreetMap et les données de population de l’Insee. On peut parcourir l’offre heure par heure, comparer les lignes et animer les véhicules sur la carte, jusque dans une vue satellite en 3D.
+Le projet croise les données ouvertes de SYTRAL Mobilités et d’OpenStreetMap. J’ai préparé les données avec Python et DuckDB, puis construit la carte avec Vue, TypeScript et MapLibre.
 
-Pour le jour de référence, le réseau représente 20 705 courses programmées et 2 588 arrêts desservis.
+Lancer la scène :
+https://atlas-lyon.drekky.fr/#offre-demo
 
-J’ai travaillé toute la chaîne : préparation des données avec Python et DuckDB, calcul d’accessibilité avec R5, puis interface avec Vue, TypeScript et MapLibre.
-
-La carte et le code sont accessibles ici :
-https://atlas-lyon.drekky.fr/#vitesse
+Le code :
 https://github.com/Yanis1650/gtfs-lyon
 
-Jour étudié : mardi 17 novembre 2026. Les résultats décrivent l’offre théorique programmée ; ils ne mesurent ni les retards ni les perturbations. La comparaison T1/T3 ne permet pas, à elle seule, d’expliquer les causes de l’écart.
+Quel quartier de Lyon aimeriez-vous explorer ?
 
-Quelle ligne ou quel quartier aimeriez-vous explorer ?
+Sources : SYTRAL Mobilités (ODbL), contributeurs OpenStreetMap (ODbL). Fond OpenFreeMap / OpenMapTiles.
 
 #Cartographie #OpenData #Mobilité #Lyon

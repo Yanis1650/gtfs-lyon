@@ -6,7 +6,8 @@
 - Recherche d’arrêt tolérante aux accents, à la casse et aux tirets, avec centrage sur la carte.
 - Recherche dans le classement des lignes, par numéro ou destination.
 - Navigation mobile en bas, avec espaces Carte et exploration séparés ; déplacement de la carte avec un doigt.
-- Animer les véhicules et Vue 3D mis en avant en tête de carte, sur mobile comme sur bureau.
+- Voir le réseau s’animer et Vue 3D mis en avant en tête de carte, sur mobile comme sur bureau.
+- Scène à 8 h 30, vitesse ×1 et zoom 18 sur un tram : accès direct par `#offre-demo`, le panneau de l’offre ou l’aide ; réduction des mouvements respectée.
 - Zoom vers un véhicule en circulation pour montrer sa modélisation ; satellite compact avec un pictogramme dédié.
 - Durées 30/45 minutes et pôle de départ dans un bandeau repliable sur la carte ; guide Aide et retour par balayage depuis les panneaux.
 - Isochrones TCL + marche à 15/30/45 min depuis le carreau survolé ou touché ; zones habitées évaluées sur une maille de 200 m, départs entre 8 h et 9 h.
@@ -33,4 +34,4 @@ La description actuelle de l’interface et ses captures sont dans `../docs/refo
 4. **Rendre les vitesses comparables par contexte.** Présenter distinctement lignes urbaines, express/périurbaines et Rhônexpress avant de tirer des conclusions sur un mode entier.
 5. **Comparer les moments de la semaine.** Ajouter un samedi ou un dimanche sur un même périmètre, avec un jour de référence et une provenance explicites.
 
-Pour la communication, garder un résultat concret par publication et montrer le fonctionnement de la carte. Une courte vidéo de l’animation serait un complément utile aux images statiques ; aucune vidéo n’est incluse dans ce dossier.
+Pour la communication, le premier post porte sur l’animation et sa vidéo sous-titrée de 22 secondes. Le texte T1/T3 est conservé pour une publication séparée. Le protocole d’essai avec trois personnes est dans `verification/parcours-decouverte.md` ; ces essais externes restent à mener.

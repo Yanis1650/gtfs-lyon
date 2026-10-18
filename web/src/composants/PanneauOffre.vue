@@ -5,6 +5,7 @@ import { debutTranche, simulation } from '../etat/simulation'
 import { nombre } from '../format'
 import FicheArret from './FicheArret.vue'
 import RechercheArret from './RechercheArret.vue'
+import { ouvrirDemonstration } from '../etat/vue'
 
 defineProps<{
   meta: Meta
@@ -30,6 +31,10 @@ function choisirHeure(i: number) {
     <div class="panneau-entete">
       <p class="etiquette">Explorer le réseau</p>
       <h2>L’offre, heure par heure.</h2>
+    </div>
+    <div v-if="!simulation.actif" class="decouverte">
+      <button @click="ouvrirDemonstration">Voir le réseau s’animer →</button>
+      <p>Un tram en 3D, à 8 h 30. Simulation à vitesse ×1, d’après les horaires théoriques.</p>
     </div>
     <RechercheArret :arrets="arrets" @choisir="(a) => emit('choisirArret', a)" />
 
@@ -71,3 +76,9 @@ function choisirHeure(i: number) {
     </details>
   </section>
 </template>
+
+<style scoped>
+.decouverte { padding: 12px 14px; border: 1px solid var(--filet); border-radius: var(--rayon); background: var(--plan); }
+.decouverte button { min-height: 44px; border: 0; background: transparent; color: var(--terracotta-fort); font: 500 16px var(--police); text-align: left; cursor: pointer; }
+.decouverte p { color: var(--encre-2); font-size: 12px; line-height: 1.5; }
+</style>

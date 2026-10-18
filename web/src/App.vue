@@ -34,6 +34,7 @@ import { population } from './etat/statistiques'
 import { useRetourCarte } from './etat/balayage'
 import { useTheme } from './etat/theme'
 import { useVue } from './etat/vue'
+import { useDecouverte } from './etat/decouverte'
 
 const { sombre, basculer } = useTheme()
 const vue = useVue()
@@ -57,6 +58,7 @@ const arret = shallowRef<ProprietesArret | null>(null)
 const troncon = shallowRef<ProprietesTroncon | null>(null)
 const ligne = ref<string | null>(null)
 const carreau = shallowRef<ProprietesCarreau | null>(null)
+useDecouverte({ heure, relief, exploration, effacer: () => { arret.value = null; troncon.value = null; carreau.value = null; ligne.value = null } })
 
 const carte = ref<InstanceType<typeof CarteAtlas>>()
 const contenu = ref<HTMLElement>()

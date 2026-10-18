@@ -1,6 +1,7 @@
-import { ref, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
 
 import type { Vue } from '../donnees'
+import { ANCRE_DEMONSTRATION, demanderDemonstration } from './demonstration'
 
 export const VUES: { id: Vue; titre: string }[] = [
   { id: 'offre', titre: 'L’offre' },
@@ -10,13 +11,24 @@ export const VUES: { id: Vue; titre: string }[] = [
 
 const lire = (): Vue => {
   const ancre = window.location.hash.slice(1)
+  if (ancre === ANCRE_DEMONSTRATION) { demanderDemonstration(); return 'offre' }
   return VUES.some((v) => v.id === ancre) ? (ancre as Vue) : 'offre'
 }
 
-/** Vue active, partageable par l'ancre de l'adresse (#offre, #vitesse, #acces). */
+export function ouvrirDemonstration() {
+  if (window.location.hash === `#${ANCRE_DEMONSTRATION}`) demanderDemonstration()
+  else window.location.hash = ANCRE_DEMONSTRATION
+}
+
+/** Vues et scène de découverte : seules ces ancres sont reconnues. */
 export function useVue() {
   const vue = ref<Vue>(lire())
-  window.addEventListener('hashchange', () => (vue.value = lire()))
-  watch(vue, (v) => history.replaceState(null, '', `#${v}`))
+  const actualiser = () => (vue.value = lire())
+  window.addEventListener('hashchange', actualiser)
+  onBeforeUnmount(() => window.removeEventListener('hashchange', actualiser))
+  watch(vue, (v) => {
+    if (v === 'offre' && window.location.hash === `#${ANCRE_DEMONSTRATION}`) return
+    window.history.replaceState(null, '', `#${v}`)
+  })
   return vue
 }
