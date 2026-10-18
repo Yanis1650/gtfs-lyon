@@ -9,7 +9,9 @@
 - Animer les véhicules et Vue 3D mis en avant en tête de carte, sur mobile comme sur bureau.
 - Zoom vers un véhicule en circulation pour montrer sa modélisation ; satellite compact avec un pictogramme dédié.
 - Durées 30/45 minutes et pôle de départ dans un bandeau repliable sur la carte ; guide Aide et retour par balayage depuis les panneaux.
+- Isochrones TCL + marche à 15/30/45 min depuis le carreau survolé ou touché ; zones habitées évaluées sur une maille de 200 m, départs entre 8 h et 9 h.
 - Barre horaire d’environ 52 px, persistante pendant la lecture des fiches ; vitesses d’animation dans les réglages.
+- Curseur à la minute en simulation, avec pause pendant le glissement ; génération des isochrones sans rechargement automatique de l’aperçu.
 - Recherche d’arrêt et choix de l’indicateur placés en tête des panneaux ; fiches défilantes sur toute la hauteur disponible.
 - Simulation et horaires théoriques explicités près de l’horloge et dans l’en-tête.
 - Totaux et classement des arrêts identifiés comme portant sur la journée complète.

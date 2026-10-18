@@ -28,6 +28,7 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
         <h3>L’accessibilité</h3>
         <p>Choisissez <strong>30 min</strong> ou <strong>45 min</strong> sur la carte : la couleur indique la part de population joignable depuis chaque quartier.</p>
         <p><strong>Depuis un pôle</strong> affiche les temps depuis le point de départ choisi. Touchez un carreau pour le détail.</p>
+        <p><strong>Isochrones</strong> trace les zones joignables en 15, 30 et 45 minutes depuis le carreau survolé, ou touché sur téléphone. Cliquez pour fixer le départ.</p>
         <button @click="choisir('acces')">Explorer l’accessibilité →</button>
       </section>
     </div>

@@ -17,6 +17,7 @@ les trois familles typographiques et les classes de données de l’atlas.
 - Un balayage horizontal dans un panneau revient à la carte. Le défilement vertical, les champs et les graphiques gardent leur usage.
 - Dans l’accessibilité, les boutons 30 min, 45 min et Depuis un pôle, puis le choix du départ, sont accessibles sur la carte.
 - Ce bandeau se replie avec la flèche : une commande compacte conserve la durée ou le pôle actif et permet de le rouvrir sans perdre les réglages.
+- Isochrones affiche les zones habitées à 15/30/45 min depuis un carreau : survol puis clic pour fixer sur bureau, toucher sur téléphone ([méthode](isochrones.md)).
 - Le bouton Aide ouvre un guide des trois usages, avec des raccourcis vers les vues et une explication des gestes.
 - Les liens Méthode et sources, Mentions légales et Code source se trouvent au bas du panneau défilant.
 
@@ -35,6 +36,7 @@ Vue 3D incline et rapproche la carte pour montrer les bâtiments et les véhicul
 Le bouton Options d’animation conserve les vitesses ×1, ×10 ou ×60 et une commande des véhicules accessible pendant la lecture d’une fiche.
 Un clic à l’extérieur ou Échap ferme le menu. Les cibles principales gardent 44 px de hauteur.
 Le libellé Théorique ou Simulation précise la nature de l’affichage ; les horaires ne décrivent pas les retards réels.
+En simulation, le curseur choisit la minute, suit l’horloge des véhicules et suspend la lecture pendant le glissement ; le relâchement restaure l’état de lecture précédent.
 L’activation respecte la préférence système de réduction des animations.
 
 ## Bureau : à partir de 900 px
@@ -63,6 +65,7 @@ Le parcours manuel couvre :
 - recherche d’arrêt, ouverture de fiche et retour à la carte ;
 - défilement jusqu’aux sources, recherche de ligne et choix d’indicateur 30/45 minutes ;
 - repli et réouverture des commandes d’accessibilité, avec conservation de la mesure et du pôle sélectionnés ;
+- isochrones au survol, départ fixé, changement de seuil, effacement et retour aux indicateurs habituels ;
 - curseur au clavier, lecture/pause et options d’animation ;
 - thème sombre, fond satellite et vue 3D ;
 - petits écrans, hauteur réduite en paysage et disposition bureau.

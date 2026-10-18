@@ -20,6 +20,7 @@ import {
 import { ajouterMaquettes } from '../simulation/maquettes'
 import { premiereCoucheTexte } from './maplibre'
 import { ajouterBatiments, BATIMENTS } from './relief'
+import { ajouterIsochrones } from '../isochrones/couches'
 
 export const COUCHES_PAR_VUE: Record<Vue, string[]> = {
   offre: ['troncons-offre', 'arrets-offre', 'arrets-selection'],
@@ -141,6 +142,7 @@ export function ajouterCouches(carte: CarteMapLibre, d: Donnees, r: Reglages, s:
       'circle-stroke-width': 2.5,
     },
   })
+  ajouterIsochrones(carte, avant)
 }
 
 export function montrerVue(carte: CarteMapLibre, vue: Vue) {

@@ -30,6 +30,7 @@ La barre horaire fine reste accessible pendant la lecture des fiches ; ses régl
 de la simulation. La légende peut se replier et son détail expose toutes les classes.
 L’activation des véhicules rapproche la carte d’un véhicule en circulation pour montrer sa modélisation ; Satellite reste une commande distincte.
 Dans l’accessibilité, **30 min**, **45 min** et **Depuis un pôle**, avec le choix du départ, se règlent sur la carte ; le bandeau se replie en conservant le choix actif.
+Le mode **Isochrones** trace les zones habitées joignables à 15/30/45 min depuis le carreau survolé, ou touché sur mobile ([méthode et recalcul](docs/isochrones.md)).
 
 À partir de 900 px, carte et panneau apparaissent côte à côte, avec les onglets dans l’en-tête et la barre horaire
 flottante sur la carte. L’adresse partage la vue (`#offre`, `#vitesse`, `#acces`), pas encore l’heure ou la sélection.
@@ -111,6 +112,7 @@ pipeline/.venv/Scripts/python -m pytest pipeline/tests
 pipeline/.venv/Scripts/python outils/verifier_longueurs.py
 cd web
 npm run build
+npm test
 ```
 
 Les calculs sont vérifiés sur un mini-réseau GTFS (`tests/conftest.py`) dont chaque résultat se calcule à la main :
@@ -137,6 +139,7 @@ pipeline/atlas/       chaîne de traitement (Python + SQL DuckDB)
   sql/                une étape par fichier, de 01_courses à 06_lignes
   osm.py, traces.py   lecture des relations OpenStreetMap, reconstitution des tracés
   accessibilite.py    carreaux Insee et calcul r5py
+  isochrones.py       temps R5 par origine, pour les isochrones interactives
   vehicules.py        courses heure par heure, horaires lissés, pour l'animation
 pipeline/tests/       mini-réseau GTFS et tests
 web/src/

@@ -5,6 +5,8 @@ import type { Carreaux, IndicateurAcces, Meta, ProprietesCarreau } from '../donn
 import { medianePonderee, partSous, population } from '../etat/statistiques'
 import { nombre, part, pourcent } from '../format'
 import FicheCarreau from './FicheCarreau.vue'
+import PanneauIsochrones from './PanneauIsochrones.vue'
+import { isochrones } from '../etat/isochrones'
 
 const props = defineProps<{
   meta: Meta
@@ -28,7 +30,7 @@ const medianeMarche = computed(() => medianePonderee(habitants.value, (c) => c.p
 </script>
 
 <template>
-  <section class="panneau-vue">
+  <section v-if="!isochrones.actif" class="panneau-vue">
     <div class="panneau-entete"><p class="etiquette">Mesurer l’accessibilité</p><h2>La ville à portée.</h2></div>
     <div class="puces" role="group" aria-label="Indicateur affiché">
       <button class="puce" :aria-pressed="indicateur === 'pop_tc30'" @click="indicateur = 'pop_tc30'">
@@ -97,6 +99,7 @@ const medianeMarche = computed(() => medianePonderee(habitants.value, (c) => c.p
 
     <p v-if="!carreau" class="note">Touchez ou cliquez un carreau pour le détail.</p>
   </section>
+  <PanneauIsochrones v-else :total="total" :date="meta.date_reference" />
 </template>
 
 <style scoped>

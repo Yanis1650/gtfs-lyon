@@ -17,6 +17,8 @@ import { brancherInteractions } from '../carte/interactions'
 import { creerCarte, marqueurDePole, styleFond } from '../carte/maplibre'
 import { basculerRelief } from '../carte/relief'
 import { brancherSimulation } from '../etat/simulation'
+import { isochrones } from '../etat/isochrones'
+import { brancherIsochrones } from '../isochrones/exploration'
 import {
   chargerArrets,
   chargerCarreaux,
@@ -58,6 +60,7 @@ const chargement = ref(true)
 let carte: CarteMapLibre | null = null
 let bulle: Popup | null = null
 let marqueurPole: Marker | null = null
+let rafraichirIsochrones: (() => void) | undefined
 const donnees: Partial<Donnees> = {}
 
 const reglages = computed<Reglages>(() => ({
@@ -79,6 +82,7 @@ async function construire() {
   Object.assign(donnees, { arrets, troncons, lignes })
   ajouterCouches(carte, { carreaux: null, ...donnees } as Donnees, reglages.value, selection.value)
   await afficherVue()
+  rafraichirIsochrones?.()
   chargement.value = false
 }
 
@@ -98,7 +102,7 @@ async function afficherVue() {
 
 function placerPole() {
   marqueurPole?.remove()
-  const pole = props.indicateur === 'temps' ? props.meta?.poles.find((p) => p.id === props.pole) : undefined
+  const pole = !isochrones.actif && props.indicateur === 'temps' ? props.meta?.poles.find((p) => p.id === props.pole) : undefined
   marqueurPole = carte && pole && props.vue === 'acces' ? marqueurDePole(carte, pole) : null
 }
 
@@ -108,6 +112,7 @@ onMounted(async () => {
   if (import.meta.env.DEV) Object.assign(window, { carteAtlas: carte })
   carte.on('style.load', () => void construire())
   brancherSimulation(carte, { sombre: () => props.sombre, vue: () => props.vue })
+  rafraichirIsochrones = brancherIsochrones(carte, { vue: () => props.vue })
   bulle = brancherInteractions(
     carte,
     {
@@ -128,6 +133,7 @@ onBeforeUnmount(() => {
 })
 
 watch(() => props.vue, afficherVue)
+watch(() => isochrones.actif, placerPole)
 watch(() => props.heure, () => pret() && appliquerHeure(carte!, reglages.value))
 watch(() => props.modes, () => pret() && appliquerModes(carte!, reglages.value))
 watch(

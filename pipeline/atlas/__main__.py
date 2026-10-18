@@ -3,6 +3,7 @@
   telecharger    sources ouvertes (GTFS, Insee, OSM, communes)
   calculer       offre, tronçons, lignes et carreaux dans DuckDB
   accessibilite  temps de parcours r5py (dans le conteneur, Java 21)
+  isochrones     temps par origine pour l'exploration au survol (étape facultative)
   exporter       couches GeoJSON pour la webmap
   tout           les quatre, dans l'ordre
 """
@@ -13,7 +14,7 @@ import time
 from . import calcul, export, gtfs, sources
 from .config import SORTIE_WEB, Parametres
 
-ETAPES = ["telecharger", "calculer", "accessibilite", "exporter", "tout"]
+ETAPES = ["telecharger", "calculer", "accessibilite", "isochrones", "exporter", "tout"]
 
 
 def main() -> None:
@@ -58,6 +59,12 @@ def main() -> None:
         calcul.preparer_variables(con, p)
         export.exporter(con, p, SORTIE_WEB)
         con.close()
+
+    if args.etape == "isochrones":
+        from . import isochrones
+
+        print("Isochrones interactives (r5py)")
+        isochrones.calculer(p, SORTIE_WEB / "isochrones", limite=args.echantillon)
 
     print(f"Terminé en {time.perf_counter() - debut:.0f} s")
 

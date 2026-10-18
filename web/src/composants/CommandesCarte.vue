@@ -2,6 +2,7 @@
 import type { Vue } from '../donnees'
 import { basculerVehicules } from '../etat/lecture'
 import { simulation } from '../etat/simulation'
+import { isochrones } from '../etat/isochrones'
 
 defineProps<{ vue: Vue; heure: number }>()
 const satellite = defineModel<boolean>('satellite', { required: true })
@@ -14,6 +15,11 @@ const VEHICULE = 'M5 5h14v12H5zM5 10h14M8 5v5m8-5v5M7 17v3m10-3v3M8 14h.01M16 14
 
 <template>
   <div :class="['commandes', { 'commandes--offre': vue === 'offre' }]" role="group" aria-label="Explorer la carte">
+    <button v-if="vue === 'acces'" class="commandes__bouton" :aria-pressed="isochrones.actif"
+      aria-label="Isochrones au survol" @click="isochrones.actif = !isochrones.actif">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16c-4-6 3-14 10-12 8 2 11 10 5 15-5 4-12 1-15-3Zm4-2c-2-3 1-7 5-6 4 1 5 5 2 7-3 2-6 1-7-1Z" /></svg>
+      Isochrones
+    </button>
     <button v-if="vue === 'offre'" class="commandes__bouton commandes__animation"
       :aria-pressed="simulation.actif" :aria-label="simulation.actif ? 'Masquer les véhicules' : 'Animer les véhicules'"
       @click="basculerVehicules(heure)">

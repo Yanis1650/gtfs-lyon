@@ -73,6 +73,10 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
     </p>
 
     <h3>Outils</h3>
+    <p>Le mode Isochrones utilise les mêmes temps R5, conservés par origine pour permettre le survol.
+      Le départ est le centre du carreau choisi. Les contours à 15, 30 et 45 minutes suivent la frontière
+      des carreaux habités atteints ; les espaces non habités ne sont pas évalués par cette représentation.
+      Les temps sont arrondis à la minute supérieure. Le calcul couvre la même fenêtre de départ, sans données en temps réel.</p>
     <p>
       Python et DuckDB (extension spatiale) pour la chaîne de traitement, testée sur un mini-réseau dont chaque résultat
       se calcule à la main&nbsp;; r5py dans un conteneur Docker&nbsp;; Vue 3, TypeScript et MapLibre GL pour la carte, sur

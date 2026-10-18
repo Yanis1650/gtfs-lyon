@@ -4,6 +4,7 @@ import { type Map as CarteMapLibre, type MapGeoJSONFeature, Popup } from 'maplib
 import type { IndicateurAcces, ProprietesArret, ProprietesCarreau, ProprietesTroncon, Vue } from '../donnees'
 import { kmh, minutes, nombre, part, tranche } from '../format'
 import { COUCHES_PAR_VUE } from './couches'
+import { isochrones } from '../etat/isochrones'
 
 export interface Contexte {
   vue: () => Vue
@@ -70,6 +71,7 @@ export function brancherInteractions(carte: CarteMapLibre, ctx: Contexte, rappel
       bulle.remove()
     })
     carte.on('mousemove', couche, (e) => {
+      if (couche === 'carreaux' && isochrones.actif) return bulle.remove()
       const f = e.features?.[0]
       if (f) bulle.setLngLat(e.lngLat).setHTML(texte(f)).addTo(carte)
     })
@@ -77,6 +79,7 @@ export function brancherInteractions(carte: CarteMapLibre, ctx: Contexte, rappel
 
   carte.on('click', (e) => {
     const vue = ctx.vue()
+    if (vue === 'acces' && isochrones.actif) return
     const couches = COUCHES_PAR_VUE[vue].filter((id) => carte.getLayer(id))
     const f = carte.queryRenderedFeatures(e.point, { layers: couches })[0]
     const id = f?.layer.id

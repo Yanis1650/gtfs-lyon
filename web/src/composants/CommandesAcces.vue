@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { IndicateurAcces, Meta } from '../donnees'
+import { isochrones } from '../etat/isochrones'
+import ReglagesIsochrones from './ReglagesIsochrones.vue'
 
 const props = defineProps<{ poles: Meta['poles'] }>()
 const indicateur = defineModel<IndicateurAcces>('indicateur', { required: true })
 const pole = defineModel<string>('pole', { required: true })
 const ouverte = ref(true)
-const mesureActive = computed(() => indicateur.value === 'temps'
+watch(() => isochrones.actif, actif => { if (actif) ouverte.value = true })
+const mesureActive = computed(() => isochrones.actif ? `Isochrones · ${isochrones.seuil} min` : indicateur.value === 'temps'
   ? props.poles.find(p => p.id === pole.value)?.nom ?? 'Depuis un pôle'
   : indicateur.value === 'pop_tc45' ? '45 min' : '30 min')
 const action = computed(() => ouverte.value
@@ -41,6 +44,8 @@ const CHOIX: { id: IndicateurAcces; titre: string; aide: string }[] = [
       </svg>
     </button>
     <div v-show="ouverte" id="reglages-accessibilite-carte">
+      <ReglagesIsochrones v-if="isochrones.actif" />
+      <template v-else>
       <div class="acces-carte__choix">
         <button v-for="c in CHOIX" :key="c.id" :aria-label="c.aide" :aria-pressed="indicateur === c.id"
           @click="indicateur = c.id">{{ c.titre }}</button>
@@ -49,6 +54,7 @@ const CHOIX: { id: IndicateurAcces; titre: string; aide: string }[] = [
         <option v-for="p in poles" :key="p.id" :value="p.id">{{ p.nom }}</option>
       </select>
       <p>Touchez un carreau pour le détail.</p>
+      </template>
     </div>
   </div>
 </template>

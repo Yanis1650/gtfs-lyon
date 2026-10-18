@@ -2,14 +2,18 @@
 import { computed, ref } from 'vue'
 import type { IndicateurAcces, Vue } from '../donnees'
 import { classesFrequence, classesPart, classesTemps, classesVitesse } from '../palette'
+import { isochrones } from '../etat/isochrones'
+import { classesIsochrones } from '../isochrones/couches'
 
 const props = defineProps<{ vue: Vue; sombre: boolean; indicateur: IndicateurAcces }>()
 const ouverte = ref(!window.matchMedia('(max-width: 599px)').matches)
 const classes = computed(() => props.vue === 'offre' ? classesFrequence(props.sombre)
   : props.vue === 'vitesse' ? classesVitesse(props.sombre)
+  : isochrones.actif ? classesIsochrones().filter(c => c.min < isochrones.seuil)
   : props.indicateur === 'temps' ? classesTemps(props.sombre) : classesPart(props.sombre))
 const titre = computed(() => props.vue === 'offre' ? 'Passages par heure'
   : props.vue === 'vitesse' ? 'Vitesse commerciale · km/h'
+  : isochrones.actif ? `Isochrones · ${isochrones.seuil} min`
   : props.indicateur === 'temps' ? 'Temps de trajet · minutes'
   : `Habitants joignables en ${props.indicateur === 'pop_tc45' ? 45 : 30} min`)
 </script>
@@ -32,6 +36,7 @@ const titre = computed(() => props.vue === 'offre' ? 'Passages par heure'
       </details>
       <p v-if="vue === 'vitesse'">Épaisseur : courses sur la journée.</p>
       <p v-else-if="vue === 'offre'">Traits : passages · Disques : départs.</p>
+      <p v-else-if="isochrones.actif">Zones habitées joignables depuis le départ. Contours à 15, 30 et 45 min, sur une maille de 200 m.</p>
     </div>
   </aside>
 </template>
