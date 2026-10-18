@@ -54,7 +54,8 @@ Après recalcul complet, reconstruire le site selon le README ; un simple push n
 `index.json` contient l’ordre des identifiants, la version et les hypothèses horaires. Chaque fichier
 `<version>/<numero>.bin` contient un octet par destination : une durée en minutes, arrondie au supérieur,
 ou 255 si la destination est hors de la limite de 45 minutes ou non calculable.
-Une ligne représente 7 879 octets, sans téléchargement de toute la matrice au premier survol.
+Une ligne représente 7 879 octets avant compression HTTP, sans téléchargement de toute la matrice au premier survol.
+L’image nginx prépare aussi ses variantes gzip à la construction ([déploiement et contrôle](deploiement.md)).
 Le client refuse les versions, chemins et tailles invalides ; le cache conserve au plus 128 origines récemment
 utilisées, soit environ 1 Mo de temps sur le jeu actuel. Revenir sur ces départs évite une nouvelle requête.
 Le survol est échantillonné toutes les 40 ms au maximum, dès le premier mouvement, sans attendre l’arrêt de la souris.

@@ -30,11 +30,11 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
       nulle part.
     </p>
     <p>
-      Pour sa sécurité, le serveur web enregistre chaque requête dans un journal&nbsp;: adresse IP, date et heure, page
-      demandée et navigateur. Base légale&nbsp;: l’intérêt légitime à protéger le site (article 6.1.f du RGPD). Ce
-      journal tient dans trois fichiers de 10&nbsp;Mo au plus&nbsp;; au-delà, les lignes les plus anciennes sont
-      effacées, si bien que sa durée de conservation dépend de la fréquentation. Il reste sur le serveur, chez
-      l’hébergeur OVH, et n’est transmis à personne.
+      Pour sa sécurité, le serveur web (nginx) et le relais d’accès (Traefik) enregistrent les requêtes dans deux
+      journaux techniques&nbsp;: adresse IP, date et heure, page demandée et navigateur. Base légale&nbsp;:
+      l’intérêt légitime à protéger le site (article 6.1.f du RGPD). Chacun est limité à trois fichiers de
+      10&nbsp;Mo&nbsp;; les entrées les plus anciennes sont ensuite effacées. Leur durée de conservation dépend
+      donc de la fréquentation. Ces journaux restent sur le serveur, chez l’hébergeur OVH, et ne sont transmis à personne.
     </p>
     <p>
       Le fond de carte est chargé chez OpenFreeMap, dont les serveurs passent par Cloudflare, société établie aux
@@ -55,6 +55,6 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
       Les photographies aériennes de la vue satellite proviennent de la BD ORTHO® de l’IGN (Licence Ouverte 2.0)&nbsp;;
       la hauteur des immeubles en relief, d’OpenStreetMap.
     </p>
-    <p class="note">Mis à jour le 17 octobre 2026.</p>
+    <p class="note">Mis à jour le 18 octobre 2026.</p>
   </Dialogue>
 </template>

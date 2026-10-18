@@ -4,7 +4,7 @@ WORKDIR /web
 COPY package.json package-lock.json ./
 RUN npm ci --no-fund --no-audit
 COPY . .
-RUN npm run build
+RUN npm run build && node deploy/precompresser.mjs dist
 
 # nginx 1.31.6 ou plus (failles corrigées en 2026) ; l'image « unprivileged » tourne
 # sous l'utilisateur nginx (uid 101) et écoute sur le port 8080.

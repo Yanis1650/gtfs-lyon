@@ -43,6 +43,24 @@ jobs:
       - run: npm test
       - run: npm run build
 
+  serveur:
+    name: Image nginx (compression et HTTP)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Construire l'image de production
+        run: docker build -t atlas-verification ./web
+      - name: Démarrer avec les restrictions de production
+        run: >-
+          docker run -d --name atlas-verification --read-only --tmpfs /tmp
+          --cap-drop ALL --security-opt no-new-privileges:true --memory 128m --cpus 0.5
+          -p 127.0.0.1:8080:8080 atlas-verification
+      - name: Vérifier les variantes et les protections HTTP
+        run: python3 outils/verifier_compression.py http://127.0.0.1:8080
+      - name: Arrêter le conteneur de vérification
+        if: always()
+        run: docker rm -f atlas-verification || true
+
   regles:
     name: Règles du dépôt
     runs-on: ubuntu-latest

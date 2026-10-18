@@ -128,7 +128,7 @@ Le parcours manuel de l’interface et les limites des vérifications mobiles so
 Le dépôt définit une CI de vérification. La commande prévue pour reconstruire le site sur le serveur, depuis le dépôt
 actualisé, est `docker compose up -d --build web`. Elle utilise nginx derrière le réseau externe `traefik-public`.
 Le domaine peut être défini avec `ATLAS_DOMAINE` ; sa valeur par défaut est `atlas-lyon.drekky.fr`.
-L’envoi des commits et cette reconstruction sont deux étapes distinctes.
+L’envoi des commits et cette reconstruction sont deux étapes distinctes. Voir [compression statique et contrôles HTTP](docs/deploiement.md).
 
 ## Organisation
 
@@ -169,8 +169,8 @@ les réglages secondaires se déplient à la demande. Les marges de sécurité d
 ## Sécurité
 
 Le site est **statique** : ni serveur applicatif, ni base, ni formulaire, ni cookie, ni mesure d’audience.
-Seuls les journaux d’accès du serveur web gardent des adresses IP, bornés à trois fichiers de 10 Mo (`compose.yaml`),
-comme le décrivent les mentions légales.
+Les journaux d’accès de nginx et de Traefik gardent des adresses IP, chacun borné à trois fichiers de 10 Mo,
+comme le décrivent les mentions légales ; `compose.yaml` règle nginx, la rotation de Traefik relève du serveur.
 
 - nginx 1.31.7 sans droits root (`nginx-unprivileged`), conteneur en lecture seule, sans capacités
   (`cap_drop: ALL`, `no-new-privileges`), mémoire et processeur limités, aucun port publié (Traefik seulement).
