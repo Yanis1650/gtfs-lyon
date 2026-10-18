@@ -27,7 +27,9 @@ Le curseur reste utilisable après lancement ; les tests web contrôlent aussi l
 écouteurs et la réduction des animations. La vidéo a été enregistrée dans l’application, encodée puis contrôlée
 par décodage des 660 images et lecture de sa durée de 22 secondes, avec vérification des sous-titres et des crédits.
 
-Le GIF `../images/02-part-dieu-10s.gif` reprend les secondes 2 à 12 de cette capture, recadrées sur la carte.
-Contrôles : 800 × 532 pixels, 150 images, durée cumulée exactement 10 secondes, boucle infinie,
-décodage intégral sans erreur du GIF et du MP4 équivalent. Les images à 0, 5 et 9 secondes ont été
-vérifiées visuellement : les véhicules se déplacent et les mentions restent lisibles.
+La vidéo `../videos/02-part-dieu-10s.mp4` a ensuite été réenregistrée dans l’application en ×10 :
+véhicules modélisés près de la Part-Dieu, retour à plat, dézoom et cadrage de Neuville à Givors.
+Contrôles : 720 × 608 pixels, 30 images/s, durée de 10 secondes et décodage intégral sans erreur.
+Les images rapprochées, la transition et les vues finales ont été vérifiées visuellement :
+les véhicules se déplacent et les crédits restent présents. Le montage montre la carte seule,
+avec une ligne de crédits discrète en IBM Plex Sans, sans titre ni bandeau descriptif.

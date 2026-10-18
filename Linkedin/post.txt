@@ -6,7 +6,7 @@ En voyant passer plusieurs publications sur le sujet, j’ai eu envie de m’y r
 
 C’est encore un prototype pas complètement abouti, mais j’avais envie de partager cette petite reprise en main.
 
-👉 Découvrir le prototype :
+Découvrir le prototype :
 https://atlas-lyon.drekky.fr/#offre-demo
 
 Vos retours sont les bienvenus !
