@@ -14,17 +14,22 @@ async function jusquA(condition) {
 class CarteTest {
   evenements = new Map()
   sources = new Map()
+  objetsSources = new Map()
+  etats = new Map()
+  recherches = 0
   id = 'a'
   on(nom, f) { this.evenements.set(nom, f) }
   off(nom) { this.evenements.delete(nom) }
   getLayer() { return true }
   getSource(id) {
-    return { setData: donnees => this.sources.set(id, donnees) }
+    if (!this.objetsSources.has(id)) this.objetsSources.set(id, { setData: donnees => this.sources.set(id, donnees) })
+    return this.objetsSources.get(id)
   }
+  setFeatureState({ id }, etat) { this.etats.set(id, etat) }
   setLayoutProperty() {}
   setPaintProperty() {}
   isMoving() { return false }
-  queryRenderedFeatures() { return [{ properties: { id: this.id } }] }
+  queryRenderedFeatures() { this.recherches++; return [{ properties: { id: this.id } }] }
   emettre(nom) {
     this.evenements.get(nom)?.({ point: { x: 0, y: 0 }, originalEvent: { buttons: 0 } })
   }
@@ -87,7 +92,7 @@ test('survol, fixation, changement de vue et réponses obsolètes', async t => {
   assert.equal(isochrones.origine, 'b', 'Une carte recréée retrouve le tracé du départ conservé')
   effacerIsochrone()
   await nextTick()
-  assert.equal(carte.sources.get('iso-zones').features.length, 0)
+  assert.equal(carte.sources.get('iso-depart').features.length, 0)
   vue = 'offre'
   carte.emettre('click')
   await attendre(200)
@@ -104,10 +109,30 @@ test('survol, fixation, changement de vue et réponses obsolètes', async t => {
   autre.emettre('mousemove')
   await jusquA(() => departsA === 1)
   autre.id = 'b'
-  autre.emettre('mousemove')
+  autre.emettre('click')
   await jusquA(() => isochrones.origine === 'b')
   await jusquA(() => reponsesA === 1)
   await attendre(30)
   assert.equal(isochrones.origine, 'b', 'Une réponse ancienne ne remplace pas la dernière origine')
   assert.equal(isochrones.erreur, '')
+
+  effacerIsochrone()
+  await nextTick()
+  retarderA = false
+  const avant = autre.recherches
+  const origines = new Set()
+  for (let i = 0; i < 30; i++) {
+    autre.id = i % 10 < 5 ? 'a' : 'b'
+    autre.emettre('mousemove')
+    await attendre(10)
+    if (isochrones.origine) origines.add(isochrones.origine)
+  }
+  assert.equal(origines.size, 2, 'Le résultat suit un mouvement continu sans attendre une pause')
+  assert.ok(autre.recherches - avant < 15, 'Les événements rapprochés partagent une seule recherche')
+  await jusquA(() => isochrones.origine === 'b' && !isochrones.chargement)
+  autre.id = 'a'
+  autre.emettre('mousemove')
+  autre.emettre('mouseout')
+  await attendre(100)
+  assert.equal(isochrones.origine, 'b', 'Sortir annule aussi le dernier mouvement programmé')
 })

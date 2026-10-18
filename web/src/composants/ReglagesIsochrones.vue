@@ -12,7 +12,7 @@ import { nombre } from '../format'
     <p class="iso-reglages__geste">{{ isochrones.fixe ? 'Départ fixé. Cliquez ailleurs pour le déplacer.' : 'Survolez un carreau ; cliquez pour fixer le départ.' }}</p>
     <p class="iso-reglages__tactile">{{ isochrones.fixe ? 'Départ fixé. Touchez un autre carreau pour le déplacer.' : 'Touchez un carreau pour choisir le départ.' }}</p>
     <p v-if="isochrones.erreur" class="iso-reglages__erreur" role="alert">{{ isochrones.erreur }}</p>
-    <p v-else-if="isochrones.chargement" role="status">Chargement de l’isochrone…</p>
+    <p v-else-if="isochrones.chargement && !isochrones.origine" role="status">Chargement de l’isochrone…</p>
     <p v-else-if="isochrones.origine" role="status">
       {{ nombre(isochrones.habitants) }} habitants joignables en {{ isochrones.seuil }} min.
     </p>

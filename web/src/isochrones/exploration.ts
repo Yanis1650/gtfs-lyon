@@ -4,15 +4,16 @@ import { chargerCarreaux, type Carreaux, type Vue } from '../donnees'
 import { isochrones } from '../etat/isochrones'
 import { creerLecteur } from './chargement'
 import { afficherIsochrones } from './couches'
+import { cadencer } from './cadence'
 import { dessiner, ordonner, type Cellule, type TracesIsochrones } from './geometrie'
 
-/** Un seul survol en attente, requêtes annulées et cache borné ; aucun calcul sur le serveur web. */
+/** Un chargement à la fois, puis la dernière cible ; un clic préempte le survol. */
 export function brancherIsochrones(carte: Map, ctx: { vue: () => Vue }) {
   const lire = creerLecteur(import.meta.env.BASE_URL + 'data/')
   let cellules: Cellule[] | undefined
   let version = ''
   let arreter: AbortController | undefined
-  let minuterie: ReturnType<typeof setTimeout> | undefined
+  let enCours = false
   let cible: string | null = null
   let revision = 0
   let derniere: { temps: Uint8Array; origine: number } | undefined
@@ -21,8 +22,9 @@ export function brancherIsochrones(carte: Map, ctx: { vue: () => Vue }) {
 
   function afficher() { afficherIsochrones(carte, actif(), traces) }
   function annuler() {
-    clearTimeout(minuterie)
+    suivi.annuler()
     arreter?.abort()
+    enCours = false
     revision++
     isochrones.chargement = false
   }
@@ -36,10 +38,11 @@ export function brancherIsochrones(carte: Map, ctx: { vue: () => Vue }) {
   }
   async function charger(id: string, tour: number) {
     arreter = new AbortController()
+    enCours = true
     isochrones.chargement = true
     isochrones.erreur = ''
     try {
-      const [{ index, temps }, carreaux] = await Promise.all([
+      const [{ index, temps, numero }, carreaux] = await Promise.all([
         lire(id, arreter.signal), chargerCarreaux(),
       ])
       if (tour !== revision || !actif()) return
@@ -47,13 +50,13 @@ export function brancherIsochrones(carte: Map, ctx: { vue: () => Vue }) {
         cellules = ordonner(carreaux as Carreaux, index.ids)
         version = index.version
       }
-      derniere = { temps, origine: index.ids.indexOf(id) }
+      derniere = { temps, origine: numero }
       isochrones.origine = id
       isochrones.heure = index.heure
       isochrones.fenetre = index.fenetre
       retracer()
     } catch {
-      if (tour !== revision || !actif()) return
+      if (tour !== revision || !actif() || cible !== id) return
       traces = undefined
       derniere = undefined
       isochrones.origine = null
@@ -61,17 +64,22 @@ export function brancherIsochrones(carte: Map, ctx: { vue: () => Vue }) {
       afficher()
       cible = null
     } finally {
-      if (tour === revision) isochrones.chargement = false
+      if (tour === revision) {
+        enCours = false
+        if (actif() && cible && cible !== id) void charger(cible, tour)
+        else isochrones.chargement = false
+      }
     }
   }
   function demander(id: string, clic: boolean) {
-    if (clic) isochrones.fixe = true
-    if (id === cible && (isochrones.chargement || isochrones.origine === id)) return
-    annuler()
+    if (clic) {
+      isochrones.fixe = true
+      suivi.annuler()
+      if (isochrones.origine === id && traces && !enCours) return
+      annuler()
+    } else if (id === cible) return
     cible = id
-    isochrones.chargement = true
-    const tour = revision
-    minuterie = setTimeout(() => void charger(id, tour), clic ? 0 : 180)
+    if (!enCours) void charger(id, revision)
   }
   function choisir(e: MapMouseEvent, clic: boolean) {
     if (!actif() || (!clic && (isochrones.fixe || e.originalEvent.buttons || carte.isMoving()))) return
@@ -79,7 +87,10 @@ export function brancherIsochrones(carte: Map, ctx: { vue: () => Vue }) {
     const id = carte.queryRenderedFeatures(e.point, { layers: ['carreaux'] })[0]?.properties.id as string | undefined
     if (id) demander(id, clic)
   }
-  const survoler = (e: MapMouseEvent) => choisir(e, false)
+  const suivi = cadencer((e: MapMouseEvent) => choisir(e, false))
+  const survoler = (e: MapMouseEvent) => {
+    if (actif() && !isochrones.fixe) suivi.recevoir(e)
+  }
   const cliquer = (e: MapMouseEvent) => choisir(e, true)
   const sortir = () => { if (!isochrones.fixe) { annuler(); cible = null } }
   const effacer = watch(() => isochrones.effacement, () => {

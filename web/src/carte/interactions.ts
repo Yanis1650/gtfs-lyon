@@ -64,18 +64,21 @@ export function brancherInteractions(carte: CarteMapLibre, ctx: Contexte, rappel
     },
   }
 
-  for (const [couche, texte] of Object.entries(textes)) {
-    carte.on('mouseenter', couche, () => (carte.getCanvas().style.cursor = 'pointer'))
-    carte.on('mouseleave', couche, () => {
-      carte.getCanvas().style.cursor = ''
-      bulle.remove()
-    })
-    carte.on('mousemove', couche, (e) => {
-      if (couche === 'carreaux' && isochrones.actif) return bulle.remove()
-      const f = e.features?.[0]
-      if (f) bulle.setLngLat(e.lngLat).setHTML(texte(f)).addTo(carte)
-    })
-  }
+  const sortir = () => { carte.getCanvas().style.cursor = ''; bulle.remove() }
+  // Éviter les recherches des couches masquées et laisser le suivi cadencé gérer les isochrones.
+  carte.on('mousemove', (e) => {
+    if (ctx.vue() === 'acces' && isochrones.actif) {
+      carte.getCanvas().style.cursor = 'crosshair'
+      return bulle.remove()
+    }
+    const couche = { offre: 'arrets-offre', vitesse: 'troncons-vitesse', acces: 'carreaux' }[ctx.vue()]
+    if (!carte.getLayer(couche)) return sortir()
+    const f = carte.queryRenderedFeatures(e.point, { layers: [couche] })[0]
+    if (!f) return sortir()
+    carte.getCanvas().style.cursor = 'pointer'
+    bulle.setLngLat(e.lngLat).setHTML(textes[couche](f)).addTo(carte)
+  })
+  carte.on('mouseout', sortir)
 
   carte.on('click', (e) => {
     const vue = ctx.vue()

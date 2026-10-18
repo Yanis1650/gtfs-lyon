@@ -55,9 +55,19 @@ Après recalcul complet, reconstruire le site selon le README ; un simple push n
 `<version>/<numero>.bin` contient un octet par destination : une durée en minutes, arrondie au supérieur,
 ou 255 si la destination est hors de la limite de 45 minutes ou non calculable.
 Une ligne représente 7 879 octets, sans téléchargement de toute la matrice au premier survol.
-Le client refuse les versions, chemins et tailles invalides ; le cache est limité à 24 origines.
-Les requêtes obsolètes sont annulées et un résultat ancien ne peut pas remplacer une origine plus récente.
-Un court délai de survol évite de charger toutes les cases traversées pendant un déplacement de souris.
+Le client refuse les versions, chemins et tailles invalides ; le cache conserve au plus 128 origines récemment
+utilisées, soit environ 1 Mo de temps sur le jeu actuel. Revenir sur ces départs évite une nouvelle requête.
+Le survol est échantillonné toutes les 40 ms au maximum, dès le premier mouvement, sans attendre l’arrêt de la souris.
+Un seul chargement s’exécute à la fois : il se termine même pendant le mouvement, puis seule la dernière cible
+en attente est chargée. Cela évite une succession d’annulations sur une connexion lente et une file de résultats en retard.
+Un clic reste prioritaire et fixe immédiatement la cible à charger. Effacer, sortir de la carte ou quitter la vue
+annule les opérations en attente ; une réponse annulée ne peut pas remplacer le résultat du départ fixé.
+
+Les polygones des carreaux restent dans la source cartographique : seuls leurs changements de bande de temps
+sont appliqués avec `feature-state`. Les voisinages des carreaux sont préparés une fois, puis réutilisés pour
+retrouver les frontières exactes. Seuls les contours et le point de départ changent de géométrie au survol.
+Le résultat précédent reste visible pendant le chargement suivant. La maille de calcul reste de 200 m :
+le départ change en passant dans un autre carreau habité, sans interpolation des temps ou des zones.
 
 Vite ignore les écritures de ce dossier pendant le calcul, pour ne pas recharger la page et réinitialiser l’horloge.
 Il faut redémarrer le serveur local après la publication d’un nouveau jeu de données pour actualiser son inventaire de fichiers.
@@ -66,12 +76,21 @@ Il faut redémarrer le serveur local après la publication d’un nouveau jeu de
 
 Les tests Python contrôlent les seuils, les arrondis, les valeurs absentes et l’encodage.
 Les tests web contrôlent les arêtes communes, les trous, les îlots, les temps dirigés, l’ordre des identifiants,
-la validation des données, les erreurs de chargement et les annulations. Ils s’exécutent avec `npm test`.
+la validation des données, les erreurs de chargement et les annulations. Ils vérifient aussi le mouvement continu,
+la dernière cible sur réseau lent, les mises à jour partielles du rendu et sa restauration après changement de style.
+Une comparaison avec l’union brute des polygones contrôle 32 origines du jeu publié aux trois seuils.
+Ils s’exécutent avec `npm test`.
 `python outils/verifier_isochrones.py` vérifie aussi toutes les lignes publiées et leur cohérence avec les métadonnées et les carreaux ; la CI l’exécute.
 Le [rapport du jeu publié](verification-isochrones.json) conserve les dimensions et l’empreinte de la matrice.
 La compilation TypeScript et les contrôles manuels complètent ces tests : survol, départ fixé, effacement,
 retour aux indicateurs, thème, satellite, 3D et petits écrans.
 Un essai en navigateur ne remplace pas une vérification tactile sur téléphone physique.
+
+Mesure locale du 18 octobre 2026, sous Node, sur ces 32 origines et 128 préparations à 45 min :
+le temps moyen de préparation passe de 1,70 à 0,56 ms (95e centile : 4,15 à 0,84 ms).
+Depuis le centre de Lyon, les géométries sérialisées passent de 409 à 70 ko par résultat ;
+les 1 790 polygones sélectionnés ne sont plus réindexés à chaque départ.
+Ces mesures portent sur la préparation et les géométries, pas sur la fréquence d’affichage du navigateur.
 
 Voir aussi [la description générale de l’interface](refonte-atlas.md).
 

@@ -65,7 +65,7 @@ Le parcours manuel couvre :
 - recherche d’arrêt, ouverture de fiche et retour à la carte ;
 - défilement jusqu’aux sources, recherche de ligne et choix d’indicateur 30/45 minutes ;
 - repli et réouverture des commandes d’accessibilité, avec conservation de la mesure et du pôle sélectionnés ;
-- isochrones au survol, départ fixé, changement de seuil, effacement et retour aux indicateurs habituels ;
+- isochrones pendant un mouvement continu, réseau lent, départ fixé, seuils, effacement et retour aux indicateurs ;
 - curseur au clavier, lecture/pause et options d’animation ;
 - thème sombre, fond satellite et vue 3D ;
 - petits écrans, hauteur réduite en paysage et disposition bureau.

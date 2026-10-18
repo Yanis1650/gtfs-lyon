@@ -30,7 +30,7 @@ La barre horaire fine reste accessible pendant la lecture des fiches ; ses régl
 de la simulation. La légende peut se replier et son détail expose toutes les classes.
 L’activation des véhicules rapproche la carte d’un véhicule en circulation pour montrer sa modélisation ; Satellite reste une commande distincte.
 Dans l’accessibilité, **30 min**, **45 min** et **Depuis un pôle**, avec le choix du départ, se règlent sur la carte ; le bandeau se replie en conservant le choix actif.
-Le mode **Isochrones** trace les zones habitées joignables à 15/30/45 min depuis le carreau survolé, ou touché sur mobile ([méthode et recalcul](docs/isochrones.md)).
+Le mode **Isochrones** suit le survol sans attendre l’arrêt de la souris, ou le toucher sur mobile, et trace les zones habitées joignables à 15/30/45 min ([méthode, fluidité et recalcul](docs/isochrones.md)).
 
 À partir de 900 px, carte et panneau apparaissent côte à côte, avec les onglets dans l’en-tête et la barre horaire
 flottante sur la carte. L’adresse partage la vue (`#offre`, `#vitesse`, `#acces`), pas encore l’heure ou la sélection.

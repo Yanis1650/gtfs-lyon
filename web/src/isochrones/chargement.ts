@@ -28,20 +28,22 @@ export function validerTemps(buffer: ArrayBuffer, taille: number): Uint8Array {
 
 export function creerLecteur(base: string, recuperer: typeof fetch = fetch) {
   let index: Promise<IndexIsochrones> | undefined
+  let numeros: Map<string, number>
   const cache = new Map<string, Uint8Array>()
   async function lireIndex(signal: AbortSignal) {
     // Le signal d'une origine n'annule pas l'index partagé entre deux survols.
     index ??= recuperer(`${base}isochrones/index.json`, { signal: AbortSignal.timeout(15000) })
       .then(r => { if (!r.ok) throw new Error('Calculs indisponibles'); return r.json() })
-      .then(validerIndex).catch(e => { index = undefined; throw e })
+      .then(validerIndex).then(i => { numeros = new Map(i.ids.map((id, n) => [id, n])); return i })
+      .catch(e => { index = undefined; throw e })
     const i = await index
     signal.throwIfAborted()
     return i
   }
   return async (origine: string, signal: AbortSignal) => {
     const i = await lireIndex(signal)
-    const numero = i.ids.indexOf(origine)
-    if (numero < 0) throw new Error('Origine absente')
+    const numero = numeros.get(origine)
+    if (numero === undefined) throw new Error('Origine absente')
     const cle = `${i.version}/${numero}`
     let temps = cache.get(cle)
     if (!temps) {
@@ -50,10 +52,11 @@ export function creerLecteur(base: string, recuperer: typeof fetch = fetch) {
       })
       if (!reponse.ok) throw new Error('Temps indisponibles')
       temps = validerTemps(await reponse.arrayBuffer(), i.ids.length)
-      if (cache.size >= 24) cache.delete(cache.keys().next().value!)
-      cache.set(cle, temps)
+      if (cache.size >= 128) cache.delete(cache.keys().next().value!)
     }
+    cache.delete(cle)
+    cache.set(cle, temps)
     signal.throwIfAborted()
-    return { index: i, temps }
+    return { index: i, temps, numero }
   }
 }
