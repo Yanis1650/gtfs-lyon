@@ -1,3 +1,6 @@
+images/02-part-dieu-10s.gif et videos/02-part-dieu-10s.mp4
+Animation de 10 secondes du prototype Lyon sans voiture, près de la Part-Dieu. Des trams bleus et des bus terracotta se déplacent parmi les bâtiments en 3D. La carte est recadrée sur les véhicules. Les positions sont simulées à partir des horaires théoriques TCL à 8 h 30, à vitesse ×1 ; il ne s’agit pas d’un suivi GPS. Le GIF tourne en boucle et les crédits figurent sous la carte.
+
 videos/01-reseau-anime.mp4 et images/01-demo-3d.png
 Capture de la carte Lyon sans voiture : des trams bleus et des bus terracotta se déplacent entre les bâtiments en 3D, près de la Part-Dieu. L’horloge indique 8 h 30 et Simulation. Les positions sont calculées à partir des horaires théoriques TCL du 17 novembre 2026, à vitesse ×1. La vidéo de 22 secondes porte des sous-titres décrivant la simulation et son lien d’accès. Elle est sans piste audio.
 

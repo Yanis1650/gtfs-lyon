@@ -1,10 +1,20 @@
 # Publication LinkedIn — Lyon sans voiture
 
-Le premier post présente l’animation en 3D. Le texte à copier est dans `post.txt` ; les autres sujets sont conservés pour des publications séparées.
+Le premier post raconte la reprise des données GTFS depuis le master, le temps d’un week-end. Le texte simple à copier est dans `post.txt` ; les autres sujets sont conservés pour des publications séparées.
 
-## Premier post : le réseau qui s’anime
+## Premier post : un GIF de 10 secondes
 
-Joindre **`videos/01-reseau-anime.mp4`** comme vidéo à `post.txt` :
+Joindre **`images/02-part-dieu-10s.gif`** à `post.txt` :
+
+- 10 secondes en boucle, 800 × 532 pixels, 15 images/s ; environ 1,5 Mo.
+- Extrait de la capture réelle près de la Part-Dieu, recadré sur les véhicules et les bâtiments en 3D.
+- Simulation à 8 h 30 et à vitesse ×1, selon les horaires théoriques TCL du 17 novembre 2026.
+- Mention « prototype », précision sur la simulation et crédits intégrés ; pas de son.
+- `videos/02-part-dieu-10s.mp4` fournit la même séquence au format vidéo, environ 0,3 Mo.
+
+## Vidéo de présentation plus longue
+
+`videos/01-reseau-anime.mp4` conserve la démonstration initiale :
 
 - 22 secondes, 1 280 × 848 pixels, 30 images/s, H.264 ; moins de 1 Mo.
 - Capture du fonctionnement réel de l’application, à 8 h 30 et à vitesse ×1, sur les horaires théoriques du 17 novembre 2026.
@@ -53,7 +63,7 @@ Après le déploiement, vérifier l’aperçu avec le [Post Inspector LinkedIn](
 - Vitesses commerciales : lignes complètes, arrêts compris, rapport des distances cumulées aux durées cumulées des courses. Elles ne mesurent pas la ponctualité et ne démontrent pas les causes des différences.
 - Les visuels ne publient aucun chiffre d’accessibilité.
 - Tracés et horaires : SYTRAL Mobilités et contributeurs OpenStreetMap, ODbL. Population : Insee Filosofi 2021, Licence Ouverte.
-- Vidéo et couverture de démonstration : fond OpenFreeMap / OpenMapTiles, OpenStreetMap et horaires TCL ; les crédits sont intégrés dans la vidéo.
+- GIF, vidéos et couverture de démonstration : fond OpenFreeMap / OpenMapTiles, OpenStreetMap et horaires TCL ; les crédits sont intégrés dans les animations.
 - Capture satellite historique : photographies aériennes IGN BD ORTHO, Licence Ouverte 2.0 ; fond/tracés OpenStreetMap et données TCL selon les crédits du site.
 - Les cartes des visuels sont des extraits géographiques : les totaux décrivent l’ensemble du périmètre GTFS retenu, hors lignes scolaires.
 

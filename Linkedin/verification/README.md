@@ -26,3 +26,8 @@ La scène de découverte ajoutée ensuite a été vérifiée par lien direct, bo
 Le curseur reste utilisable après lancement ; les tests web contrôlent aussi l’ancre autorisée, le démontage des
 écouteurs et la réduction des animations. La vidéo a été enregistrée dans l’application, encodée puis contrôlée
 par décodage des 660 images et lecture de sa durée de 22 secondes, avec vérification des sous-titres et des crédits.
+
+Le GIF `../images/02-part-dieu-10s.gif` reprend les secondes 2 à 12 de cette capture, recadrées sur la carte.
+Contrôles : 800 × 532 pixels, 150 images, durée cumulée exactement 10 secondes, boucle infinie,
+décodage intégral sans erreur du GIF et du MP4 équivalent. Les images à 0, 5 et 9 secondes ont été
+vérifiées visuellement : les véhicules se déplacent et les mentions restent lisibles.

@@ -1,23 +1,14 @@
-J’ai donné vie au réseau TCL à partir de ses horaires.
+Ça faisait longtemps que je n’avais pas travaillé sur des données GTFS, depuis mon master pour être précis.
 
-Des trams qui suivent leurs voies, des bus qui traversent les carrefours, les bâtiments de Lyon en 3D : j’avais envie de rendre les données de transport plus concrètes.
+En voyant passer plusieurs publications sur le sujet, j’ai eu envie de m’y remettre ce week-end.
 
-J’ai développé « Lyon sans voiture », une carte interactive du réseau lyonnais.
+Ça a donné « Lyon sans voiture », un prototype de carte interactive pour explorer le réseau TCL à partir de ses horaires théoriques, avec notamment une animation des véhicules en 3D.
 
-La vidéo montre une scène à 8 h 30, à vitesse ×1. On peut ensuite changer l’heure, se déplacer dans la ville et observer les véhicules modélisés de près.
+C’est encore un prototype pas complètement abouti, mais j’avais envie de partager cette petite reprise en main.
 
-Il s’agit d’une simulation fondée sur les horaires théoriques TCL du 17 novembre 2026. Les positions sont calculées ; elles ne proviennent pas d’un suivi GPS et ne représentent pas les retards ou les perturbations.
-
-Le projet croise les données ouvertes de SYTRAL Mobilités et d’OpenStreetMap. J’ai préparé les données avec Python et DuckDB, puis construit la carte avec Vue, TypeScript et MapLibre.
-
-Lancer la scène :
+👉 Découvrir le prototype :
 https://atlas-lyon.drekky.fr/#offre-demo
 
-Le code :
-https://github.com/Yanis1650/gtfs-lyon
+Vos retours sont les bienvenus !
 
-Quel quartier de Lyon aimeriez-vous explorer ?
-
-Sources : SYTRAL Mobilités (ODbL), contributeurs OpenStreetMap (ODbL). Fond OpenFreeMap / OpenMapTiles.
-
-#Cartographie #OpenData #Mobilité #Lyon
+#GTFS #Cartographie #Lyon
