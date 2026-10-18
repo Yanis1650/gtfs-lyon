@@ -1,11 +1,34 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { arreterDefilement as arreter, minuterie } from '../etat/lecture'
 import { debutTranche, simulation, trancheDe } from '../etat/simulation'
 import { horaire, tranche } from '../format'
 
 const heure = defineModel<number>({ required: true })
+const glissement = ref(false)
+let reprendre = false
+
+function commencer() {
+  arreter()
+  glissement.value = true
+  reprendre = simulation.actif && simulation.lecture
+  if (simulation.actif) simulation.lecture = false
+}
+function terminer() {
+  if (!glissement.value) return
+  glissement.value = false
+  if (reprendre && simulation.actif) simulation.lecture = true
+  reprendre = false
+}
+onMounted(() => {
+  window.addEventListener('pointerup', terminer)
+  window.addEventListener('pointercancel', terminer)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('pointerup', terminer)
+  window.removeEventListener('pointercancel', terminer)
+})
 
 // Lecture : la journée défile d'une heure toutes les 0,9 s, jusqu'à ce qu'on reprenne la main.
 function basculer() {
@@ -23,6 +46,7 @@ const enLecture = computed(() => (simulation.actif ? simulation.lecture : minute
 // Une valeur par minute simulée : l'affichage ne se redessine pas à chaque image.
 const minute = computed(() => Math.floor(simulation.temps / 60))
 const libelle = computed(() => (simulation.actif ? horaire(minute.value * 60) : tranche(heure.value)))
+const position = computed(() => simulation.actif ? minute.value * 60 : heure.value)
 // L'horloge des véhicules entraîne le curseur des heures, et la carte des fréquences avec lui.
 watch(
   () => (simulation.actif ? trancheDe(simulation.temps) : null),
@@ -30,10 +54,12 @@ watch(
     if (t != null && t !== heure.value) heure.value = t
   },
 )
-function choisir(i: number) {
+function choisir(valeur: number) {
   arreter()
-  heure.value = i
-  if (simulation.actif) simulation.temps = debutTranche(i)
+  if (simulation.actif) {
+    simulation.temps = valeur
+    heure.value = trancheDe(valeur)
+  } else heure.value = valeur
 }
 
 defineExpose({ arreter })
@@ -56,10 +82,12 @@ defineExpose({ arreter })
       <input
         id="heure"
         type="range"
-        min="0"
-        max="23"
-        :value="heure"
-        :aria-valuetext="tranche(heure)"
+        :min="simulation.actif ? debutTranche(0) : 0"
+        :max="simulation.actif ? debutTranche(24) - 60 : 23"
+        :step="simulation.actif ? 60 : 1"
+        :value="position"
+        :aria-valuetext="simulation.actif ? horaire(position) : tranche(heure)"
+        @pointerdown="commencer"
         @input="choisir(Number(($event.target as HTMLInputElement).value))"
       />
   </div>
@@ -116,6 +144,7 @@ input[type='range'] {
   margin: 0;
   background: transparent;
   cursor: pointer;
+  touch-action: none;
 }
 input::-webkit-slider-runnable-track { height: 3px; background: var(--filet); border-radius: 2px; }
 input::-moz-range-track { height: 3px; background: var(--filet); border-radius: 2px; }

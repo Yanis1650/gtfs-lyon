@@ -53,7 +53,7 @@ export function brancherSimulation(carte: CarteMapLibre, ctx: Contexte) {
   let maquettesAffichees = false
   let source: unknown = null
   let rapprocher = false
-  watch(() => simulation.actif, (actif) => { rapprocher = actif }, { immediate: true })
+  const suivreActivation = watch(() => simulation.actif, (actif) => { rapprocher = actif }, { immediate: true })
 
   async function charger(tranche: number) {
     if (tranche > 23 || heures.has(tranche)) return
@@ -146,8 +146,12 @@ export function brancherSimulation(carte: CarteMapLibre, ctx: Contexte) {
   }
 
   // La boucle ne tourne que si l'on regarde les véhicules : pas de calcul ni de batterie perdus.
-  watch(() => simulation.actif && ctx.vue() === 'offre', (voir) => (voir ? demarrer() : arreter()), { immediate: true })
-  watch(ctx.sombre, () => (sale = true))
+  const suivreVue = watch(() => simulation.actif && ctx.vue() === 'offre', (voir) => (voir ? demarrer() : arreter()), { immediate: true })
+  const suivreTheme = watch(ctx.sombre, () => (sale = true))
+  carte.once('remove', () => {
+    suivreActivation(); suivreVue(); suivreTheme()
+    cancelAnimationFrame(image)
+  })
   carte.on('move', () => (bouge = true))
   carte.on('moveend', () => (sale = true))
   carte.on('resize', () => (sale = true))
