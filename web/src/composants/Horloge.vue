@@ -43,10 +43,10 @@ function basculer() {
 onBeforeUnmount(arreter)
 
 const enLecture = computed(() => (simulation.actif ? simulation.lecture : minuterie.value != null))
-// Une valeur par minute simulée : l'affichage ne se redessine pas à chaque image.
-const minute = computed(() => Math.floor(simulation.temps / 60))
-const libelle = computed(() => (simulation.actif ? horaire(minute.value * 60) : tranche(heure.value)))
-const position = computed(() => simulation.actif ? minute.value * 60 : heure.value)
+// Horloge et curseur suivent la seconde simulée, sans redessiner pour les fractions de seconde.
+const seconde = computed(() => Math.floor(simulation.temps))
+const libelle = computed(() => (simulation.actif ? horaire(seconde.value, true) : tranche(heure.value)))
+const position = computed(() => simulation.actif ? seconde.value : heure.value)
 // L'horloge des véhicules entraîne le curseur des heures, et la carte des fréquences avec lui.
 watch(
   () => (simulation.actif ? trancheDe(simulation.temps) : null),
@@ -60,6 +60,13 @@ function choisir(valeur: number) {
     simulation.temps = valeur
     heure.value = trancheDe(valeur)
   } else heure.value = valeur
+}
+
+function deplacer(e: KeyboardEvent) {
+  if (!simulation.actif || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return
+  e.preventDefault()
+  const pas = e.key === 'ArrowRight' || e.key === 'ArrowUp' ? 60 : -60
+  choisir(Math.min(debutTranche(24) - 1, Math.max(debutTranche(0), position.value + pas)))
 }
 
 defineExpose({ arreter })
@@ -77,18 +84,19 @@ defineExpose({ arreter })
     </button>
     <label for="heure" class="horloge__libelle chiffres">
       {{ libelle }}
-      <span class="horloge__contexte">{{ simulation.actif ? 'Simulation' : 'Théorique' }}</span>
+      <span class="horloge__contexte">{{ simulation.actif ? `Simulation ×${simulation.vitesse}` : 'Théorique' }}</span>
     </label>
       <input
         id="heure"
         type="range"
         :min="simulation.actif ? debutTranche(0) : 0"
-        :max="simulation.actif ? debutTranche(24) - 60 : 23"
-        :step="simulation.actif ? 60 : 1"
+        :max="simulation.actif ? debutTranche(24) - 1 : 23"
+        step="1"
         :value="position"
-        :aria-valuetext="simulation.actif ? horaire(position) : tranche(heure)"
+        :aria-valuetext="libelle"
         @pointerdown="commencer"
         @input="choisir(Number(($event.target as HTMLInputElement).value))"
+        @keydown="deplacer"
       />
   </div>
 </template>

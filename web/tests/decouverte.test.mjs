@@ -42,16 +42,18 @@ test('la découverte reconnaît une seule URL, initialise la scène et respecte 
   assert.equal(contexte.relief.value, true)
   assert.equal(contexte.exploration.value, false)
   assert.equal(simulation.temps, 30600)
-  assert.equal(simulation.vitesse, 1)
+  assert.equal(simulation.vitesse, 10)
   assert.equal(simulation.lecture, true)
   assert.equal(effacements, 1, 'La scène efface une ancienne sélection qui masquerait la découverte')
   simulation.temps = 36000
   await nextTick()
   assert.equal(simulation.temps, 36000, 'Le curseur reste libre après le lancement')
   reduire = true
+  simulation.vitesse = 60
   ouvrirDemonstration()
   await nextTick()
   assert.equal(simulation.temps, 30600, 'La même URL permet de rejouer la scène')
+  assert.equal(simulation.vitesse, 10, 'Relancer la scène restaure la vitesse ×10')
   assert.equal(simulation.lecture, false, 'La préférence de réduction des mouvements reste prioritaire')
   vue.value = 'vitesse'
   await nextTick()

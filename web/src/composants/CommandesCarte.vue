@@ -23,7 +23,7 @@ const VEHICULE = 'M5 5h14v12H5zM5 10h14M8 5v5m8-5v5M7 17v3m10-3v3M8 14h.01M16 14
     </button>
     <button v-if="vue === 'offre'" class="commandes__bouton commandes__animation"
       :aria-pressed="simulation.actif" :aria-label="simulation.actif ? 'Masquer les véhicules' : 'Voir le réseau s’animer'"
-      :title="simulation.actif ? 'Masquer les véhicules' : 'Démo 3D à 8 h 30, d’après les horaires théoriques'"
+      :title="simulation.actif ? 'Masquer les véhicules' : 'Démo 3D à 8 h 30 en ×10, d’après les horaires théoriques'"
       @click="simulation.actif ? basculerVehicules(heure) : ouvrirDemonstration()">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="VEHICULE" /></svg>
       <span v-if="simulation.actif">Véhicules animés</span>

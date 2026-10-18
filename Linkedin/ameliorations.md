@@ -7,12 +7,12 @@
 - Recherche dans le classement des lignes, par numéro ou destination.
 - Navigation mobile en bas, avec espaces Carte et exploration séparés ; déplacement de la carte avec un doigt.
 - Voir le réseau s’animer et Vue 3D mis en avant en tête de carte, sur mobile comme sur bureau.
-- Scène à 8 h 30, vitesse ×1 et zoom 18 sur un tram : accès direct par `#offre-demo`, le panneau de l’offre ou l’aide ; réduction des mouvements respectée.
+- Scène à 8 h 30, vitesse ×10 et zoom 18 sur un tram : accès direct par `#offre-demo`, le panneau de l’offre ou l’aide ; réduction des mouvements respectée. L’horloge et le curseur suivent les secondes simulées.
 - Zoom vers un véhicule en circulation pour montrer sa modélisation ; satellite compact avec un pictogramme dédié.
 - Durées 30/45 minutes et pôle de départ dans un bandeau repliable sur la carte ; guide Aide et retour par balayage depuis les panneaux.
 - Isochrones TCL + marche à 15/30/45 min depuis le carreau survolé ou touché ; zones habitées évaluées sur une maille de 200 m, départs entre 8 h et 9 h.
 - Barre horaire d’environ 52 px, persistante pendant la lecture des fiches ; vitesses d’animation dans les réglages.
-- Curseur à la minute en simulation, avec pause pendant le glissement ; génération des isochrones sans rechargement automatique de l’aperçu.
+- Curseur à la seconde en simulation, flèches du clavier d’une minute et pause pendant le glissement ; génération des isochrones sans rechargement automatique de l’aperçu.
 - Recherche d’arrêt et choix de l’indicateur placés en tête des panneaux ; fiches défilantes sur toute la hauteur disponible.
 - Simulation et horaires théoriques explicités près de l’horloge et dans l’en-tête.
 - Totaux et classement des arrêts identifiés comme portant sur la journée complète.
@@ -34,4 +34,4 @@ La description actuelle de l’interface et ses captures sont dans `../docs/refo
 4. **Rendre les vitesses comparables par contexte.** Présenter distinctement lignes urbaines, express/périurbaines et Rhônexpress avant de tirer des conclusions sur un mode entier.
 5. **Comparer les moments de la semaine.** Ajouter un samedi ou un dimanche sur un même périmètre, avec un jour de référence et une provenance explicites.
 
-Pour la communication, le premier post porte sur l’animation et sa vidéo sous-titrée de 22 secondes. Le texte T1/T3 est conservé pour une publication séparée. Le protocole d’essai avec trois personnes est dans `verification/parcours-decouverte.md` ; ces essais externes restent à mener.
+Pour la communication, le premier post raconte la reprise des données GTFS depuis le master, inclut la stack technique et s’accompagne d’une vidéo de 10 secondes en ×10, sans bandeau descriptif. Le texte T1/T3 est conservé pour une publication séparée. Le protocole d’essai avec trois personnes est dans `verification/parcours-decouverte.md` ; ces essais externes restent à mener.

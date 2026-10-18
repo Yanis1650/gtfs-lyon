@@ -17,7 +17,7 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
       <section>
         <h3>Les départs</h3>
         <p>Touchez un arrêt pour ses horaires. Changez l’heure avec le curseur fin.</p>
-        <p><strong>Voir l’animation</strong> lance une scène à 8 h 30 : un tram modélisé, les bâtiments en 3D et les horaires théoriques à vitesse ×1. Modifiez ensuite l’heure ou le cadrage librement.</p>
+        <p><strong>Voir l’animation</strong> lance une scène à 8 h 30 : un tram modélisé, les bâtiments en 3D et les horaires théoriques à vitesse ×10. L’horloge et le curseur suivent la lecture ; modifiez ensuite l’heure ou le cadrage librement.</p>
         <button @click="choisir('offre'); ouvrirDemonstration()">Voir le réseau s’animer →</button>
       </section>
       <section>

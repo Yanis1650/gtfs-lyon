@@ -15,6 +15,7 @@ import { avancement, type Course, indexerTroncons, pointCourse, preparer, type T
 
 /** Vitesses de lecture : temps réel, dix fois, soixante fois (une heure par minute). */
 export const VITESSES = [1, 10, 60] as const
+export const VITESSE_DEFAUT = 10
 /** Le jour de service commence à 4 h et court jusqu'à 4 h le lendemain (28 h). */
 const DEBUT = 4 * 3600
 const FIN = DEBUT + 24 * 3600
@@ -26,7 +27,7 @@ export const simulation = reactive({
   temps: 8 * 3600,
   vehicules: 0,
   /** Dix fois la réalité par défaut : assez vite pour voir le réseau vivre, assez lent pour suivre un tram. */
-  vitesse: 10 as (typeof VITESSES)[number],
+  vitesse: VITESSE_DEFAUT as (typeof VITESSES)[number],
 })
 
 /** Tranche horaire de l'instant simulé (0 = 4 h-5 h), comme le curseur des heures. */

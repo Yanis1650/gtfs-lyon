@@ -28,7 +28,7 @@ Un balayage horizontal dans le panneau ramène aussi à la carte. Le bouton **Ai
 Dans l’offre, **Voir le réseau s’animer** et **Vue 3D** sont visibles en tête de carte, sur téléphone comme sur bureau.
 La barre horaire fine reste accessible pendant la lecture des fiches ; ses réglages regroupent les vitesses ×1, ×10 et ×60. Le libellé distingue les horaires théoriques
 de la simulation. La légende peut se replier et son détail expose toutes les classes.
-**Voir le réseau s’animer** ouvre une scène en 3D à 8 h 30, à vitesse ×1, centrée sur un tram en circulation ; le lien `#offre-demo` ouvre la même scène. Satellite reste distinct.
+**Voir le réseau s’animer** ouvre une scène en 3D à 8 h 30, à vitesse ×10, centrée sur un tram en circulation ; le lien `#offre-demo` ouvre la même scène. L’horloge affiche les secondes et la vitesse ; le curseur suit le temps simulé. Satellite reste distinct.
 Dans l’accessibilité, **30 min**, **45 min** et **Depuis un pôle**, avec le choix du départ, se règlent sur la carte ; le bandeau se replie en conservant le choix actif.
 Le mode **Isochrones** suit le survol sans attendre l’arrêt de la souris, ou le toucher sur mobile, et trace les zones habitées joignables à 15/30/45 min ([méthode, fluidité et recalcul](docs/isochrones.md)).
 
@@ -63,7 +63,7 @@ Le détail est repris dans la fenêtre « Méthode et sources » de la carte.
 
 ## Communication LinkedIn
 
-Le dossier `Linkedin/` contient le post sur l’animation, une vidéo de 22 secondes sous-titrée, sa couverture et les textes alternatifs.
+Le dossier `Linkedin/` contient le post personnel avec la stack technique et une vidéo de 10 secondes en ×10, de la Part-Dieu à la métropole, sans bandeau descriptif. La vidéo initiale de 22 secondes, sa couverture et les textes alternatifs restent disponibles.
 Son `README.md` décrit les fichiers à publier ; le texte T1/T3 et les anciens visuels restent disponibles pour une publication séparée.
 
 L’image de partage de 1 200 × 627 pixels est dans `web/public/partage/lyon-sans-voiture.png` et déclarée dans les

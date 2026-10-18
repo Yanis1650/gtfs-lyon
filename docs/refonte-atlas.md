@@ -29,7 +29,7 @@ Dans L’offre, la barre d’environ 52 px regroupe lecture/pause, heure et curs
 Elle reste présente au-dessus de la navigation du bas, y compris pendant la lecture d’une fiche.
 Sur bureau, elle flotte sur la carte, avec une largeur plafonnée à 640 px.
 
-Le bouton Voir le réseau s’animer (Voir l’animation sur petit écran) ouvre une scène à 8 h 30, à vitesse ×1,
+Le bouton Voir le réseau s’animer (Voir l’animation sur petit écran) ouvre une scène à 8 h 30, à vitesse ×10,
 avec la 3D activée et un zoom 18 sur un tram réellement en circulation, choisi près du centre de Lyon.
 Le lien `#offre-demo`, le panneau de l’offre et l’aide ouvrent la même scène ; les sélections précédentes sont effacées.
 Le curseur et le cadrage restent libres ensuite. La préférence de réduction des animations suspend la lecture et supprime le vol de caméra.
@@ -39,8 +39,12 @@ Vue 3D incline et rapproche la carte pour montrer les bâtiments et les véhicul
 Le bouton Options d’animation conserve les vitesses ×1, ×10 ou ×60 et une commande des véhicules accessible pendant la lecture d’une fiche.
 Un clic à l’extérieur ou Échap ferme le menu. Les cibles principales gardent 44 px de hauteur.
 Le libellé Théorique ou Simulation précise la nature de l’affichage ; les horaires ne décrivent pas les retards réels.
-En simulation, le curseur choisit la minute, suit l’horloge des véhicules et suspend la lecture pendant le glissement ; le relâchement restaure l’état de lecture précédent.
+En simulation, l’horloge affiche HH:MM:SS et la vitesse de lecture. Le curseur suit les secondes des véhicules et permet de choisir un instant précis ; les flèches du clavier conservent un pas d’une minute. Le glissement suspend la lecture ; le relâchement restaure l’état précédent.
 L’activation respecte la préférence système de réduction des animations.
+
+La synchronisation à la seconde et le lancement en ×10 sont vérifiés par les tests de découverte et d’horloge,
+puis dans le navigateur à 320 et 390 px : lecture, pause, glissement avec reprise, flèches d’une minute et bornes 4 h–4 h.
+[Capture de la barre horaire sur téléphone](images/atlas-timeline-mobile.jpg).
 
 ## Bureau : à partir de 900 px
 

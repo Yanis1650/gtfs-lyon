@@ -24,7 +24,7 @@ L’[aide LinkedIn sur les vidéos](https://www.linkedin.com/help/linkedin/answe
 - `images/01-demo-3d.png` fournit une couverture tirée de cette vidéo, utilisable aussi comme image seule.
 
 Le lien du post est `https://atlas-lyon.drekky.fr/#offre-demo`. Il ouvre la même scène de départ,
-avec un tram réellement en circulation dans les données, la 3D et la lecture à vitesse ×1.
+avec un tram réellement en circulation dans les données, la 3D et la lecture à vitesse ×10.
 L’heure et le cadrage restent ensuite libres ; la préférence système de réduction des mouvements met la lecture en pause.
 **Déployer la version du dépôt avant de publier ce lien** : les anciens builds ne reconnaissent pas cette scène.
 

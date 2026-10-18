@@ -33,3 +33,6 @@ Contrôles : 720 × 608 pixels, 30 images/s, durée de 10 secondes et décodage 
 Les images rapprochées, la transition et les vues finales ont été vérifiées visuellement :
 les véhicules se déplacent et les crédits restent présents. Le montage montre la carte seule,
 avec une ligne de crédits discrète en IBM Plex Sans, sans titre ni bandeau descriptif.
+
+Le post inclut la stack technique. Le lien de découverte lance désormais la scène en ×10,
+avec une horloge et un curseur synchronisés à la seconde ; l’enregistrement historique de 22 secondes reste en ×1.

@@ -4,7 +4,9 @@ En voyant passer plusieurs publications sur le sujet, j’ai eu envie de m’y r
 
 Ça a donné « Lyon sans voiture », un prototype de carte interactive pour explorer le réseau TCL à partir de ses horaires théoriques, avec notamment une animation des véhicules en 3D.
 
-C’est encore un prototype pas complètement abouti, mais j’avais envie de partager cette petite reprise en main.
+C’est encore un prototype en construction, mais j’avais envie de partager cette petite reprise en main.
+
+Côté technique : Python et DuckDB pour les données GTFS, R5 pour l’accessibilité, Vue 3, TypeScript et MapLibre GL JS pour la carte. Le tout déployé avec Docker et nginx.
 
 Découvrir le prototype :
 https://atlas-lyon.drekky.fr/#offre-demo

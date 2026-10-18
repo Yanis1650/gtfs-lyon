@@ -34,7 +34,7 @@ function choisirHeure(i: number) {
     </div>
     <div v-if="!simulation.actif" class="decouverte">
       <button @click="ouvrirDemonstration">Voir le réseau s’animer →</button>
-      <p>Un tram en 3D, à 8 h 30. Simulation à vitesse ×1, d’après les horaires théoriques.</p>
+      <p>Un tram en 3D, à 8 h 30. Simulation à vitesse ×10, d’après les horaires théoriques.</p>
     </div>
     <RechercheArret :arrets="arrets" @choisir="(a) => emit('choisirArret', a)" />
 
