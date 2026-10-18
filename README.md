@@ -1,199 +1,111 @@
 # Lyon sans voiture
 
-**Jusqu’où va le réseau TCL ?** Une carte interactive du réseau de transports en commun lyonnais, calculée à partir
-des horaires théoriques GTFS publiés par SYTRAL Mobilités : l’offre heure par heure, la vitesse commerciale tronçon par
-tronçon et l’accessibilité en transports en commun, carreau de 200 m par carreau de 200 m.
+Une carte interactive pour explorer l’offre, les vitesses et l’accessibilité du réseau TCL à partir de données ouvertes.
 
-Toutes les mesures portent sur un jour de référence : le mardi 17 novembre 2026, jour de semaine en période scolaire.
+**[Explorer la carte](https://atlas-lyon.drekky.fr/)** · **[Voir les véhicules en 3D](https://atlas-lyon.drekky.fr/#offre-demo)**
 
-## Trois vues
+![Aperçu de Lyon sans voiture : réseau TCL, carte et commandes d’exploration](docs/images/atlas-apercu.jpg)
 
-| Vue | Ce qu’elle montre |
-|---|---|
-| **L’offre** | Courses par heure sur chaque tronçon entre deux arrêts, départs à chaque arrêt ; un curseur fait défiler la journée de 4 h à 4 h. Les véhicules s’animent d’après les horaires théoriques, à vitesse ×1, ×10 ou ×60. Une recherche permet de trouver un arrêt. |
-| **La vitesse** | Vitesse commerciale de chaque tronçon (divergente autour de l’allure typique du réseau) et classement des lignes, par période. |
-| **L’accessibilité** | Part des habitants de la Métropole joignables en 30 et 45 minutes depuis chaque carreau habité, et temps de trajet depuis six grands pôles. |
+Ce prototype utilise les horaires théoriques du **17 novembre 2026**. Les véhicules sont simulés à partir de ces horaires : ils ne représentent ni des positions GPS ni les retards réels.
 
-Sur chaque vue, la carte passe en vue satellite (photographies aériennes de l’IGN) et en relief : carte inclinée,
-immeubles à leur hauteur OpenStreetMap.
+## Fonctionnalités
 
-## Navigation
+- **L’offre** : fréquences par tronçon, départs aux arrêts et animation des véhicules au fil de la journée. La découverte démarre en 3D à 8 h 30, en ×10.
+- **La vitesse** : vitesses commerciales des lignes et des tronçons, arrêts compris, avec comparaison par période.
+- **L’accessibilité** : population joignable en transports et à pied, temps depuis de grands pôles et isochrones à 15, 30 et 45 minutes depuis un point choisi.
 
-Sur téléphone et tablette (moins de 900 px), les trois vues restent accessibles dans la barre du bas. Le bouton
-**Carte** affiche la carte sur tout l’espace disponible : on la déplace directement avec un doigt. Le bouton voisin
-ouvre **Arrêts et recherche**, **Lignes et filtres** ou **Résultats et détails**, selon la vue. Ce panneau défile indépendamment,
-sans carte figée au-dessus. Toucher un arrêt, un tronçon ou un carreau ouvre sa fiche ; le bouton Carte permet d’y revenir.
-Un balayage horizontal dans le panneau ramène aussi à la carte. Le bouton **Aide** explique les trois usages et permet de les ouvrir.
+L’interface s’adapte au téléphone et au bureau. Le fond de carte, la vue satellite et les bâtiments en 3D se règlent directement sur la carte.
 
-Dans l’offre, **Voir le réseau s’animer** et **Vue 3D** sont visibles en tête de carte, sur téléphone comme sur bureau.
-La barre horaire fine reste accessible pendant la lecture des fiches ; ses réglages regroupent les vitesses ×1, ×10 et ×60. Le libellé distingue les horaires théoriques
-de la simulation. La légende peut se replier et son détail expose toutes les classes.
-**Voir le réseau s’animer** ouvre une scène en 3D à 8 h 30, à vitesse ×10, centrée sur un tram en circulation ; le lien `#offre-demo` ouvre la même scène. L’horloge affiche les secondes et la vitesse ; le curseur suit le temps simulé. Satellite reste distinct.
-Dans l’accessibilité, **30 min**, **45 min** et **Depuis un pôle**, avec le choix du départ, se règlent sur la carte ; le bandeau se replie en conservant le choix actif.
-Le mode **Isochrones** suit le survol sans attendre l’arrêt de la souris, ou le toucher sur mobile, et trace les zones habitées joignables à 15/30/45 min ([méthode, fluidité et recalcul](docs/isochrones.md)).
+## Stack technique
 
-À partir de 900 px, carte et panneau apparaissent côte à côte, avec les onglets dans l’en-tête et la barre horaire
-flottante sur la carte. L’adresse partage la vue (`#offre`, `#vitesse`, `#acces`) ou la scène fixe (`#offre-demo`), pas les autres sélections.
-La description et les captures de l’interface sont dans [docs/refonte-atlas.md](docs/refonte-atlas.md).
+- **Données** : Python, DuckDB et SQL.
+- **Calcul d’accessibilité** : r5py / R5, réseau piéton OpenStreetMap et population Insee.
+- **Application** : Vue 3, TypeScript et MapLibre GL JS.
+- **Déploiement** : fichiers statiques, Docker et nginx.
 
 ## Chaîne de traitement
 
+```mermaid
+flowchart TB
+    subgraph sources["1. Sources ouvertes"]
+        GTFS["Horaires TCL<br/>GTFS · SYTRAL Mobilités"]
+        OSM["Tracés et réseau piéton<br/>OpenStreetMap"]
+        INSEE["Population à 200 m<br/>Insee Filosofi 2021"]
+    end
+    subgraph traitements["2. Préparation et calculs"]
+        PREPARATION["Python + DuckDB<br/>Courses, arrêts, tracés, vitesses et carreaux"]
+        ACCES["r5py / R5<br/>Temps de trajet et population joignable"]
+    end
+    GTFS --> PREPARATION
+    OSM --> PREPARATION
+    INSEE --> PREPARATION
+    PREPARATION --> ACCES
+    PREPARATION -->|Offre, vitesses et véhicules| EXPORT["3. Export pour le web<br/>GeoJSON, JSON et matrices de temps"]
+    ACCES -->|Accessibilité et isochrones| EXPORT
+    EXPORT --> CARTE["4. Exploration dans le navigateur<br/>Vue 3 + MapLibre GL JS"]
+
+    classDef source fill:#f7f2e6,stroke:#dcd3bd,color:#1c2523
+    classDef calcul fill:#3c565d,stroke:#334a50,color:#f7f2e6
+    classDef sortie fill:#efe6d1,stroke:#c9bb9b,color:#1c2523
+    classDef carte fill:#f7f2e6,stroke:#bc6a4a,color:#1c2523,stroke-width:2px
+    class GTFS,OSM,INSEE source
+    class PREPARATION,ACCES calcul
+    class EXPORT sortie
+    class CARTE carte
 ```
-GTFS TCL ──► DuckDB (SQL) ──► arrêts logiques, courses du jour, tronçons, lignes ──► GeoJSON ──► Vue 3 + MapLibre
-OSM (.pbf) ─┘  └─► tracés manquants reconstitués                                     ▲
-Insee Filosofi 2021 ──► carreaux habités ──► r5py / R5 (Docker, Java 21) ─────────────┘
-```
 
-- **Arrêts logiques.** Les quais de même nom distants de moins de 250 m, ou rattachés à une même station, forment un arrêt.
-- **Tracés reconstitués.** Le flux ne fournit pas le tracé du métro, du tram et des funiculaires. Pour chaque suite
-  d’arrêts sans tracé, la chaîne retient la relation OpenStreetMap de la ligne qui passe au plus près des arrêts, dans leur
-  ordre ; 76 suites sur 78 sont ainsi recalées, à un écart moyen de 1 à 10 m.
-- **Vitesse commerciale.** Rapport de sommes (kilomètres cumulés sur heures cumulées), jamais moyenne de vitesses. Les
-  horaires étant arrondis à la minute, la vitesse d’un tronçon est mesurée sur une fenêtre de cinq inter-arrêts.
-- **Véhicules en circulation.** Pour chaque course, une heure par arrêt ; quand le flux donne la même minute à plusieurs
-  arrêts de suite, le temps est réparti selon la distance. La carte déplace chaque véhicule le long des tronçons publiés,
-  avec un court arrêt puis une accélération et un freinage. Un fichier par heure, 50 Ko compressés au plus. De près,
-  chaque véhicule prend son gabarit (bus de 12 m, articulés de 18 m, trams en cinq modules, métros voiture par voiture),
-  chaque caisse suivant la courbe de la voie ; métros et funiculaires, souterrains, restent à plat sous les immeubles.
-- **Accessibilité.** r5py (moteur R5 de Conveyal) : départs minute par minute entre 8 h et 9 h, durée médiane, marche
-  à 3,6 km/h comprise, sur les 7 879 carreaux habités de la Métropole. L’archive transmise à R5 exclut les mêmes agences
-  scolaires que l’offre ; les références aux lignes et courses exclues sont retirées des tables GTFS.
+Les calculs sont réalisés avant publication. Le navigateur charge les données exportées et dessine la carte ; le serveur de l’application ne calcule pas d’itinéraire à la demande.
 
-Le détail est repris dans la fenêtre « Méthode et sources » de la carte.
+## Démarrage local
 
-## Communication LinkedIn
+Avec **Node.js 24**, depuis la racine du dépôt :
 
-Le dossier `Linkedin/` contient le post personnel avec la stack technique et une vidéo de 10 secondes en ×10, de la Part-Dieu à la métropole, sans bandeau descriptif. La vidéo initiale de 22 secondes, sa couverture et les textes alternatifs restent disponibles.
-Son `README.md` décrit les fichiers à publier ; le texte T1/T3 et les anciens visuels restent disponibles pour une publication séparée.
-
-L’image de partage de 1 200 × 627 pixels est dans `web/public/partage/lyon-sans-voiture.png` et déclarée dans les
-métadonnées de la page. Les visuels sont régénérables avec `node outils/generer_linkedin.cjs` (Node.js et `sharp` requis).
-
-## Lancer le projet
-
-Pour consulter les données déjà exportées : Node.js 24. Aucun recalcul n’est nécessaire.
-
-```powershell
+```bash
 cd web
 npm ci
 npm run dev -- --host 127.0.0.1 --port 5180 --strictPort
 ```
 
-Ouvrir [localhost:5180](http://localhost:5180/). Le fond de carte et les photographies aériennes demandent une connexion.
-Le [contrôle responsive local](http://localhost:5180/verification-mobile.html) propose les petits écrans, le portrait
-et le paysage. Cette page de développement ne fait pas partie du site construit pour la production.
+Ouvrir [localhost:5180](http://localhost:5180/). Les données exportées sont incluses dans le dépôt : aucun recalcul ni compte externe n’est nécessaire pour lancer l’application. Le fond de carte nécessite une connexion Internet.
 
-Pour recalculer les données : Python 3.11+ et Docker ; R5 et Java 21 s’exécutent dans le conteneur du pipeline.
+Pour régénérer les données avec Python et Docker, suivre la [préparation et les étapes de calcul](docs/traitement.md). Les paramètres, dont le jour de référence, sont dans [config.py](pipeline/atlas/config.py).
+
+## Vérifications et déploiement
+
+Depuis `web/` :
 
 ```bash
-# 1. Chaîne de traitement (DuckDB)
-cd pipeline
-python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"   # bin/python sous Linux et macOS
-.venv/Scripts/python -m atlas telecharger
-.venv/Scripts/python -m atlas calculer
-
-# 2. Accessibilité (r5py, Java 21) dans le conteneur
-cd ..
-docker compose --profile pipeline run --rm pipeline accessibilite
-
-# 3. Export des couches, puis la carte
-pipeline/.venv/Scripts/python -m atlas exporter
-cd web && npm install && npm run dev
-```
-
-La chaîne complète tient aussi dans le conteneur : `docker compose --profile pipeline run --rm pipeline tout`.
-
-## Tests
-
-Depuis la racine du dépôt, sous PowerShell :
-
-```powershell
-pipeline/.venv/Scripts/python -m pytest pipeline/tests
-pipeline/.venv/Scripts/python outils/verifier_longueurs.py
-cd web
-npm run build
 npm test
+npm run build
 ```
 
-Les calculs sont vérifiés sur un mini-réseau GTFS (`tests/conftest.py`) dont chaque résultat se calcule à la main :
-services actifs avec ajouts et retraits, exclusion des lignes scolaires, heures après minuit, terminus, vitesse
-pondérée, fenêtre glissante, reconstitution des tracés. Chaque test a été éprouvé par mutation : on casse
-volontairement le code qu’il couvre et on vérifie qu’il échoue.
+La CI vérifie aussi les tests Python, l’intégrité des données, les dépendances, l’absence de secrets et l’image de production. Le [contrôle responsive local](http://localhost:5180/verification-mobile.html) permet de vérifier les petits écrans.
 
-La compilation vérifie aussi TypeScript. La CI ajoute l’audit des dépendances de production et la recherche de secrets.
-Le parcours manuel de l’interface et les limites des vérifications mobiles sont décrits dans la documentation de l’interface.
-
-## Déploiement sur le serveur
-
-Le dépôt définit une CI de vérification. La commande prévue pour reconstruire le site sur le serveur, depuis le dépôt
-actualisé, est `docker compose up -d --build web`. Elle utilise nginx derrière le réseau externe `traefik-public`.
-Le domaine peut être défini avec `ATLAS_DOMAINE` ; sa valeur par défaut est `atlas-lyon.drekky.fr`.
-L’envoi des commits et cette reconstruction sont deux étapes distinctes. Voir [compression statique et contrôles HTTP](docs/deploiement.md).
+La construction produit `web/dist/`, à servir avec un serveur statique. Le dépôt fournit une image nginx et un [exemple de déploiement Docker derrière Traefik](docs/deploiement.md), avec compression des données et protections HTTP.
 
 ## Organisation
 
-Règle du dépôt : aucun fichier de plus de 200 lignes (`python outils/verifier_longueurs.py`, aussi lancé par la CI).
-
-```
-pipeline/atlas/       chaîne de traitement (Python + SQL DuckDB)
-  sql/                une étape par fichier, de 01_courses à 06_lignes
-  osm.py, traces.py   lecture des relations OpenStreetMap, reconstitution des tracés
-  accessibilite.py    carreaux Insee et calcul r5py
-  isochrones.py       temps R5 par origine, pour les isochrones interactives
-  vehicules.py        courses heure par heure, horaires lissés, pour l'animation
-pipeline/tests/       mini-réseau GTFS et tests
-web/src/
-  carte/              MapLibre : fond recoloré, satellite et relief, expressions, couches, interactions
-  composants/         en-tête, navigation mobile, onglets, barre horaire, panneaux, fiches, légendes, fenêtres
-  etat/               thème, vue active, statistiques, horloge des véhicules
-  simulation/         position des véhicules le long des tronçons, gabarits et maquettes 3D, calque de dessin
-web/deploy/           nginx et ses en-têtes de sécurité
-web/public/data/      couches GeoJSON produites par la chaîne
-compose.yaml          webmap (nginx derrière Traefik) et conteneur de la chaîne
-docs/                 description de l’interface et captures de vérification
-Linkedin/             publication, visuels, sources et archive du kit
+```text
+pipeline/   Préparation des données, calculs et tests Python
+web/        Application Vue et données exportées dans public/data/
+docs/       Méthodes, interface et déploiement
+outils/     Contrôles des données et du dépôt
 ```
 
-## Charte
+## Documentation
 
-L’interface suit une charte sobre : fond crème, ardoise pour les éléments d’action, terracotta en touches,
-Space Grotesk, IBM Plex Sans et IBM Plex Mono servies depuis le site, commandes arrondies à 7 px. Les données en reprennent
-les rampes : ardoise pour les quantités, terracotta pour les temps, et une échelle divergente terracotta-ardoise pour
-les vitesses. Le fond OpenFreeMap est recoloré aux mêmes teintes. Mise en page pensée d’abord pour le téléphone,
-puis pour le bureau (une colonne de lecture et la carte en pleine hauteur, à partir de 900 px).
-
-La direction **Atlas** utilise un en-tête compact, une navigation adaptée au téléphone, une colonne de lecture
-resserrée sur bureau et des fiches qui mettent le résultat principal en valeur. La barre horaire mesure environ 52 px ;
-les réglages secondaires se déplient à la demande. Les marges de sécurité de l’écran sont prises en compte sur mobile.
-
-## Sécurité
-
-Le site est **statique** : ni serveur applicatif, ni base, ni formulaire, ni cookie, ni mesure d’audience.
-Les journaux d’accès de nginx et de Traefik gardent des adresses IP, chacun borné à trois fichiers de 10 Mo,
-comme le décrivent les mentions légales ; `compose.yaml` règle nginx, la rotation de Traefik relève du serveur.
-
-- nginx 1.31.7 sans droits root (`nginx-unprivileged`), conteneur en lecture seule, sans capacités
-  (`cap_drop: ALL`, `no-new-privileges`), mémoire et processeur limités, aucun port publié (Traefik seulement).
-- En-têtes sur toutes les réponses, erreurs 400, 404, 405 et 414 comprises : CSP stricte (seuls tiers : les
-  tuiles OpenFreeMap et, en vue satellite, les photographies de l’IGN, sans `blob:`), HSTS, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`. Version de nginx masquée.
-- Une adresse inconnue répond un vrai 404 ; fichiers cachés jamais servis ; seuls `GET` et `HEAD` sont acceptés.
-- Polices hébergées sur le site, aucune requête vers Google.
-- Textes venus des données échappés avant tout affichage en HTML.
-- CI : tests, typage, construction, `npm audit --omit=dev`, gitleaks, actions épinglées par empreinte SHA ;
-  Dependabot chaque semaine. Image sans les pages d’exemple de nginx.
-
-Vérifié le 17/10/2026 sur l’image de production lancée en local, puis relu par une session indépendante selon une
-liste de contrôle de sécurité (aucun point bloquant ; ses trois écarts mineurs sont corrigés). À refaire en ligne le
-jour du déploiement : redirection HTTPS, en-têtes à travers Traefik, `verifier.py` et `scanner.py`.
+- [Préparation des données et méthode de calcul](docs/traitement.md)
+- [Isochrones : méthode, formats et recalcul](docs/isochrones.md)
+- [Interface et navigation mobile](docs/refonte-atlas.md)
+- [Déploiement et compression](docs/deploiement.md)
 
 ## Sources et licences
 
-- Horaires théoriques GTFS du réseau TCL, SYTRAL Mobilités, via data.gouv.fr (ODbL).
-- Insee, Filosofi 2021, données carroyées à 200 m (Licence Ouverte).
-- Contributeurs OpenStreetMap : tracés, réseau piéton, fond de carte OpenFreeMap, hauteur des immeubles (ODbL).
-- IGN, BD ORTHO® : photographies aériennes de la vue satellite (Licence Ouverte 2.0).
+- **SYTRAL Mobilités** : horaires GTFS du réseau TCL, sous licence ODbL.
+- **OpenStreetMap** : tracés, réseau piéton et bâtiments, sous licence ODbL ; fond de carte fourni par OpenFreeMap.
+- **Insee, Filosofi 2021** : population carroyée à 200 m, sous Licence Ouverte.
+- **IGN, BD ORTHO®** : photographies aériennes de la vue satellite, sous Licence Ouverte 2.0.
 
-Les couches dérivées publiées dans `web/public/data/` sont diffusées sous la même licence ODbL.
-Elles décrivent l’offre théorique publiée, pas la circulation réelle.
+Les couches dérivées publiées dans `web/public/data/` sont diffusées sous licence ODbL. La méthode et les crédits sont également accessibles dans l’application.
 
-Conçu et développé par Yanis Lepesant · [portfolio](https://portfolio.drekky.fr/) · yanis@drekky.fr
+Conçu et développé par [Yanis Lepesant](https://portfolio.drekky.fr/).
