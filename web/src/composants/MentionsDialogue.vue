@@ -11,8 +11,8 @@ defineExpose({ ouvrir: () => cadre.value?.ouvrir() })
   <Dialogue ref="cadre" id="titre-mentions" etiquette="Lyon sans voiture" titre="Mentions légales">
     <h3>Éditeur</h3>
     <p>
-      Yanis Lepesant, micro-entrepreneur. SIRET&nbsp;102&nbsp;161&nbsp;031&nbsp;00012. 63 route de
-      l’Épine, 50800 Bourguenolles. Contact&nbsp;: <a href="mailto:yanis@drekky.fr">yanis@drekky.fr</a>,
+      Yanis Lepesant. 63 route de l’Épine, 50800 Bourguenolles.
+      Contact&nbsp;: <a href="mailto:yanis@drekky.fr">yanis@drekky.fr</a>,
       07&nbsp;87&nbsp;15&nbsp;81&nbsp;60.
     </p>
     <p>Directeur de la publication&nbsp;: Yanis Lepesant.</p>
