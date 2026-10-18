@@ -25,34 +25,7 @@ L’interface s’adapte au téléphone et au bureau. Le fond de carte, la vue s
 
 ## Chaîne de traitement
 
-```mermaid
-flowchart TB
-    subgraph sources["1. Sources ouvertes"]
-        GTFS["Horaires TCL<br/>GTFS · SYTRAL Mobilités"]
-        OSM["Tracés et réseau piéton<br/>OpenStreetMap"]
-        INSEE["Population à 200 m<br/>Insee Filosofi 2021"]
-    end
-    subgraph traitements["2. Préparation et calculs"]
-        PREPARATION["Python + DuckDB<br/>Courses, arrêts, tracés, vitesses et carreaux"]
-        ACCES["r5py / R5<br/>Temps de trajet et population joignable"]
-    end
-    GTFS --> PREPARATION
-    OSM --> PREPARATION
-    INSEE --> PREPARATION
-    PREPARATION --> ACCES
-    PREPARATION -->|Offre, vitesses et véhicules| EXPORT["3. Export pour le web<br/>GeoJSON, JSON et matrices de temps"]
-    ACCES -->|Accessibilité et isochrones| EXPORT
-    EXPORT --> CARTE["4. Exploration dans le navigateur<br/>Vue 3 + MapLibre GL JS"]
-
-    classDef source fill:#f7f2e6,stroke:#dcd3bd,color:#1c2523
-    classDef calcul fill:#3c565d,stroke:#334a50,color:#f7f2e6
-    classDef sortie fill:#efe6d1,stroke:#c9bb9b,color:#1c2523
-    classDef carte fill:#f7f2e6,stroke:#bc6a4a,color:#1c2523,stroke-width:2px
-    class GTFS,OSM,INSEE source
-    class PREPARATION,ACCES calcul
-    class EXPORT sortie
-    class CARTE carte
-```
+![Chaîne de traitement : sources ouvertes, préparation Python et DuckDB, calcul R5, export et carte interactive](docs/images/chaine-traitement.svg)
 
 Les calculs sont réalisés avant publication. Le navigateur charge les données exportées et dessine la carte ; le serveur de l’application ne calcule pas d’itinéraire à la demande.
 

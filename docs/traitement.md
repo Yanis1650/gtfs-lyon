@@ -3,6 +3,8 @@
 L’application utilise des données préparées en amont, puis exportées dans `web/public/data/`.
 Ces exports sont versionnés : il suffit de lancer l’application pour les consulter.
 
+![Chaîne de traitement : sources, préparation Python et DuckDB, calcul R5, export et application](images/chaine-traitement.svg)
+
 ## Sources et paramètres
 
 [config.py](../pipeline/atlas/config.py) définit les sources, les chemins et les paramètres :

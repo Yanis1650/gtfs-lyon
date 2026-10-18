@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="440" viewBox="0 0 1120 440" role="img" aria-labelledby="titre description">
+  <title id="titre">De la donnée ouverte à la carte interactive</title>
+  <desc id="description">Les horaires TCL, les tracés OpenStreetMap et la population Insee sont préparés avec Python et DuckDB. R5 calcule les temps de trajet et l’accessibilité. Les données sont exportées en fichiers statiques, puis affichées avec Vue, TypeScript et MapLibre.</desc>
+  <defs>
+    <marker id="fleche" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#3c565d" stroke-width="1.5" stroke-linejoin="round"/>
+    </marker>
+    <marker id="fleche-acces" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#a0553f" stroke-width="1.5" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text { font-family: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif; fill: #1c2523; text-anchor: middle; }
+      .etape { font-size: 17px; font-weight: 600; fill: #3c565d; }
+      .titre { font-size: 19px; font-weight: 600; }
+      .detail { font-size: 15px; fill: #4a5654; }
+      .clair { fill: #f7f2e6; }
+      .secondaire { fill: #cfd9d9; }
+      .source { fill: #f7f2e6; stroke: #dcd3bd; stroke-width: 1.5; }
+      .trait { fill: none; stroke: #3c565d; stroke-width: 2; stroke-linejoin: round; }
+    </style>
+  </defs>
+  <rect x="1" y="1" width="1118" height="438" rx="3" fill="#fbf8f1" stroke="#dcd3bd"/>
+
+  <text x="134" y="42" class="etape">1. Sources ouvertes</text>
+  <text x="419" y="42" class="etape">2. Préparer et calculer</text>
+  <text x="719" y="42" class="etape">3. Exporter</text>
+  <text x="1000" y="42" class="etape">4. Explorer</text>
+
+  <g>
+    <rect x="24" y="78" width="220" height="80" rx="3" class="source"/>
+    <text x="134" y="110" class="titre">SYTRAL Mobilités</text>
+    <text x="134" y="136" class="detail">Horaires GTFS du réseau TCL</text>
+
+    <rect x="24" y="177" width="220" height="80" rx="3" class="source"/>
+    <text x="134" y="209" class="titre">OpenStreetMap</text>
+    <text x="134" y="235" class="detail">Tracés et réseau piéton</text>
+
+    <rect x="24" y="276" width="220" height="80" rx="3" class="source"/>
+    <text x="134" y="308" class="titre">Insee Filosofi 2021</text>
+    <text x="134" y="334" class="detail">Population · carreaux de 200 m</text>
+  </g>
+
+  <path d="M244 118H274V316H244M244 217H274" class="trait"/>
+  <path d="M274 190H304" class="trait" marker-end="url(#fleche)"/>
+
+  <g>
+    <rect x="304" y="135" width="230" height="110" rx="3" fill="#3c565d"/>
+    <text x="419" y="169" class="titre clair">Python + DuckDB</text>
+    <text x="419" y="197" class="detail secondaire">Courses, arrêts et tracés</text>
+    <text x="419" y="220" class="detail secondaire">Vitesses et carreaux habités</text>
+  </g>
+
+  <path d="M534 190H614" class="trait" marker-end="url(#fleche)"/>
+  <path d="M419 245V300" class="trait" marker-end="url(#fleche)"/>
+
+  <g>
+    <rect x="304" y="300" width="230" height="110" rx="3" fill="#efe6d1" stroke="#a0553f" stroke-width="1.5"/>
+    <text x="419" y="333" class="titre">r5py / R5</text>
+    <text x="419" y="360" class="detail">Transports + marche</text>
+    <text x="419" y="385" class="detail">Temps et population joignable</text>
+  </g>
+
+  <path d="M534 355H704Q719 355 719 340V245" fill="none" stroke="#a0553f" stroke-width="2" marker-end="url(#fleche-acces)"/>
+  <text x="625" y="337" font-size="14" style="fill:#a0553f">Temps de trajet</text>
+
+  <g>
+    <rect x="614" y="135" width="210" height="110" rx="3" fill="#efe6d1" stroke="#c9bb9b" stroke-width="1.5"/>
+    <text x="719" y="169" class="titre">Fichiers statiques</text>
+    <text x="719" y="197" class="detail">GeoJSON et JSON</text>
+    <text x="719" y="220" class="detail">Matrices de temps binaires</text>
+  </g>
+
+  <path d="M824 190H904" class="trait" marker-end="url(#fleche)"/>
+
+  <g>
+    <rect x="904" y="135" width="192" height="110" rx="3" fill="#3c565d"/>
+    <text x="1000" y="169" class="titre clair">Carte interactive</text>
+    <text x="1000" y="197" class="detail secondaire">Vue 3 + TypeScript</text>
+    <text x="1000" y="220" class="detail secondaire">MapLibre GL JS</text>
+  </g>
+</svg>
