@@ -108,10 +108,22 @@ export function avancement(course: Course, t: number): { k: number; d: number } 
   return { k, d: longueurDe(trace) * u * u * (3 - 2 * u) }
 }
 
+/** Écart toléré entre la fin d'un tronçon et le début du suivant : 5 m, en degrés. */
+const RACCORD = 5 / 111_200
+
+/** Deux tronçons se suivent sur le terrain ? Les quais d'un même arrêt logique peuvent être
+ *  distants de plusieurs dizaines de mètres : le tronçon suivant part alors d'un autre point. */
+function raccordes(precedent: Trace, suivant: Trace): boolean {
+  const a = precedent.points[precedent.points.length - 1]
+  const b = suivant.points[0]
+  return Math.hypot((a[0] - b[0]) * COS_LAT, a[1] - b[1]) <= RACCORD
+}
+
 /** Le point à la distance d du début du tronçon k ; une distance négative remonte les tronçons
- *  précédents, pour que les caisses d'un tram qui vient de quitter l'arrêt suivent la voie. */
+ *  précédents qui lui sont raccordés, pour que les caisses d'un tram qui vient de quitter l'arrêt
+ *  suivent la voie. Sans raccord, le point prolonge le début du tronçon. */
 export function pointCourse({ traces }: Course, k: number, d: number): Point {
-  while (d < 0 && k > 0 && traces[k - 1]) d += longueurDe(traces[--k]!)
+  while (d < 0 && k > 0 && traces[k - 1] && raccordes(traces[k - 1]!, traces[k]!)) d += longueurDe(traces[--k]!)
   return pointA(traces[k]!, d)
 }
 

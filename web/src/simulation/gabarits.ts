@@ -93,8 +93,9 @@ export function silhouettes(course: Course, k: number, d: number, couleur: strin
     const corde = Math.hypot(ex, ey)
     if (corde < 1) return
     const [ux, uy] = [ex / corde, ey / corde]
-    // Chaque caisse garde sa longueur réelle, même si la corde d'une courbe est plus courte.
-    const l = Math.max(corde, longueur * 0.9)
+    // Chaque caisse garde sa longueur réelle, même si la corde d'une courbe est plus courte,
+    // et ne s'étire jamais au-delà, quel que soit l'écart entre deux points du tracé.
+    const l = Math.min(Math.max(corde, longueur * 0.9), longueur * 1.05)
     const dernier = i === g.caisses.length - 1
     const forme = contour(l, g.largeur / 2, i === 0 ? 1 : 0.25, dernier ? 0.6 : 0.25, !!g.proue && i === 0)
     const anneau = forme.map(([a, b]): Point => {
