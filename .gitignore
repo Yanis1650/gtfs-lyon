@@ -20,3 +20,6 @@ R_Carto.R
 
 # Outils locaux
 .claude/
+
+# Kit de publication LinkedIn (brouillons, vidéos, générateur) : gardé en local, hors du dépôt public
+/Linkedin/
