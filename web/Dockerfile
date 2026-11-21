@@ -1,5 +1,5 @@
 # Construction de la webmap (Node 24), puis service statique par nginx sans droits root.
-FROM node:24-alpine AS construction
+FROM node:26-alpine AS construction
 WORKDIR /web
 COPY package.json package-lock.json ./
 RUN npm ci --no-fund --no-audit
